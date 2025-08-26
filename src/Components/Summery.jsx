@@ -85,9 +85,9 @@ const Summery = () => {
   return (
     <>
       <ToastContainer></ToastContainer>
-      <div className=" w-[100%] rounded-2xl 2xl:h-[85%] xl:h-[80%] h-[78%]  flex flex-col">
+      <div className=" w-[100%] rounded-2xl 2xl:h-[85%] xl:h-[80%] h-[78%]   flex flex-col">
         <main className="w-full  h-full flex flex-col overflow-y-scroll">
-          <div className="w-full sm:h-[50px] h-[90px] sm:flex-row flex-col px-[20px] flex items-center justify-between mt-[2px] sm:mt-[30px] ">
+          <div className="w-full sm:h-[50px] h-[90px] sm:flex-row flex-col px-[20px]   flex items-center justify-between mt-[2px] sm:mt-[30px] ">
             <h1 className="text-[23px] font-semibold">Dashboard Summary</h1>
             <div className="h-full w-full sm:w-[360px] gap-[10px] flex">
               <div className="border-dashed rounded flex flex-col w-[105px] border-gray-400 border-[1px] text-center gap-[2px] p-[5px]">
@@ -108,8 +108,8 @@ const Summery = () => {
               </div>
             </div>
           </div>
-          <div className="w-full h-[276px]  mt-[5px] p-2 px-[20px]">
-            <div className="bg-gradient-to-r hover:translate-y-[-5px] duration-300 from-violet-500  to-indigo-500  text-white p-8 rounded-lg shadow-lg w-full sm:w-[390px] h-full">
+          <div className="w-full h-[676px]  justify-between flex mt-[5px] p-2 px-[20px]">
+            <div className="bg-gradient-to-r hover:translate-y-[-5px]  duration-300 from-violet-500  to-indigo-500  text-white p-8 rounded-lg shadow-lg w-full sm:w-[590px] h-full">
               <div className="w-full h-[60px] font-semibold mb-4 flex items-center gap-[20px]">
                 <div className=" w-[70%]">
                   <h1 className="text-[20px]">Virtual Account</h1>
@@ -134,11 +134,10 @@ const Summery = () => {
                 <p className="font-semibold text-[12px]">IFSC Code</p>
                 <h1 className="font-bold text-[18px]">HDFC0000060</h1>
               </div>
+              
             </div>
-          </div>
-          <section className="w-full flex flex-col sm:flex-row  gap-[20px]   sm:min-h-[400px] sm:h-[400px]  px-[20px]">
-            <div className="flex w-full z-0 sm:w-[35%] h-full">
-              <div className="grid grid-cols-2 grid-rows-2 w-full h-full gap-4 ">
+            <div className="flex w-full z-0 sm:w-[60%] h-full">
+              <div className="grid grid-cols-2 grid-rows-2 w-full h-full gap-4">
                 {icons.map(({ icon, num, text, deg }) => (
                   <div
                     style={{ backgroundImage: `url(${bg3})` }}
@@ -157,52 +156,14 @@ const Summery = () => {
                   </div>
                 ))}
 
-                {/* <div style={{backgroundImage:`url(${bg3})`}} className="flex bg-no-repeat bg-left-top bg-contain flex-col  items-center justify-between  rounded-xl p-4   shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-                  <div  className="w-full  flex justify-center items-center h-[40%]">
-                    <i className="fa-solid fa-arrow-right text-3xl text-gray-600 rotate-[-50deg]"></i>
-                  
-                  </div>
-                  <div className="w-full text-center h-[60%]">
-                    <h1 className="text-4xl font-semibold text-gray-800">
-                      36
-                    </h1>
-                    <p className="text-base text-gray-500">Payouts</p>
-                  </div>
-                </div>
-
-                <div className="flex flex-col items-center justify-between shadow-lime-200 rounded-xl p-4 bg-white shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-                  <div className="w-full flex justify-center items-center h-[40%]">
-                    <i className="fa-solid fa-arrow-right text-3xl text-gray-600 rotate-[130deg]"></i>
-                  </div>
-                  <div className="w-full text-center h-[60%]">
-                    <h1 className="text-4xl  font-semibold text-gray-800">0</h1>
-                    <p className="text-base text-gray-500">Collection</p>
-                  </div>
-                </div>
-
-                <div className="flex flex-col items-center justify-between shadow-violet-300  rounded-xl p-4 bg-white shadow-xl hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-                  <div className="w-full flex justify-center items-center h-[40%]">
-                    <i className="fa-regular fa-credit-card text-3xl text-gray-600"></i>
-                  </div>
-                  <div className="w-full text-center h-[60%]">
-                    <h1 className="text-4xl  font-semibold text-gray-800">0</h1>
-                    <p className="text-base text-gray-500">Cards Created</p>
-                  </div>
-                </div>
-
-                <div className="flex flex-col items-center justify-between shadow-red-200 rounded-xl p-4 bg-white shadow-xl hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-                  <div className="w-full flex justify-center items-center h-[40%]">
-                    <i className="fa-solid fa-circle-check text-3xl text-gray-600"></i>
-                  </div>
-                  <div className="w-full text-center h-[60%]">
-                    <h1 className="text-4xl  font-semibold text-gray-800">0</h1>
-                    <p className="text-base text-gray-500">Identity Verified</p>
-                  </div>
-                </div> */}
+                
               </div>
             </div>
+          </div>
+          <section className="w-full flex flex-col sm:flex-row  gap-[20px]   sm:min-h-[400px] sm:h-[400px]  px-[20px]">
+        
 
-            <div className="flex w-full sm:w-[65%] h-[100%]  flex-col justify-center items-center">
+            <div className="flex w-full  h-[100%]  flex-col justify-center items-center">
               <header className="w-full h-[18%] flex justify-around items-center border border-gray-200 bg-gradient-to-r from-sky-50 to-sky-100 rounded-t-2xl shadow-sm">
                 <h1 className="text-[20px] font-semibold text-gray-700">
                   Earnings

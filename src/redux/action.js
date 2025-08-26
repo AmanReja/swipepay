@@ -8,8 +8,9 @@ export const GETENTITY_CALLBACK = "GETENTITY_CALLBACK";
 export const ADDENTITY_CALLBACK = "ADDENTITY_CALLBACK";
 export const UPDATEENTITY_CALLBACK = "UPDATEENTITY_CALLBACK";
 export const DELETEENTITY_CALLBACK = "DELETEENTITY_CALLBACK";
+export const FORGOT_PASSWORD = "FORGOT_PASSWORD";
 
-const baseUrl = "http://localhost:3000";
+const baseUrl = "http://192.168.1.43:3000";
 
 export const getall_ledgerwallet_data =
   (searchtr, trstatus,searchdate_start,searchdate_end,downloadexcl=false) => async (dispatch) => {
@@ -323,5 +324,41 @@ export const updateeteentitycallbackevent = (upentdata,corpid,eventname,status) 
   const data = await res.json();
   dispatch({ type: "UPDATEENTITY_CALLBACK", payload: data });
 };
+export const forgotpassword = (uppassword) => async (dispatch) => {
 
-///ent callback update///
+  if (window.confirm("Are you sure you want to update your password")) {
+
+    const token = localStorage.getItem("token") || {};
+    const res = await fetch(
+      `${baseUrl}/v1/user/forgot-password`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body:JSON.stringify(uppassword)
+      }
+    );
+  
+    if (res.status === 401) {
+      localStorage.removeItem("token");
+      window.location.href = "/";
+      return;
+    }
+  
+    if (res.status===200) {
+      alert("password hasbeen updated")
+      localStorage.removeItem("token")
+      window.location.href = "/";
+      
+    }
+  
+    const data = await res.json();
+    dispatch({ type: "FORGOT_PASSWORD", payload: data });
+  }
+
+ 
+};
+
+///ent pass update///

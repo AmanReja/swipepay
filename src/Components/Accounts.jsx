@@ -16,6 +16,7 @@ import tie from "../assets/icons/tie.png";
 import phone from "../assets/icons/phone.png";
 import mail from "../assets/icons/mail.png";
 import Subfooter from "./Subfooter";
+import robo from "../assets/icons/robo.png";
 import {getone_user} from "../redux/action"
 import { useSelector, useDispatch } from "react-redux";
 
@@ -262,43 +263,57 @@ const Accounts = () => {
     <>
       <div className="w-full flex flex-col gap-[50px] mb-[10px] bg-white  overflow-hidden">
         <div className="flex flex-col border-gray-200 border h-auto    w-full shadow rounded-xl">
-          <div className="flex  w-full bg-gradient-to-r from-[#a16bf8] via-[#3644c2] h-[50%] to-[#8d90d8] rounded-t-xl p-6 shadow-md items-center justify-between">
-            <div className="flex flex-col h-[90px] justify-center gap-2 text-white">
-              <div className="flex  items-center gap-[10px]">
-                <div className="bg-[#6a26e7] shadow-md w-[40px] p-2 rounded-full">
-                  <svg
-                    class="w-6 h-6 text-white"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke="currentColor"
-                      stroke-width="2"
-                      d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-                    />
-                  </svg>
-                </div>
-                <p
-                  style={{ fontFamily: "Delius" }}
-                  className="text-[16px] tracking-wide opacity-90"
-                >
-                  Personal Information
-                </p>
-              </div>
-              <h1
-                style={{ fontFamily: "Delius" }}
-                className="text-2xl font-extrabold drop-shadow-md "
-              >
-                {""}
-              </h1>
-            </div>
+        <div className="relative overflow-hidden rounded-xl p-8 md:p-10 flex flex-col md:flex-row items-center justify-between gap-8 bg-gradient-to-br from-indigo-900 via-indigo-800 to-indigo-700 shadow-2xl">
 
-            {/* <img className="w-[250px] h-[90px] object-contain opacity-80" src={line} alt="Decoration" /> */}
-          </div>
+<div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.05)_1px,transparent_1px)] [background-size:40px_40px] animate-[slowpan_20s_linear_infinite]"></div>
+
+
+
+
+
+<div className="flex flex-col gap-6 max-w-2xl text-center md:text-left">
+  {/* Icon */}
+  <div className="flex justify-center md:justify-start">
+    <div className="bg-indigo-500/90 p-3 rounded-xl shadow-sm">
+      <svg
+        className="w-7 h-7 text-white"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        strokeWidth={2}
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M5.121 17.804A9.953 9.953 0 0112 15c2.21 0 4.21.72 5.879 1.928M15 10a3 3 0 11-6 0 3 3 0 016 0z"
+        />
+      </svg>
+    </div>
+  </div>
+
+  {/* Heading */}
+  <h1  className="text-3xl md:text-4xl font-semibold text-white">
+    Personal Information
+  </h1>
+
+  {/* Paragraph */}
+  <p style={{ fontFamily: "Delius" }} className="text-base md:text-lg text-gray-300 leading-relaxed pr-[20%]">
+    Manage your details to keep your account secure and personalized.
+  </p>
+</div>
+
+
+{/* Image */}
+<div className="flex shadow-2xl shadow-violet-400 rounded-full">
+<img
+  className="w-40 md:w-48 h-auto object-contain drop-shadow-lg " 
+  src={robo}
+  alt="Developer Tools"
+/>
+</div>
+
+</div>
 
           <div className="w-full py-[10px] pl-[30px] sm:justify-normal flex-wrap h-auto  mt-[20px] justify-start sm:flex-row flex-col flex gap-[50px] ">
             {content_card.map((item) => (

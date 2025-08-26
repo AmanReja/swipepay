@@ -12,6 +12,7 @@ import bank from "../assets/icons/bank.png";
 import user from "../assets/icons/user.png";
 
 
+
 const Settings = () => {
 
 
@@ -54,24 +55,41 @@ const Settings = () => {
                 Account
               </NavLink>
 
-              <a className="flex items-center gap-1 hover:border-b-violet-300 hover:border-b-[3px]">
-                {/* Security Icon */}
+              <NavLink
+                to={"/dashboard/settings/security"}
+                className={({ isActive }) =>
+                  `flex items-center gap-1 hover:border-b-violet-300 hover:border-b-[3px] ${
+                    isActive
+                      ? "border-b-violet-400 border-b-[3px] font-bold"
+                      : ""
+                  }`
+                }
+              >
+                {/* Developer Tools Icon */}
                 <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-4 h-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 11c.828 0 1.5-.672 1.5-1.5S12.828 8 12 8s-1.5.672-1.5 1.5S11.172 11 12 11zM17 9V7a5 5 0 00-10 0v2H5v12h14V9h-2z"
-                  />
-                </svg>
+  xmlns="http://www.w3.org/2000/svg"
+  class="w-4 h-4"
+  fill="none"
+  viewBox="0 0 24 24"
+  stroke="currentColor"
+  stroke-width="2"
+>
+ 
+  <path
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    d="M12 3l7 3v6c0 5-3.5 9-7 9s-7-4-7-9V6l7-3z"
+  />
+
+  <path
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    d="M12 11.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm0 0v2"
+  />
+</svg>
+
                 Security
-              </a>
+              </NavLink>
 
               <NavLink
                 to={"/dashboard/settings/developertooles"}

@@ -31,6 +31,7 @@ import Accounts from "./Components/Accounts";
 import Developertools from "./Components/Developertools";
 import Protectedroute from "./Components/Protectedroute.jsx";
 import Profile from "./Components/Profile";
+import Security from "./Components/Security";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -48,6 +49,7 @@ const router = createBrowserRouter(
           <Route path="settings" element={<Settings />}>
             <Route index path="accounts" element={<Accounts />} />
             <Route path="developertooles" element={<Developertools />} />
+            <Route path="security" element={<Security />} />
           </Route>
 
           <Route path="transactionreport" element={<Transactionreport />} />

@@ -14,6 +14,7 @@ const Signin = () => {
   const [pass, setPass] = useState("");
   const [chengepos, seChangepos] = useState(false);
   const [checkpass, setCheckpass] = useState(false);
+  const [wrong, setWrong] = useState(false);
   console.log(14, pass, email);
 
   const handelchange = () => {
@@ -37,11 +38,13 @@ const Signin = () => {
         credentials: "include",
       };
 
-      const res = await fetch(`http://localhost:3000/v1/user/login`, request);
+      const res = await fetch(`http://192.168.1.43:3000/v1/user/login`, request);
       const data = await res.json();
       console.log(22, data);
       if (res.status === 401) {
         alert("invalid");
+        setWrong(true)
+        setPass("");
       }
 
       if (res.status === 200) {
@@ -49,22 +52,20 @@ const Signin = () => {
         navigate("/dashboard/summery?login=success");
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
+        setWrong(false)
       }
     } catch (error) {
       console.log(error);
-    } finally {
-      setEmail("");
-      setPass("");
     }
 
   };
   return (
     <>
       <ToastContainer></ToastContainer>
-      <div className="min-h-screen  flex items-center justify-center sm:p-6 p-0">
-        <div className="max-w-6xl  w-full bg-white backdrop-blur-lg  rounded-3xl shadow-2xl overflow-hidden border border-white/40">
+      <div className=" flex items-center justify-center sm:p-6 p-0 min-h-screen">
+        <div className="max-w-5xl   w-full bg-white backdrop-blur-lg  rounded-3xl shadow-2xl overflow-hidden border border-white/40">
           <div className="grid lg:grid-cols-2">
-            {/* Left Side - Form */}
+           
             <form
               onSubmit={(e) => {
                 login(), e.preventDefault();
@@ -72,7 +73,7 @@ const Signin = () => {
               className="p-10 lg:p-14 flex flex-col  overflow-hidden justify-center"
             >
               <div className="max-w-md mx-auto w-full space-y-4">
-                {/* Logo */}
+               
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 bg-violet-600 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-md">
                     B
@@ -82,7 +83,7 @@ const Signin = () => {
                   </span>
                 </div>
 
-                {/* Heading */}
+               
                 <div>
                   <h1 className="text-4xl font-extrabold text-gray-900 leading-tight">
                     Secure Financial Access
@@ -92,7 +93,7 @@ const Signin = () => {
                   </p>
                 </div>
 
-                {/* Google Button */}
+               
 
                 <button className="w-full flex items-center justify-center gap-3 h-12 border border-gray-300 bg-white rounded-lg hover:bg-gray-50 transition shadow-sm">
                   <svg
@@ -144,14 +145,14 @@ const Signin = () => {
                   </span>
                 </button>
 
-                {/* Divider */}
+           
                 <div className="flex items-center gap-4">
                   <span className="flex-1 h-px bg-gray-300"></span>
                   <span className="text-sm text-gray-500">OR</span>
                   <span className="flex-1 h-px bg-gray-300"></span>
                 </div>
 
-                {/* Inputs */}
+              
                 <div className="space-y-4">
                   <div className="relative">
                     <input
@@ -179,7 +180,7 @@ const Signin = () => {
                     </svg>
                   </div>
 
-                  <div className="relative border border-gray-300 focus:border-violet-500 focus:ring-2 rounded-xl pr-[8px] focus:ring-violet-200 flex items-center">
+                  <div className={`relative border border-gray-300 ${wrong?"border-red-500":"border-gray-300"}  focus:border-violet-500 focus:ring-2 rounded-xl pr-[8px] focus:ring-violet-200 flex items-center`}>
                     <input
                       onChange={(e) => {
                         setPass(e.target.value);
@@ -262,9 +263,14 @@ const Signin = () => {
                       </svg>
                     )}
                   </div>
+                  {wrong &&( <div className="flex bg-red-500 p-2 border-2 rounded-2xl text-white pr-[80px]">
+                    Wrong Password Please use a different password
+                  </div>)
+
+                  }
+                 
                 </div>
 
-                {/* Sign Up Button */}
                 <button
                   type="submit"
                   className="w-full h-12 bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-semibold rounded-xl hover:scale-[1.02] active:scale-[0.98] transition transform shadow-lg"
@@ -272,7 +278,7 @@ const Signin = () => {
                   Sign In Account
                 </button>
 
-                {/* Terms */}
+      
                 <p className="text-xs text-gray-500 text-center">
                   By signing up, you agree to our{" "}
                   <a href="#" className="text-violet-600 hover:underline">
@@ -286,7 +292,6 @@ const Signin = () => {
               </div>
             </form>
 
-            {/* Right Side - Illustration */}
             <div className="bg-gradient-to-br from-violet-600 via-purple-600 to-indigo-600 flex items-center justify-center ">
               {/* <div className="flex translate-y-[-200px] translate-x-[-260px] shadow-xl bg-white/2 backdrop-blur-2xl rounded-full opacity-[10] h-[220px] w-[280px] absolute"></div> */}
               {/* <img

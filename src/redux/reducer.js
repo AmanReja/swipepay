@@ -10,7 +10,8 @@ import {
   GETENTITY_CALLBACK,
   ADDENTITY_CALLBACK,
   DELETEENTITY_CALLBACK,
-  UPDATEENTITY_CALLBACK
+  UPDATEENTITY_CALLBACK,
+  FORGOT_PASSWORD
 } from "./action";
 
 
@@ -148,6 +149,27 @@ export const entitycallbackReducer = (state = initialentitycallbackevent, action
     return{
       ...state,
       entitycallback:state.entitycallback.map((entity) => entity.id === action.payload.id?{...entity,...action.payload}:entity)
+    }
+
+  }
+  
+  
+  
+  else {
+    return state;
+  }
+};
+
+const initialforgotpass = {
+  forgotpass: [],
+};
+
+export const forgotpassReducer = (state = initialforgotpass, action) => {
+   if(action.type===FORGOT_PASSWORD){
+    
+    return{
+      ...state,
+      forgotpass:state.forgotpass.map((pass) => pass.id === action.payload.id?{...pass,...action.payload}:pass)
     }
 
   }

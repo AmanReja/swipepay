@@ -7,7 +7,8 @@ import {
   walletcompanyReducer,
   payoutreportReducer,
   getoneuserReducer,
-  entitycallbackReducer
+  entitycallbackReducer,
+  forgotpassReducer
 } from "./reducer";
 const store = configureStore({
   reducer: {
@@ -17,7 +18,8 @@ const store = configureStore({
     walletcompany:walletcompanyReducer,
     payoutreport:payoutreportReducer,
     getoneuser:getoneuserReducer,
-    entitycallback:entitycallbackReducer
+    entitycallback:entitycallbackReducer,
+    forgotpass:forgotpassReducer
 
   },
 });

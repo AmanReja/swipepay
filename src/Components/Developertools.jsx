@@ -227,7 +227,9 @@ const Developertools = () => {
             <label className="block text-sm font-medium text-gray-700 mb-1">Call Back Event Name</label>
             <select value={callbackeventname} onChange={(e) => { setCallbackeventname(e.target.value) }} name="callbackeventname" className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500 bg-white" >
 
-              <option selected value="payout_failed">payout_failed</option>
+            <option selected value="Select callback event">Select callback event</option>
+              <option  value="payout_failed">payout_failed</option>
+
               <option value="payout_pending">payout_pending</option>
 
             </select>
@@ -241,7 +243,8 @@ const Developertools = () => {
             <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
             <select value={status} onChange={(e) => { setStatus(e.target.value) }} name="callbackeventname" className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500 bg-white" >
 
-              <option selected value="ACTIVE">ACTIVE</option>
+              <option selected value="ACTIVE">Select Status</option>
+              <option  value="ACTIVE">ACTIVE</option>
               <option value="INACTIVE">INACTIVE</option>
 
             </select>
@@ -286,26 +289,7 @@ const Developertools = () => {
               <div className="flex items-center space-x-1">
                 <p>Callback event</p>
                 <div className="flex flex-col justify-center items-center leading-none">
-                  <svg
-                    className="-mb-[4px]"
-                    xmlns="http://www.w3.org/2000/svg"
-                    height="14"
-                    viewBox="0 -960 960 960"
-                    width="14"
-                    fill="#1f1f1f"
-                  >
-                    <path d="M480-528 296-344l-56-56 240-240 240 240-56 56-184-184Z" />
-                  </svg>
-                  <svg
-                    className="-mt-[4px]"
-                    xmlns="http://www.w3.org/2000/svg"
-                    height="14"
-                    viewBox="0 -960 960 960"
-                    width="14"
-                    fill="#1f1f1f"
-                  >
-                    <path d="M480-344 240-584l56-56 184 184 184-184 56 56-240 240Z" />
-                  </svg>
+                
                 </div>
               </div>
             </th>
@@ -313,26 +297,7 @@ const Developertools = () => {
               <div className="flex items-center space-x-1">
                 <p>Callback Url</p>
                 <div className="flex flex-col justify-center items-center leading-none">
-                  <svg
-                    className="-mb-[4px]"
-                    xmlns="http://www.w3.org/2000/svg"
-                    height="14"
-                    viewBox="0 -960 960 960"
-                    width="14"
-                    fill="#dbdad7"
-                  >
-                    <path d="M480-528 296-344l-56-56 240-240 240 240-56 56-184-184Z" />
-                  </svg>
-                  <svg
-                    className="-mt-[4px]"
-                    xmlns="http://www.w3.org/2000/svg"
-                    height="14"
-                    viewBox="0 -960 960 960"
-                    width="14"
-                    fill="#1f1f1f"
-                  >
-                    <path d="M480-344 240-584l56-56 184 184 184-184 56 56-240 240Z" />
-                  </svg>
+                 
                 </div>
               </div>
             </th>
@@ -366,7 +331,7 @@ const Developertools = () => {
               <td className="px-4 py-4"> {
                 entity.create_on
 
-              }</td>
+          }</td>
 
               <td className="px-4 py-4">
                 {
