@@ -46,7 +46,7 @@ const Accounts = () => {
     {
       name: getoneuserdata?.role,
       catagory: "Role",
-      color: "bg-gradient-to-r from-lime-400 to-green-500",
+      color: "bg-gradient-to-r from-red-400 to-red-500",
       icon: (
         <svg
           className="w-6 h-6  text-white"
@@ -171,7 +171,7 @@ const Accounts = () => {
     {
       name: getoneuserdata?.company_id,
       catagory: "Business Name",
-      color: "bg-gradient-to-r from-lime-400 to-green-500",
+      color: "bg-gradient-to-r from-red-400 to-red-500",
       icon: (
         <svg
           className="w-6 h-6 text-white"
@@ -337,7 +337,7 @@ const Accounts = () => {
         </div>
         <div className="flex border-gray-200  border w-full rounded-2xl bg-white  h-auto mb-[10px] flex-col p-4 gap-[10px]">
           <div className="flex  items-center gap-[10px]">
-            <div className="bg-lime-400 shadow-md w-[40px] p-2 rounded-full">
+            <div className="bg-violet-400 shadow-md w-[40px] p-2 rounded-full">
               <svg
                 class="w-6 h-6 text-white"
                 aria-hidden="true"

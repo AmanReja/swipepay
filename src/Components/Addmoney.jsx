@@ -2,26 +2,25 @@ import React, { useEffect, useState } from "react";
 import Chart from "./Chart";
 import Hdfc from "../assets/images/HDFC.png";
 import {useDispatch, useSelector } from "react-redux";
-import { getall_wallet_company_data } from "../redux/action";
+import { getall_wallet_company_data,Payout_report } from "../redux/action";
 
 const Addmoney = () => {
   const [walldata,setWalldata] = useState([])
 
   const dispatch = useDispatch();
   const walletcompanydata = useSelector((state)=>state.walletcompany.walletcompany.data)
+  const payoutdata = useSelector((state)=>state.payoutreport.payoutreport)
+  
+  console.log(55,walletcompanydata);
   
 
 
-  function setwall() {
-    setWalldata(walletcompanydata)
-  }
-
-  console.log(55,walldata);
 
 
 
   useEffect(() => {
-   dispatch(getall_wallet_company_data()),setwall()
+   dispatch(getall_wallet_company_data()),
+   dispatch(Payout_report())
   }, [dispatch]);
 
 
@@ -106,7 +105,8 @@ const Addmoney = () => {
                   </div>
                 </div>
                 <h1 className="text-lg font-bold text-gray-800">
-                  ₹
+                 {payoutdata?.total_payout_value
+} ₹
                 </h1>
               </div>
 
@@ -248,7 +248,8 @@ const Addmoney = () => {
                   <th className="px-4 py-4">
                     {" "}
                     <div className="flex items-center space-x-1">
-                      <p>UTR</p>
+                      <p>AEPS WALLET
+</p>
                       <div className="flex flex-col justify-center items-center leading-none">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -303,7 +304,8 @@ const Addmoney = () => {
                   </th>
                   <th className="px-4 py-4">
                     <div className="flex items-center space-x-1">
-                      <p>Amount</p>
+                      <p>hold balance
+</p>
                       <div className="flex flex-col justify-center items-center leading-none">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -350,11 +352,13 @@ const Addmoney = () => {
                       </span>
                     </td>
                     <td className="px-4 py-5">{txn.last_update}</td>
-                    <td className="px-4 py-5">{txn.utr}</td>
-                    <td className="px-4 py-5">{txn.account}</td>
-                    <td className="px-4 py-5">
-                     {txn.hold_balance}
-                    </td>
+                    <td className="px-4 py-5">{txn.aeps_wallet}</td>
+                    <td className="px-4 py-5">{txn.aeps_wallet}</td>
+                    <td className="px-4 py-5">{txn.hold_balance}</td>
+                   
+                    
+                    
+                   
                   </tr>
                 ))}
               </tbody>

@@ -5,6 +5,7 @@ import play from "../assets/images/play.png";
 import group from "../assets/images/lap.svg";
 import group1 from "../assets/images/lap2.png";
 import busybox from "../assets/icons/busybox.png";
+import { ShieldCheck, Smartphone, Lock, X } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast, Bounce, Slide } from "react-toastify";
 
@@ -16,6 +17,14 @@ const Signin = () => {
   const [checkpass, setCheckpass] = useState(false);
   const [wrong, setWrong] = useState(false);
   console.log(14, pass, email);
+  const [passopen, setPassopen] = useState(false);
+  const [otp, setOtp] = useState("");
+
+
+  const handelpassopen = ()=>{
+    
+    setPassopen((prev)=>!prev)
+  }
 
   const handelchange = () => {
     seChangepos((prev) => !prev);
@@ -277,6 +286,10 @@ const Signin = () => {
                 >
                   Sign In Account
                 </button>
+                <p onClick={(e)=>{setPassopen(true)}} className=" text-gray-500  text-right hover:underline cursor-pointer">
+                  Forgot Password
+            
+                </p>
 
       
                 <p className="text-xs text-gray-500 text-center">
@@ -291,6 +304,31 @@ const Signin = () => {
                 </p>
               </div>
             </form>
+            {passopen && (
+        <form onSubmit={(e)=>{passupdate(e)}} className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl shadow-2xl p-6 w-[90%] md:w-[400px] relative">
+            <button
+              onClick={handelpassopen}
+              className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
+            >
+              <X />
+            </button>
+            <h2 className="text-lg font-bold mb-4">Enter Your otp</h2>
+            <p className="text-sm text-gray-600 mb-4">
+            Enter your otp which was sent to your email
+            </p>
+            <input required onChange={(e)=>{setOtp(e.target.value)}}
+              type="text"
+              value={otp}
+              placeholder="Enter your email"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg mb-4"
+            />
+            <button type="submit" className="w-full py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700 transition">
+              Confirm
+            </button>
+          </div>
+        </form>
+      )}
 
             <div className="bg-gradient-to-br from-violet-600 via-purple-600 to-indigo-600 flex items-center justify-center ">
               {/* <div className="flex translate-y-[-200px] translate-x-[-260px] shadow-xl bg-white/2 backdrop-blur-2xl rounded-full opacity-[10] h-[220px] w-[280px] absolute"></div> */}
