@@ -11,7 +11,8 @@ import {
   ADDENTITY_CALLBACK,
   DELETEENTITY_CALLBACK,
   UPDATEENTITY_CALLBACK,
-  FORGOT_PASSWORD
+  FORGOT_PASSWORD,
+  GETCOLLECTIONS
 } from "./action";
 
 
@@ -170,6 +171,27 @@ export const forgotpassReducer = (state = initialforgotpass, action) => {
     return{
       ...state,
       forgotpass:state.forgotpass.map((pass) => pass.id === action.payload.id?{...pass,...action.payload}:pass)
+    }
+
+  }
+  
+  
+  
+  else {
+    return state;
+  }
+};
+
+const initialcollections = {
+  collections: [],
+};
+
+export const collectionsReducer = (state = initialcollections, action) => {
+   if(action.type===GETCOLLECTIONS){
+    
+    return{
+      ...state,
+      collections:action.payload
     }
 
   }

@@ -47,7 +47,7 @@ const Signin = () => {
         credentials: "include",
       };
 
-      const res = await fetch(`http://localhost:3000/v1/user/login`, request);
+      const res = await fetch(`http://192.168.1.43:3000/v1/user/login`, request);
       const data = await res.json();
       console.log(22, data);
       if (res.status === 401) {

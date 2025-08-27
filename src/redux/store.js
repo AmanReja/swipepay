@@ -8,7 +8,8 @@ import {
   payoutreportReducer,
   getoneuserReducer,
   entitycallbackReducer,
-  forgotpassReducer
+  forgotpassReducer,
+  collectionsReducer
 } from "./reducer";
 const store = configureStore({
   reducer: {
@@ -19,7 +20,8 @@ const store = configureStore({
     payoutreport:payoutreportReducer,
     getoneuser:getoneuserReducer,
     entitycallback:entitycallbackReducer,
-    forgotpass:forgotpassReducer
+    forgotpass:forgotpassReducer,
+    collections:collectionsReducer
 
   },
 });

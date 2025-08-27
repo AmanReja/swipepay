@@ -9,8 +9,9 @@ export const ADDENTITY_CALLBACK = "ADDENTITY_CALLBACK";
 export const UPDATEENTITY_CALLBACK = "UPDATEENTITY_CALLBACK";
 export const DELETEENTITY_CALLBACK = "DELETEENTITY_CALLBACK";
 export const FORGOT_PASSWORD = "FORGOT_PASSWORD";
+export const GETCOLLECTIONS = "GETCOLLECTIONS";
 
-const baseUrl = "http://localhost:3000";
+const baseUrl = "http://192.168.1.43:3000";
 
 export const getall_ledgerwallet_data =
   (searchtr, trstatus,searchdate_start,searchdate_end,downloadexcl=false) => async (dispatch) => {
@@ -194,6 +195,30 @@ export const Payout_report = () => async (dispatch) => {
 
   const data = await res.json();
   dispatch({ type: "PAYOUT_REPORT", payload: data });
+};
+
+
+export const get_collections = () => async (dispatch) => {
+  const token = localStorage.getItem("token") || {};
+  const res = await fetch(
+    `${baseUrl}/v1/user/col-transactions`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  if (res.status === 401) {
+    localStorage.removeItem("token");
+    window.location.href = "/";
+    return;
+  }
+
+  const data = await res.json();
+  dispatch({ type: "GETCOLLECTIONS", payload: data });
 };
 
 

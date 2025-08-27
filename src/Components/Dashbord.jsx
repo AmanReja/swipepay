@@ -80,7 +80,7 @@ const Dashbord = () => {
   ];
   return (
     <>
-      <div className="w-full h-screen  bg-sky-100 flex flex-col gap-[20px] items-center sm:overflow-y-hidden overflow-y-auto overflow-x-hidden ">
+      <div className="w-full h-screen  bg-gray-100 flex flex-col gap-[20px] items-center sm:overflow-y-hidden overflow-y-auto overflow-x-hidden ">
         <Navbar></Navbar>
         <div className="w-full flex-col  h-screen pb-0 sm:pb-[100px] sm:flex-row flex">
           <div className="flex flex-row h-full  sm:w-[4%] sm:px-0 px-[30px] sm:flex-col sm:justify-normal justify-center items-center gap-[5px]  mb-2 sm:gap-[20px] w-full">
