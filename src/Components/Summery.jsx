@@ -83,6 +83,7 @@ const Summery = () => {
   ];
 
   return (
+    
     <>
       <ToastContainer></ToastContainer>
       <div className=" w-[100%] rounded-2xl 2xl:h-[85%] xl:h-[80%] h-[78%]   flex flex-col">
@@ -108,7 +109,7 @@ const Summery = () => {
               </div>
             </div>
           </div>
-          <div className="w-full h-[676px]  justify-between flex mt-[5px] p-2 px-[20px]">
+          <div className="w-full h-[676px]  justify-between sm:flex-row flex-col flex mt-[5px] p-2 px-[20px]">
             <div className="bg-gradient-to-r hover:translate-y-[-5px]  duration-300 from-violet-500  to-indigo-500  text-white p-8 rounded-lg shadow-lg w-full sm:w-[590px] h-full">
               <div className="w-full h-[60px] font-semibold mb-4 flex items-center gap-[20px]">
                 <div className=" w-[70%]">

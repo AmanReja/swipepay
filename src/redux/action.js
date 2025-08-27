@@ -10,7 +10,7 @@ export const UPDATEENTITY_CALLBACK = "UPDATEENTITY_CALLBACK";
 export const DELETEENTITY_CALLBACK = "DELETEENTITY_CALLBACK";
 export const FORGOT_PASSWORD = "FORGOT_PASSWORD";
 
-const baseUrl = "http://192.168.1.43:3000";
+const baseUrl = "http://localhost:3000";
 
 export const getall_ledgerwallet_data =
   (searchtr, trstatus,searchdate_start,searchdate_end,downloadexcl=false) => async (dispatch) => {
