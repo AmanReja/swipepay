@@ -6,7 +6,7 @@ import { useParams, useLocation } from "react-router-dom";
 import bg3 from "../assets/images/bg-3.png";
 import Subfooter from "./Subfooter";
 import { useSelector, useDispatch } from "react-redux";
-import { getall_payoutlog_data,getall_wallet_company_data } from "../redux/action";
+import { getall_payoutlog_data,getall_wallet_company_data,get_vertualaccountdetails} from "../redux/action";
 import {BadgeCheck,ArrowDownLeft,ArrowUpRight,CreditCard} from "lucide-react"
 
 
@@ -18,7 +18,8 @@ const Summery = () => {
   const dispatch = useDispatch();
   const payoutdata = useSelector((state) => state.payoutlog.payoutlog.data);
   const walletdata = useSelector((state) => state.walletcompany.walletcompany.total);
-  console.log(18,walletdata);
+  const vaaccountdata = useSelector((state) => state.vaaccount.vaaccount);
+  console.log(18,vaaccountdata);
   
 
 
@@ -26,6 +27,7 @@ const Summery = () => {
   useEffect(() => {
     dispatch(getall_payoutlog_data())
     dispatch(getall_wallet_company_data())
+    dispatch(get_vertualaccountdetails())
     
   }, [dispatch]);
 
@@ -129,11 +131,13 @@ const Summery = () => {
 
               <div className="w-full  h-[60px]">
                 <p className="font-semibold text-[12px]">Account Number</p>
-                <h1 className="font-bold text-[18px]"> BB559900000036</h1>
+                <h1 className="font-bold text-[18px]"> {vaaccountdata[0]?.account_number}</h1>
               </div>
+
               <div className="w-full  h-[60px]">
                 <p className="font-semibold text-[12px]">IFSC Code</p>
-                <h1 className="font-bold text-[18px]">HDFC0000060</h1>
+                <h1 className="font-bold text-[18px]">{vaaccountdata[0]?.ifsc_code
+}</h1>
               </div>
               
             </div>

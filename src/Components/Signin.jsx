@@ -8,6 +8,9 @@ import busybox from "../assets/icons/busybox.png";
 import { ShieldCheck, Smartphone, Lock, X } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast, Bounce, Slide } from "react-toastify";
+import backgroundgreed from "../assets/images/bg.svg"
+import { FaBriefcase, FaDollarSign, FaChartLine } from "react-icons/fa";
+
 
 const Signin = () => {
   const navigate = useNavigate();
@@ -71,35 +74,102 @@ const Signin = () => {
   return (
     <>
       <ToastContainer></ToastContainer>
-      <div className=" flex items-center justify-center sm:p-6 p-0 min-h-screen">
-        <div className="max-w-5xl   w-full bg-white backdrop-blur-lg  rounded-3xl shadow-2xl overflow-hidden border border-white/40">
-          <div className="grid lg:grid-cols-2">
-           
-            <form
+      <div className="flex bgcolor sm:flex-row flex-col h-screen font-sans bg-gradient-to-br from-violet-800 to-[#152c6b]">
+      {/* Left Section */}
+
+    
+
+      <div className="w-full sm:w-1/2 text-white hidden sm:flex flex-col justify-center p-16 relative">
+  {/* Logo */}
+  <div 
+
+  style={{ fontFamily: "Righteous" }}
+  className="flex tracking-wide relative text-5xl font-normal bottom-[80px] 
+             bg-gradient-to-r from-white via-yellow-500 to-pink-500 
+             bg-clip-text text-transparent"
+>
+  busybox
+</div>
+{/* <div className="  w-[100px] h-[100px] rounded opacity-[0.4] absolute top-[10px]"></div> */}
+
+  {/* <div className="w-[200px] bg-amber-400 h-[3px] relative bottom-[72px]"></div> */}
+
+  {/* Title */}
+  <h1 className="text-4xl lg:text-5xl font-bold mb-6 leading-tight">
+    Welcome to the World of <br />
+    <span className="bg-gradient-to-r from-white via-violet-400 to-sky-400 bg-clip-text text-transparent">
+      New Age Banking
+    </span>
+  </h1>
+
+  {/* Subtitle */}
+  <p className="text-gray-300 text-sm md:text-base max-w-md leading-relaxed mb-10">
+    Powering businesses with seamless transactions, fast settlements, and 
+    next-gen financial infrastructure built for growth.
+  </p>
+
+  {/* Stats Box */}
+  <div className="w-[500px] relative rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 shadow-lg">
+    <div className="flex justify-between items-center text-sm h-full divide-x divide-gray-300/30">
+      {/* Block 1 */}
+      <div className="flex-1 flex flex-col items-center px-6 py-6 transition-transform hover:scale-105">
+        <strong className="block text-xl font-bold text-white">1M+</strong>
+        <p className="text-xs text-gray-300">Registered Businesses</p>
+      </div>
+
+      {/* Block 2 */}
+      <div className="flex-1 flex flex-col items-center px-6 py-6 transition-transform hover:scale-105">
+        <strong className="block text-xl font-bold text-white">$1B+</strong>
+        <p className="text-xs text-gray-300">Monthly Payments</p>
+      </div>
+
+      {/* Block 3 */}
+      <div className="flex-1 flex flex-col items-center px-6 py-6 transition-transform hover:scale-105">
+        <strong className="block text-xl font-bold text-white">1M+</strong>
+        <p className="text-xs text-gray-300">Daily Transactions</p>
+      </div>
+    </div>
+  </div>
+
+  {/* Download Badges (optional) */}
+  {/* 
+  <div className="flex gap-4 mt-10">
+    <a href="#">
+      <img
+        src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
+        alt="Google Play"
+        className="h-12 hover:opacity-90"
+      />
+    </a>
+    <a href="#">
+      <img
+        src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
+        alt="App Store"
+        className="h-12 hover:opacity-90"
+      />
+    </a>
+  </div>
+  */}
+</div>
+
+      {/* Right Section */}
+      <div className="w-full sm:w-1/2  flex items-center justify-center">
+      <form
               onSubmit={(e) => {
                 login(), e.preventDefault();
               }}
-              className="p-10 lg:p-14 flex flex-col  overflow-hidden justify-center"
+              className="p-10 lg:p-14 flex flex-col h-[550px] rounded bg-white  overflow-hidden justify-center"
             >
               <div className="max-w-md mx-auto w-full space-y-4">
                
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-violet-600 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-md">
-                    B
-                  </div>
-                  <span className="text-xl font-semibold text-gray-800">
-                    BUSYBOX
-                  </span>
-                </div>
+             
 
                
                 <div>
-                  <h1 className="text-4xl font-extrabold text-gray-900 leading-tight">
+                  <h1 className="text-2xl  text-gray-900 leading-tight">
                     Secure Financial Access
                   </h1>
-                  <p className="text-gray-600 text-lg mt-2">
-                    Log in to manage payouts and pay-ins instantly.
-                  </p>
+                  
                 </div>
 
                
@@ -282,7 +352,7 @@ const Signin = () => {
 
                 <button
                   type="submit"
-                  className="w-full h-12 bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-semibold rounded-xl hover:scale-[1.02] active:scale-[0.98] transition transform shadow-lg"
+                  className="w-full h-12 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-xl hover:scale-[1.02] active:scale-[0.98] transition transform shadow-lg"
                 >
                   Sign In Account
                 </button>
@@ -329,19 +399,8 @@ const Signin = () => {
           </div>
         </form>
       )}
-
-            <div className="bg-gradient-to-br from-violet-600 via-purple-600 to-indigo-600 flex items-center justify-center ">
-              {/* <div className="flex translate-y-[-200px] translate-x-[-260px] shadow-xl bg-white/2 backdrop-blur-2xl rounded-full opacity-[10] h-[220px] w-[280px] absolute"></div> */}
-              {/* <img
-                src={group1}
-                alt="Illustration"
-                className="max-w-lg w-full object-cover rounded-3xl shadow-2xl"
-              /> */}
-              <div className="bg-white w-[200px] h-[200px] rounded-full"></div>
-            </div>
-          </div>
-        </div>
       </div>
+    </div>
     </>
   );
 };

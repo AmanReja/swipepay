@@ -32,7 +32,7 @@ const Addmoney = () => {
   return (
     <div className=" w-[100%] rounded-2xl 2xl:h-[85%] h-[80%] flex flex-col">
       <main className="w-full  h-full flex-col overflow-y-scroll">
-        <section className="w-full flex gap-5 sm:min-h-[900px] h-auto  sm:h-[900px] mt-5 px-5">
+        <section className="w-full flex gap-5 sm:min-h-[450px]  h-auto  sm:h-[450px] mt-5 px-5">
           <div className="w-full  flex-col sm:flex-row flex  h-full gap-5 bg-white p-5 rounded-xl ">
             <form className="sm:w-[30%] border-gray-200 border w-full  flex flex-col gap-4 rounded-xl bg-white">
               <div className="border-b-gray-200 border-b-[1px] w-full p-4">
@@ -90,8 +90,9 @@ const Addmoney = () => {
               </div>
             </form>
 
-            <div className="sm:w-2/5 w-full flex flex-col  gap-5">
-              <div className="flex items-center justify-between bg-white shadow rounded-xl p-5 h-[120px]">
+            <div className=" w-full flex flex-col gap-5">
+              <div className="flex gap-[30px] ">
+              <div className="flex w-[50%] items-center justify-between bg-white shadow rounded-xl p-5 h-[120px]">
                 <div className="flex items-center gap-3">
                   <div className=" bg-gray-300 rounded-3xl w-[60px] h-[60px] flex items-center justify-center">
                     <i className="fa-solid fa-wallet text-white text-xl"></i>
@@ -108,9 +109,8 @@ const Addmoney = () => {
                  {payoutdata?.total_payout_value
 } ₹
                 </h1>
-              </div>
-
-              <div className="flex items-center justify-between bg-white shadow rounded-xl p-5 h-[120px]">
+              </div> 
+              <div className="flex items-center justify-between w-[50%]   bg-white shadow rounded-xl p-5 h-[120px]">
                 <div className="flex items-center gap-3">
                   <div className="bg-gray-300 rounded-3xl w-[60px] h-[60px] flex items-center justify-center">
                     <i className="fa-solid fa-credit-card text-white text-xl"></i>
@@ -128,7 +128,9 @@ const Addmoney = () => {
                 </h1>
               </div>
 
-              <div className="bg-white shadow rounded-xl ">
+              </div>
+              <div className="flex w-full gap-[30px]">
+              <div className="bg-white shadow rounded-xl w-[50%] ">
                 <div className="w-full border border-gray-300 rounded-lg overflow-hidden text-sm text-gray-700">
                   {/* Table Row */}
                   <div className="grid grid-cols-2 border-b border-gray-300 px-4 py-4">
@@ -162,7 +164,7 @@ const Addmoney = () => {
                   </div>
                 </div>
               </div>
-              <div className="bg-white shadow rounded-xl ">
+              <div className="bg-white shadow rounded-xl w-[50%]">
                 <div className="w-full border border-gray-300 rounded-lg overflow-hidden text-sm text-gray-700">
                   {/* Table Row */}
                   <div className="grid grid-cols-2 border-b border-gray-300 px-4 py-4">
@@ -196,6 +198,11 @@ const Addmoney = () => {
                   </div>
                 </div>
               </div>
+              </div>
+              
+
+             
+            
             </div>
           </div>
         </section>

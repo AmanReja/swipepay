@@ -12,7 +12,8 @@ import {
   DELETEENTITY_CALLBACK,
   UPDATEENTITY_CALLBACK,
   FORGOT_PASSWORD,
-  GETCOLLECTIONS
+  GETCOLLECTIONS,
+  GETVERTUAL_ACCOUNT
 } from "./action";
 
 
@@ -192,6 +193,27 @@ export const collectionsReducer = (state = initialcollections, action) => {
     return{
       ...state,
       collections:action.payload
+    }
+
+  }
+  
+  
+  
+  else {
+    return state;
+  }
+};
+
+const initialvastate = {
+  vaaccount:[],
+}
+
+export const vaReducer = (state = initialvastate, action) => {
+   if(action.type===GETVERTUAL_ACCOUNT){
+    
+    return{
+      ...state,
+      vaaccount:action.payload
     }
 
   }

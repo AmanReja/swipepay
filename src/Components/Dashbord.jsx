@@ -64,7 +64,7 @@ const Dashbord = () => {
       setShow: setShowk,
     },
     {
-      to: "/dashboard/document",
+      to: "https://documenter.getpostman.com/view/2871565/2s93sZ7u6G",
       icon: "fa-file-import",
       label: "Document",
       show: showd,

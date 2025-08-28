@@ -298,9 +298,7 @@ const Ledger = () => {
             <div className="loader"></div>
               </div>}
 
-        
-
-            <div className="flex items-center justify-between px-4 py-3 border-t border-gray-200 bg-white text-sm text-gray-600">
+        {trdata?.length!==0?<div className="flex items-center justify-between px-4 py-3 border-t border-gray-200 bg-white text-sm text-gray-600">
               <div>
                 Show{" "}
                 <select
@@ -335,7 +333,18 @@ const Ledger = () => {
                   <i class="fa-solid fa-arrow-right"></i>
                 </button>
               </div>
+            </div>:<div className="flex items-center justify-between px-4 py-3 border-t border-gray-200 bg-white text-sm text-gray-600">
+                <h1 className="text-2xl w-full text-center">
+                  No data found
+                </h1>
+
+             
             </div>
+
+
+        }
+
+            
           </div>
         </div>
 

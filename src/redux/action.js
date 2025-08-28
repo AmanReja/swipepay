@@ -10,6 +10,7 @@ export const UPDATEENTITY_CALLBACK = "UPDATEENTITY_CALLBACK";
 export const DELETEENTITY_CALLBACK = "DELETEENTITY_CALLBACK";
 export const FORGOT_PASSWORD = "FORGOT_PASSWORD";
 export const GETCOLLECTIONS = "GETCOLLECTIONS";
+export const GETVERTUAL_ACCOUNT = "GETVERTUAL_ACCOUNT";
 
 const baseUrl = "http://192.168.1.43:3000";
 
@@ -295,7 +296,7 @@ export const deleteentitycallbackevent = (corpid,eventname) => async (dispatch) 
   const res = await fetch(
     `${baseUrl}/v1/user/entity-callback/${encodeURIComponent(corpid)}/${encodeURIComponent(eventname)}`,
     {
-      method: "DELETE",
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -383,6 +384,30 @@ export const forgotpassword = (uppassword) => async (dispatch) => {
     dispatch({ type: "FORGOT_PASSWORD", payload: data });
   }
 
+ 
+};
+export const get_vertualaccountdetails = () => async (dispatch) => {
+
+  const token = localStorage.getItem("token") || {};
+  const res = await fetch(
+    `${baseUrl}/v1/user/get-va`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  if (res.status === 401) {
+    localStorage.removeItem("token");
+    window.location.href = "/";
+    return;
+  }
+
+  const data = await res.json();
+  dispatch({ type: "GETVERTUAL_ACCOUNT", payload: data });
  
 };
 

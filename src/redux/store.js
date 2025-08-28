@@ -9,7 +9,8 @@ import {
   getoneuserReducer,
   entitycallbackReducer,
   forgotpassReducer,
-  collectionsReducer
+  collectionsReducer,
+  vaReducer
 } from "./reducer";
 const store = configureStore({
   reducer: {
@@ -21,7 +22,8 @@ const store = configureStore({
     getoneuser:getoneuserReducer,
     entitycallback:entitycallbackReducer,
     forgotpass:forgotpassReducer,
-    collections:collectionsReducer
+    collections:collectionsReducer,
+    vaaccount:vaReducer
 
   },
 });
