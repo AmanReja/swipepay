@@ -13,7 +13,7 @@ import {
   UPDATEENTITY_CALLBACK,
   FORGOT_PASSWORD,
   GETCOLLECTIONS,
-  GETVERTUAL_ACCOUNT
+  GETVERTUAL_ACCOUNT,VERIFY_AADHAR
 } from "./action";
 
 
@@ -138,14 +138,14 @@ export const entitycallbackReducer = (state = initialentitycallbackevent, action
     }
 
   }
-   else if(action.type===DELETEENTITY_CALLBACK){
-    
+  else if (action.type === DELETEENTITY_CALLBACK) {
+   
     return{
       ...state,
-      entitycallback:state.entitycallback.filter((entity) => entity.id !== action.payload.id)
+      entitycallback:state.entitycallback.map((entity) => entity.id === action.payload.id?{...entity,...action.payload}:entity)
     }
-
   }
+  
    else if(action.type===UPDATEENTITY_CALLBACK){
     
     return{
@@ -225,3 +225,23 @@ export const vaReducer = (state = initialvastate, action) => {
   }
 };
 
+
+const initialaadharverifystate = {
+  aadhar:[],
+}
+
+ export const aadharReducer =(state=initialaadharverifystate,action)=>{
+
+  if (action.type===VERIFY_AADHAR) {
+    return {...state,
+
+      aadhar:[action.payload, ...state.aadhar]
+    }
+    
+  }  
+  else {
+    return state;
+  }
+
+
+}

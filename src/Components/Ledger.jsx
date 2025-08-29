@@ -75,9 +75,13 @@ const Ledger = () => {
 
   useEffect(() => {
 
-    setLoad(true)
-    dispatch(getall_ledgerwallet_data(searchtr, trstatus,formdatastr,formdataend));
-    setLoad(false)
+   async function fetch(){
+      setLoad(true)
+    await dispatch(getall_ledgerwallet_data(searchtr, trstatus,formdatastr,formdataend));
+      setLoad(false)
+    } fetch()
+
+   
   }, [dispatch, searchtr, trstatus,formdatastr,formdataend]);
 
   const downloadexcel = ()=>{
@@ -164,7 +168,7 @@ const Ledger = () => {
             </div>
                
 
-{!load?    <table className="w-full text-sm text-left text-gray-600 border border-gray-200 rounded-md overflow-hidden">
+            {!load? <table className="w-full text-sm text-left text-gray-600 border border-gray-200 rounded-md overflow-hidden">
               <thead className="text-[11px] text-gray-500 uppercase bg-[#f9f9f9] border-b border-gray-300">
                 <tr>
                   <th className="px-4 py-3">#Txn Details</th>
@@ -228,6 +232,8 @@ const Ledger = () => {
                 </tr>
               </thead>
 
+
+             
               
 
               <tbody className="text-[13px] font-medium">
@@ -293,10 +299,10 @@ const Ledger = () => {
                   </tr>
                 ))}
               </tbody>
-            </table>:<div className="w-full justify-center flex items-center">
+            </table>:<div className="flex w-full h-[200px] justify-center items-center">
               
             <div className="loader"></div>
-              </div>}
+            </div>}
 
         {trdata?.length!==0?<div className="flex items-center justify-between px-4 py-3 border-t border-gray-200 bg-white text-sm text-gray-600">
               <div>

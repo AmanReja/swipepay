@@ -13,7 +13,7 @@ const Developertools = () => {
 
 
   const entitycallbackdata = useSelector((state) => state.entitycallback.entitycallback)
-  console.log(10, entitycallbackdata);
+  // console.log(10, entitycallbackdata);
 
 
 
@@ -243,7 +243,7 @@ const Developertools = () => {
             <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
             <select value={status} onChange={(e) => { setStatus(e.target.value) }} name="callbackeventname" className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500 bg-white" >
 
-              <option selected value="ACTIVE">Select Status</option>
+              <option selected value="Select Status">Select Status</option>
               <option  value="ACTIVE">ACTIVE</option>
               <option value="INACTIVE">INACTIVE</option>
 

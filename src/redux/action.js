@@ -11,6 +11,7 @@ export const DELETEENTITY_CALLBACK = "DELETEENTITY_CALLBACK";
 export const FORGOT_PASSWORD = "FORGOT_PASSWORD";
 export const GETCOLLECTIONS = "GETCOLLECTIONS";
 export const GETVERTUAL_ACCOUNT = "GETVERTUAL_ACCOUNT";
+export const VERIFY_AADHAR = "VERIFY_AADHAR";
 
 const baseUrl = "http://192.168.1.43:3000";
 
@@ -291,12 +292,12 @@ export const addentitycallbackevent = (entdata) => async (dispatch) => {
 ///ent callback delete///////
 
 
-export const deleteentitycallbackevent = (corpid,eventname) => async (dispatch) => {
+export const deleteentitycallbackevent = (corpid,eventname,entstatus) => async (dispatch) => {
   const token = localStorage.getItem("token") || {};
   const res = await fetch(
     `${baseUrl}/v1/user/entity-callback/${encodeURIComponent(corpid)}/${encodeURIComponent(eventname)}`,
     {
-      method: "PUT",
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -313,11 +314,33 @@ export const deleteentitycallbackevent = (corpid,eventname) => async (dispatch) 
 
   if (res.status===200) {
     alert("entity hasbeen deleted")
+
+
+  const res = await fetch(
+    `${baseUrl}/v1/user/entity-callback`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  if (res.status === 401) {
+    localStorage.removeItem("token");
+    window.location.href = "/";
+    return;
+  }
+
+  const data = await res.json();
+  dispatch({ type: "GETENTITY_CALLBACK", payload: data });
     
     
   }
 
   const data = await res.json();
+  console.log("entd",data);
   dispatch({ type: "DELETEENTITY_CALLBACK", payload: data });
 };
 
@@ -410,5 +433,40 @@ export const get_vertualaccountdetails = () => async (dispatch) => {
   dispatch({ type: "GETVERTUAL_ACCOUNT", payload: data });
  
 };
+export const verify_aadhar = (aadharfile) => async (dispatch) => {
+
+  const token = localStorage.getItem("token") || {};
+  
+  const formData = new FormData();
+  formData.append("aadhaarFile", aadharfile);
+
+  const res = await fetch(
+    `${baseUrl}/v1/user/aadhaar/verify`,
+    {
+      method: "POST",
+      headers: {
+       
+        Authorization: `Bearer ${token}`,
+      },
+      body:JSON.stringify(formData)
+    }
+  );
+
+  if (res.status === 401) {
+    localStorage.removeItem("token");
+    window.location.href = "/";
+    return;
+  }
+
+  const data = await res.json();
+  console.log(66,data);
+  dispatch({ type: "VERIFY_AADHAR", payload: data });
+ 
+};
+
+
+
+
+
 
 ///ent pass update///

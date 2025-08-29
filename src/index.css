@@ -20,3 +20,19 @@ input.hide-date-icon::-webkit-calendar-picker-indicator {
   display: none;
   -webkit-appearance: none;
 }
+@keyframes gradient-x {
+  0% {
+    background-position: 100% 0;
+  }
+  50% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 100% 0;
+  }
+}
+
+.animate-gradient-x {
+  background-size: 200% auto; 
+  animation: gradient-x 4s linear infinite; 
+}
