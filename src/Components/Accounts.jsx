@@ -46,7 +46,7 @@ const Accounts = () => {
     {
       name: getoneuserdata?.role,
       catagory: "Role",
-      color: "bg-gradient-to-r from-red-400 to-red-500",
+      color: "bg-gradient-to-r from-violet-400 to-sky-500",
       icon: (
         <svg
           className="w-6 h-6  text-white"
@@ -171,7 +171,7 @@ const Accounts = () => {
     {
       name: getoneuserdata?.company_id,
       catagory: "Business Name",
-      color: "bg-gradient-to-r from-red-400 to-red-500",
+      color: "bg-gradient-to-r from-violet-400 to-sky-500",
       icon: (
         <svg
           className="w-6 h-6 text-white"

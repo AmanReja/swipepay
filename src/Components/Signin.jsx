@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import apple from "../assets/icons/apple.svg";
 import google from "../assets/icons/google.svg";
 import play from "../assets/images/play.png";
@@ -10,10 +10,18 @@ import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast, Bounce, Slide } from "react-toastify";
 import backgroundgreed from "../assets/images/bg.svg"
 import { FaBriefcase, FaDollarSign, FaChartLine } from "react-icons/fa";
+import { GoogleLogin ,useGoogleLogin} from '@react-oauth/google';
+import { useDispatch, useSelector } from "react-redux";
+import { login,google_login,send_otp,verify_otp } from "../redux/action";
+
+
 
 
 
 const Signin = () => {
+
+  const dispatch =useDispatch()
+  
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
@@ -23,7 +31,21 @@ const Signin = () => {
   console.log(14, pass, email);
   const [passopen, setPassopen] = useState(false);
   const [otp, setOtp] = useState("");
+  const [jwttoken,setJwttoken]=useState("")
+  const [forgetpassemail,setForgetpassemail] = useState()
+  const[giveotp,setGiveotp] =useState(false)
 
+
+
+
+   
+
+
+
+  console.log(38,forgetpassemail);
+
+
+console.log(22,import.meta.env.VITE_GOOGLE_CLIENT_ID);
 
   const handelpassopen = () => {
 
@@ -38,127 +60,129 @@ const Signin = () => {
     setCheckpass((prev) => !prev);
   };
 
-  const login = async (e) => {
+
+
+
+  const glogin = useGoogleLogin({
+    flow: "implicit", 
+    onSuccess: async (response) => {
+     dispatch(google_login(navigate,response.access_token))
+    },
+    onError: (err) => console.error("Login Failed:", err),
+  });
+  
+   
+
+
+    
+
+
+
+  
+ 
+  const userlogin = async (e) => {
     try {
       const olduser = {
         login_id: email,
         password: pass,
       };
-      const request = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(olduser),
-        credentials: "include",
-      };
 
-      const res = await fetch(`http://192.168.1.43:3000/v1/user/login`, request);
-      const data = await res.json();
-      console.log(22, data);
-      if (res.status === 401) {
-        alert("invalid");
-        setWrong(true)
-        setPass("");
-      }
+      dispatch(login(olduser,navigate,setWrong))
 
-      if (res.status === 200) {
-        alert("log success");
-        navigate("/dashboard/summery?login=success");
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("user", JSON.stringify(data.user));
-        setWrong(false)
-      }
+
+
+     
+      
     } catch (error) {
       console.log(error);
-    }
+    } 
 
   };
+
+
+  const forgotpass =()=>{
+    
+
+    
+    alert(forgetpassemail)
+    dispatch(send_otp(forgetpassemail,setGiveotp))
+  }
+
+
+const handelotp = ()=>{
+  alert(forgetpassemail)
+  dispatch(verify_otp(forgetpassemail,setGiveotp,navigate))
+}
+
+
   return (
     <>
       <ToastContainer></ToastContainer>
       <div className="flex bgcolor sm:flex-row flex-col h-screen font-sans bg-gradient-to-br from-violet-800 to-[#152c6b]">
-      
 
 
 
-        <div className="w-full sm:w-1/2 text-white hidden sm:flex flex-col justify-center p-16 top-[50px] relative">
-         
-          <div
 
-            style={{ fontFamily: "Righteous" }}
-            className="flex tracking-wide transition-all duration-300 animate-gradient-x h-[53px] relative text-5xl font-normal bottom-[80px] 
+        <div className="w-full sm:w-1/2 text-white hidden sm:flex flex-col justify-center p-16">
+          <div className="flex flex-col">
+
+            <div
+
+              style={{ fontFamily: "Righteous" }}
+              className="flex tracking-wide transition-all duration-300 animate-gradient-x h-[53px] relative text-5xl font-normal bottom-[80px] 
              bg-gradient-to-r from-white via-yellow-500 to-pink-500 
              bg-clip-text text-transparent"
-          >
-            busybox
-          </div>
-          <div className="  w-[100px] h-[100px] rounded opacity-[0.4] absolute top-[10px]"></div>
+            >
+              busybox
+            </div>
 
-          {/* <div className="w-[200px] bg-amber-400 h-[3px] relative bottom-[72px]"></div> */}
+            <div className="flex flex-col relative top-[50px]">
+            <h1 className="text-4xl lg:text-5xl font-bold mb-6 leading-tight">
+              Welcome to the World of <br />
+              <span className="bg-gradient-to-r from-white via-violet-400 to-sky-400 bg-clip-text text-transparent">
+                New Age Banking
+              </span>
+            </h1>
 
-          {/* Title */}
-          <h1 className="text-4xl lg:text-5xl font-bold mb-6 leading-tight">
-            Welcome to the World of <br />
-            <span className="bg-gradient-to-r from-white via-violet-400 to-sky-400 bg-clip-text text-transparent">
-              New Age Banking
-            </span>
-          </h1>
 
-          {/* Subtitle */}
-          <p className="text-gray-300 text-sm md:text-base max-w-md leading-relaxed mb-10">
-            Powering businesses with seamless transactions, fast settlements, and
-            next-gen financial infrastructure built for growth.
-          </p>
+            <p className="text-gray-300 text-sm md:text-base max-w-md leading-relaxed mb-10">
+              Powering businesses with seamless transactions, fast settlements, and
+              next-gen financial infrastructure built for growth.
+            </p>
 
-          {/* Stats Box */}
-          <div className="w-[500px] relative rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 shadow-lg">
-            <div className="flex justify-between items-center text-sm h-full divide-x divide-gray-300/30">
-              {/* Block 1 */}
-              <div className="flex-1 flex flex-col items-center px-6 py-6 transition-transform hover:scale-105">
-                <strong className="block text-xl font-bold text-white">1M+</strong>
-                <p className="text-xs text-gray-300">Registered Businesses</p>
-              </div>
+            <div className="w-[500px] relative rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 shadow-lg">
+              <div className="flex justify-between items-center text-sm h-full divide-x divide-gray-300/30">
 
-              {/* Block 2 */}
-              <div className="flex-1 flex flex-col items-center px-6 py-6 transition-transform hover:scale-105">
-                <strong className="block text-xl font-bold text-white">$1B+</strong>
-                <p className="text-xs text-gray-300">Monthly Payments</p>
-              </div>
+                <div className="flex-1 flex flex-col items-center px-6 py-6 transition-transform hover:scale-105">
+                  <strong className="block text-xl font-bold text-white">1M+</strong>
+                  <p className="text-xs text-gray-300">Registered Businesses</p>
+                </div>
 
-              {/* Block 3 */}
-              <div className="flex-1 flex flex-col items-center px-6 py-6 transition-transform hover:scale-105">
-                <strong className="block text-xl font-bold text-white">1M+</strong>
-                <p className="text-xs text-gray-300">Daily Transactions</p>
+
+                <div className="flex-1 flex flex-col items-center px-6 py-6 transition-transform hover:scale-105">
+                  <strong className="block text-xl font-bold text-white">$1B+</strong>
+                  <p className="text-xs text-gray-300">Monthly Payments</p>
+                </div>
+
+
+                <div className="flex-1 flex flex-col items-center px-6 py-6 transition-transform hover:scale-105">
+                  <strong className="block text-xl font-bold text-white">1M+</strong>
+                  <p className="text-xs text-gray-300">Daily Transactions</p>
+                </div>
               </div>
             </div>
+            </div>
+           
+
           </div>
 
-          {/* Download Badges (optional) */}
-          {/* 
-  <div className="flex gap-4 mt-10">
-    <a href="#">
-      <img
-        src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
-        alt="Google Play"
-        className="h-12 hover:opacity-90"
-      />
-    </a>
-    <a href="#">
-      <img
-        src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
-        alt="App Store"
-        className="h-12 hover:opacity-90"
-      />
-    </a>
-  </div>
-  */}
+
         </div>
 
         {/* Right Section */}
         <div className="w-full sm:w-1/2  flex items-center justify-center">
-          <form
-            onSubmit={(e) => {
-              login(), e.preventDefault();
-            }}
+          <div
+            
             className="p-10 lg:p-14 flex flex-col h-[550px] rounded bg-white  overflow-hidden justify-center"
           >
             <div className="max-w-md mx-auto w-full space-y-4">
@@ -175,39 +199,21 @@ const Signin = () => {
 
 
 
-              <button className="w-full flex items-center justify-center gap-3 h-12 border border-gray-300 bg-white rounded-lg hover:bg-gray-50 transition shadow-sm">
-                <svg
-                  className="w-5 h-5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  x="0px"
-                  y="0px"
-                  width="100"
-                  height="100"
-                  viewBox="0 0 48 48"
-                >
-                  <path
-                    fill="#FFC107"
-                    d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"
-                  ></path>
-                  <path
-                    fill="#FF3D00"
-                    d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"
-                  ></path>
-                  <path
-                    fill="#4CAF50"
-                    d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"
-                  ></path>
-                  <path
-                    fill="#1976D2"
-                    d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"
-                  ></path>
-                </svg>
+
+              <button type="button" onClick={()=>{glogin()}}  className="w-full flex items-center justify-center gap-3 h-12 border border-gray-300 bg-white rounded-lg hover:bg-gray-50 transition shadow-sm">
+                
+   
+              <svg  className="w-6 h-6" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 0 48 48">
+<path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"></path><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"></path><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"></path><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"></path>
+</svg>
+
+
 
                 <span className="text-gray-700 font-medium">
                   Sign up with Google
                 </span>
               </button>
-              <button className="w-full flex items-center justify-center gap-3 h-12 border border-gray-300 bg-white rounded-lg hover:bg-gray-50 transition shadow-sm">
+              <button  className="w-full flex items-center justify-center gap-3 h-12 border border-gray-300 bg-white rounded-lg hover:bg-gray-50 transition shadow-sm">
                 <svg
                   className="w-6 h-6"
                   xmlns="http://www.w3.org/2000/svg"
@@ -220,8 +226,10 @@ const Signin = () => {
                   <path d="M 16.125 1 C 14.972 1.067 13.648328 1.7093438 12.861328 2.5273438 C 12.150328 3.2713438 11.589359 4.3763125 11.818359 5.4453125 C 13.071359 5.4783125 14.329031 4.8193281 15.082031 3.9863281 C 15.785031 3.2073281 16.318 2.12 16.125 1 z M 16.193359 5.4433594 C 14.384359 5.4433594 13.628 6.5546875 12.375 6.5546875 C 11.086 6.5546875 9.9076562 5.5136719 8.3476562 5.5136719 C 6.2256562 5.5146719 3 7.4803281 3 12.111328 C 3 16.324328 6.8176563 21 8.9726562 21 C 10.281656 21.013 10.599 20.176969 12.375 20.167969 C 14.153 20.154969 14.536656 21.011 15.847656 21 C 17.323656 20.989 18.476359 19.367031 19.318359 18.082031 C 19.922359 17.162031 20.170672 16.692344 20.638672 15.652344 C 17.165672 14.772344 16.474672 9.1716719 20.638672 8.0136719 C 19.852672 6.6726719 17.558359 5.4433594 16.193359 5.4433594 z"></path>
                 </svg>
 
+
+
                 <span className="text-gray-700 font-medium">
-                  Sign up with Google
+                  Sign up with Apple
                 </span>
               </button>
 
@@ -352,7 +360,7 @@ const Signin = () => {
               </div>
 
               <button
-                type="submit"
+                type="submit" onClick={(e)=>{userlogin(e)}}
                 className="w-full h-12 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-xl hover:scale-[1.02] active:scale-[0.98] transition transform shadow-lg"
               >
                 Sign In Account
@@ -374,24 +382,27 @@ const Signin = () => {
                 </a>
               </p>
             </div>
-          </form>
+          </div>
           {passopen && (
-            <form onSubmit={(e) => { passupdate(e) }} className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+            <form onSubmit={(e) => { giveotp?handelotp(e) : forgotpass(e),e.preventDefault() }} className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
               <div className="bg-white rounded-2xl shadow-2xl p-6 w-[90%] md:w-[400px] relative">
-                <button
+                <button type="button"
+                  
+
                   onClick={handelpassopen}
                   className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
                 >
                   <X />
                 </button>
-                <h2 className="text-lg font-bold mb-4">Enter Your otp</h2>
+                <h2 className="text-lg font-bold mb-4">{giveotp?"Enter Your otp":"Enter Your email"}</h2>
                 <p className="text-sm text-gray-600 mb-4">
-                  Enter your otp which was sent to your email
+           
+                  {giveotp?"Enter your otp which was sent to your email":"Enter Your registered email"}
                 </p>
-                <input required onChange={(e) => { setOtp(e.target.value) }}
+                <input required onChange={(e) => { setForgetpassemail(e.target.value) }}
                   type="text"
-                  value={otp}
-                  placeholder="Enter your email"
+                  value={forgetpassemail}
+                  placeholder={giveotp?"Enter your otp":"Enter your email"}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg mb-4"
                 />
                 <button type="submit" className="w-full py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700 transition">

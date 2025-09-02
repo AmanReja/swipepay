@@ -32,11 +32,14 @@ import Developertools from "./Components/Developertools";
 import Protectedroute from "./Components/Protectedroute.jsx";
 import Profile from "./Components/Profile";
 import Security from "./Components/Security";
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import Notokensecurity from "./Components/Notokensecurity";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route element={<App />}>
       <Route path="/" element={<Signin />} />
+      <Route path="/forgotpass" element={<Notokensecurity />} />
       <Route element={<Protectedroute />}>
         <Route path="/dashboard" element={<Dashbord />}>
           <Route index path="summery" element={<Summery />} />
@@ -66,10 +69,17 @@ const router = createBrowserRouter(
   )
 );
 
+
 createRoot(document.getElementById("root")).render(
   <StrictMode>
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+
+
     <Provider store={store}>
       <RouterProvider router={router}></RouterProvider>
     </Provider>
+
+    </GoogleOAuthProvider>
+   
   </StrictMode>
 );

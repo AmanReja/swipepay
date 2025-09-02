@@ -12,8 +12,134 @@ export const FORGOT_PASSWORD = "FORGOT_PASSWORD";
 export const GETCOLLECTIONS = "GETCOLLECTIONS";
 export const GETVERTUAL_ACCOUNT = "GETVERTUAL_ACCOUNT";
 export const VERIFY_AADHAR = "VERIFY_AADHAR";
+export const LOGIN = "LOGIN";
+export const GLOGIN = "GLOGIN";
+export const SENDOTP = "SENDOTP";
+export const VERIFY_OTP = "VERIFY_OTP";
+
+
+
+
 
 const baseUrl = "http://192.168.1.43:3000";
+
+
+
+
+export const google_login = (navigate,accessToken)=>async(dispatch)=>{
+
+  const res = await fetch(`${baseUrl}/v1/user/google`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ token: accessToken }),
+  });
+
+  const data = await res.json();
+  console.log("Backend response:", data);
+
+  if (res.status === 200) {
+    alert("log success");
+    localStorage.setItem("token", data.token);
+    navigate("/dashboard/summery?login=success");
+   
+    localStorage.setItem("user", JSON.stringify(data.user));
+  
+  } dispatch({ type: "GLOGIN", payload: data });
+
+}
+export const send_otp = (forgetpassemail,setGiveotp)=>async(dispatch)=>{
+  console.log(52,forgetpassemail);
+  
+
+  const res = await fetch(`${baseUrl}/v1/user/forgot-password/send-otp`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({email:forgetpassemail}),
+  });
+
+  const data = await res.json();
+  console.log("Backend response:", data);
+
+  if (res.status === 200) {
+    alert("otp has sent");
+    setGiveotp(true)
+   
+   
+    
+  
+  } else{
+    alert("failed to send otp");
+  }
+  dispatch({ type: "SENDOTP", payload: data });
+}
+export const verify_otp = (otp,setGiveotp,navigate)=>async(dispatch)=>{
+  console.log(80,otp);
+  
+
+  const res = await fetch(`${baseUrl}/v1/user/forgot-password/verify-otp`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({otp:otp}),
+  });
+
+  const data = await res.json();
+  console.log("Backend response:", data);
+
+  if (res.status === 200) {
+    alert("otp has verified");
+    navigate("/forgotpass")
+   
+   
+    
+  
+  } else{
+    alert("failed to send otp");
+  }
+  dispatch({ type: "VERIFY_OTP", payload: data });
+}
+
+
+
+export const login = (olduser,navigate,setWrong)=>async(dispatch)=>{
+
+  
+    const request = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(olduser),
+      credentials: "include",
+    };
+   
+
+    const res = await fetch(`${baseUrl}/v1/user/login`, request);
+    const data = await res.json();
+    console.log(22, data);
+    if (res.status === 401) {
+      alert("invalid");
+      setWrong(true)
+     
+    }
+
+    if (res.status === 200) {
+      alert("log success");
+      navigate("/dashboard/summery?login=success");
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+      setWrong(false)
+      
+    };
+   
+  dispatch({ type: "LOGIN", payload: data });
+
+  }
+
+
 
 export const getall_ledgerwallet_data =
   (searchtr, trstatus,searchdate_start,searchdate_end,downloadexcl=false) => async (dispatch) => {

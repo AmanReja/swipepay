@@ -8,6 +8,7 @@ import Subfooter from "./Subfooter";
 import { useSelector, useDispatch } from "react-redux";
 import { getall_payoutlog_data,getall_wallet_company_data,get_vertualaccountdetails} from "../redux/action";
 import {BadgeCheck,ArrowDownLeft,ArrowUpRight,CreditCard} from "lucide-react"
+import Chart2 from "./Chart2";
 
 
 
@@ -168,7 +169,13 @@ const Summery = () => {
           <section className="w-full flex flex-col sm:flex-row  gap-[20px]   sm:min-h-[400px] sm:h-[400px]  px-[20px]">
         
 
-            <div className="flex w-full  h-[100%]  flex-col justify-center items-center">
+            <div className="flex w-full sm:w-[50%]  h-[100%]  flex-col justify-center items-center">
+           
+              <div className=" shadow-xl rounded-2xl shadow-sky-100 h-[80%] px-[5px]  border w-full border-gray-300 flex justify-center items-center">
+                <Chart2></Chart2>
+              </div>
+            </div>
+            <div className="flex w-full sm:w-[50%]  h-[100%]  flex-col justify-center items-center">
               <header className="w-full h-[18%] flex justify-around items-center border border-gray-200 bg-gradient-to-r from-sky-50 to-sky-100 rounded-t-2xl shadow-sm">
                 <h1 className="text-[20px] font-semibold text-gray-700">
                   Earnings

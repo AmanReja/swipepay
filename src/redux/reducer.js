@@ -13,8 +13,66 @@ import {
   UPDATEENTITY_CALLBACK,
   FORGOT_PASSWORD,
   GETCOLLECTIONS,
-  GETVERTUAL_ACCOUNT,VERIFY_AADHAR
+  GETVERTUAL_ACCOUNT,VERIFY_AADHAR,LOGIN,GLOGIN,SENDOTP
 } from "./action";
+
+
+
+const initialloginState ={
+  login:[],
+}
+
+
+export const loginReducer = (state=initialloginState,action)=>{
+  if (action.type===LOGIN) {
+    return{
+      ...state,
+      login:[action.payload , ...state.login]
+    }
+    
+  }else{
+    return state
+  }
+  
+}
+const initialsendotp ={
+  otp:[],
+}
+
+
+export const otpReducer = (state=initialsendotp,action)=>{
+  if (action.type===SENDOTP) {
+    return{
+      ...state,
+      otp:[action.payload , ...state.otp]
+    }
+    
+  }else{
+    return state
+  }
+  
+}
+
+const initialgoogleloginState ={
+  glogin:[],
+}
+
+
+export const gloginReducer = (state=initialgoogleloginState,action)=>{
+  if (action.type===GLOGIN) {
+    return{
+      ...state,
+      glogin:[action.payload , ...state.glogin]
+    }
+    
+  }else{
+    return state
+  }
+  
+}
+
+
+
 
 
 
