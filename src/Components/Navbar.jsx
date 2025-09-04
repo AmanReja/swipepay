@@ -38,7 +38,7 @@ const Navbar = () => {
         </Link>
 
         <i class="fa-regular fa-bell"></i>
-        <img onClick={handelOpen} className="w-[30px] h-[30px] rounded-full" src={i5} alt="" />
+        <img  onClick={handelOpen} className="w-[30px] h-[30px] rounded-full" src={i5} alt="" />
       </div>
       <div  className={` w-[300px] flex-col z-40 bg-white  overflow-hidden border-gray-200 border-[2px] h-[200px] shadow-2xl absolute right-[35px] ${open?"flex":"hidden"}  rounded-2xl top-[82px]`}>
         <div className="border-b-gray-200 gap-[20px] border-b-[1px] bg-white w-full items-center justify-center flex h-[80px]">
@@ -48,7 +48,7 @@ const Navbar = () => {
             <p>aakash@busybox.in
 </p>
           </div>
-          <button className="p-1 bg-blue-200 rounded-[5px] border-blue-600 border-[1px] text-blue-500">Pro</button>
+          <button onClick={()=>{navigate("/dashboard/profile")}} className="p-1 bg-blue-200 rounded-[5px] border-blue-600 border-[1px] text-blue-500">Pro</button>
 
         </div>
         <div class=" flex justify-center items-center dark:bg-gray-800">

@@ -47,8 +47,8 @@ const Chart2 = () => {
   };
 
   return (
-    <div className="p-4 bg-white rounded-2xl shadow">
-      <ReactApexChart options={options} series={series} type="bar" height={350} width={600} />
+    <div className=" w-full h-full ">
+      <ReactApexChart options={options} series={series} type="bar" height={350}  />
     </div>
   );
 };

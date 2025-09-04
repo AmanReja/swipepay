@@ -16,6 +16,7 @@ export const LOGIN = "LOGIN";
 export const GLOGIN = "GLOGIN";
 export const SENDOTP = "SENDOTP";
 export const VERIFY_OTP = "VERIFY_OTP";
+export const UPDATE_USER_DETAILS = "UPDATE_USER_DETAILS";
 
 
 
@@ -23,6 +24,68 @@ export const VERIFY_OTP = "VERIFY_OTP";
 
 const baseUrl = "http://192.168.1.43:3000";
 
+
+
+
+
+export const update_user_details =(updatedinfo)=>async(dispatch)=>{
+  const token = localStorage.getItem("token") || {};
+  const res = await fetch(
+    `${baseUrl}/v1/user/update-details`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body:JSON.stringify(updatedinfo)
+     
+    }
+  );
+
+  if (res.status === 401) {
+    localStorage.removeItem("token");
+    window.location.href = "/";
+    return;
+  }
+
+  if (res.status===200) {
+        alert("user details updated")
+       
+  const res = await fetch(
+    `${baseUrl}/v1/user/get-details`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  if (res.status === 401) {
+    localStorage.removeItem("token");
+    window.location.href = "/";
+    return;
+  }
+  const data = await res.json();
+  dispatch({ type: "GETONE_USER", payload: data });
+
+  }
+
+  if (res.status === 401) {
+    localStorage.removeItem("token");
+    window.location.href = "/";
+    return;
+  }
+
+  dispatch({ type: "UPDATE_USER_DETAILS", payload: data });
+    
+    
+  }
+
+  
+  
 
 
 
@@ -49,8 +112,10 @@ export const google_login = (navigate,accessToken)=>async(dispatch)=>{
   } dispatch({ type: "GLOGIN", payload: data });
 
 }
-export const send_otp = (forgetpassemail,setGiveotp)=>async(dispatch)=>{
+export const send_otp = (forgetpassemail,seterror,navigate,setLoad)=>async(dispatch)=>{
   console.log(52,forgetpassemail);
+
+  setLoad(true)
   
 
   const res = await fetch(`${baseUrl}/v1/user/forgot-password/send-otp`, {
@@ -65,19 +130,24 @@ export const send_otp = (forgetpassemail,setGiveotp)=>async(dispatch)=>{
   console.log("Backend response:", data);
 
   if (res.status === 200) {
-    alert("otp has sent");
-    setGiveotp(true)
+ 
+    
+    navigate("/otpverification")
    
-   
+    setLoad(false)
     
   
   } else{
-    alert("failed to send otp");
+   
+    seterror(true)
+    setLoad(false)
   }
   dispatch({ type: "SENDOTP", payload: data });
 }
-export const verify_otp = (otp,setGiveotp,navigate)=>async(dispatch)=>{
+export const verify_otp = (otp,setLoad,setError,navigate)=>async(dispatch)=>{
   console.log(80,otp);
+
+  setLoad(true)
   
 
   const res = await fetch(`${baseUrl}/v1/user/forgot-password/verify-otp`, {
@@ -92,14 +162,21 @@ export const verify_otp = (otp,setGiveotp,navigate)=>async(dispatch)=>{
   console.log("Backend response:", data);
 
   if (res.status === 200) {
-    alert("otp has verified");
-    navigate("/forgotpass")
+    
+   alert("otp verified")
+   setLoad(false)
+   
+   navigate("/resetpassword")
+   
    
    
     
   
   } else{
-    alert("failed to send otp");
+
+    setLoad(false)
+    setError(true)
+   
   }
   dispatch({ type: "VERIFY_OTP", payload: data });
 }
@@ -150,6 +227,7 @@ export const getall_ledgerwallet_data =
   if (searchdate_start) params.append("start_date", searchdate_start);
   if (searchdate_end) params.append("end_date", searchdate_end);
   if(downloadexcl) params.append("download", "excel");
+ 
 
 
   const res = await fetch(
@@ -495,38 +573,44 @@ export const updateeteentitycallbackevent = (upentdata,corpid,eventname,status) 
     alert("entity hasbeen updated")
     
   }
+ 
 
   const data = await res.json();
   dispatch({ type: "UPDATEENTITY_CALLBACK", payload: data });
 };
-export const forgotpassword = (uppassword) => async (dispatch) => {
+export const forgotpassword = (uppassword,navigate, setLoad,setError) => async (dispatch) => {
+  console.log(511,uppassword);
 
   if (window.confirm("Are you sure you want to update your password")) {
 
-    const token = localStorage.getItem("token") || {};
+    setLoad(true)
+
+ 
     const res = await fetch(
-      `${baseUrl}/v1/user/forgot-password`,
+      `${baseUrl}/v1/user/forgot-password/reset`,
       {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+        
         },
-        body:JSON.stringify(uppassword)
+        body:JSON.stringify({newPassword:uppassword})
       }
     );
   
-    if (res.status === 401) {
-      localStorage.removeItem("token");
-      window.location.href = "/";
-      return;
-    }
+   
   
     if (res.status===200) {
       alert("password hasbeen updated")
-      localStorage.removeItem("token")
-      window.location.href = "/";
+     
+      navigate("/");
+      setLoad(false)
+
       
+    } if (res.status===400) {
+      
+      setLoad(false)
+      setError("verified email not found")
     }
   
     const data = await res.json();
@@ -559,36 +643,47 @@ export const get_vertualaccountdetails = () => async (dispatch) => {
   dispatch({ type: "GETVERTUAL_ACCOUNT", payload: data });
  
 };
-export const verify_aadhar = (aadharfile) => async (dispatch) => {
+export const verify_aadhar = (file) => async (dispatch) => {
+  console.log( 647,file);
 
   const token = localStorage.getItem("token") || {};
-  
-  const formData = new FormData();
-  formData.append("aadhaarFile", aadharfile);
+  let res;
 
-  const res = await fetch(
-    `${baseUrl}/v1/user/aadhaar/verify`,
-    {
-      method: "POST",
-      headers: {
-       
-        Authorization: `Bearer ${token}`,
-      },
-      body:JSON.stringify(formData)
+  try {
+    if (file) {
+      // Upload Aadhaar file
+      const formData = new FormData();
+      formData.append("aadhaarFile", file);
+
+      res = await fetch(`${baseUrl}/v1/user/aadhaar/verify`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          
+        },
+        body: formData,
+      });
+    } 
+
+    if (res.status === 401) {
+      localStorage.removeItem("token");
+      window.location.href = "/";
+      return;
     }
-  );
 
-  if (res.status === 401) {
-    localStorage.removeItem("token");
-    window.location.href = "/";
-    return;
+    const data = await res.json();
+    console.log(66, data);
+
+    if (res.ok) {
+      alert("Verified");
+    }
+
+    dispatch({ type: "VERIFY_AADHAR", payload: data });
+  } catch (err) {
+    console.error("Verification error:", err);
   }
-
-  const data = await res.json();
-  console.log(66,data);
-  dispatch({ type: "VERIFY_AADHAR", payload: data });
- 
 };
+
 
 
 

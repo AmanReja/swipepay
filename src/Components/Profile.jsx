@@ -1,122 +1,176 @@
-import React, { useEffect } from 'react'
-
-import { getone_user } from '../redux/action'
-import { useDispatch,useSelector } from 'react-redux'
-import User from "../assets/images/5.png"
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getone_user, update_user_details } from "../redux/action";
+import User from "../assets/images/5.png";
+import { motion } from "framer-motion";
+import { Save, User as UserIcon, Mail, Briefcase, Shield } from "lucide-react";
 
 const Profile = () => {
+  const [email, setEmail] = useState("");
+  const [designation, setDesignation] = useState("");
+  const [name, setName] = useState("");
+  const [role, setRole] = useState("");
+  const [status, setStatus] = useState("");
 
+  const getoneuser = useSelector((state) => state.getoneuser.getoneuser.user);
+  const dispatch = useDispatch();
 
- const getoneuser = useSelector((state)=>state.getoneuser.getoneuser.user)
+  useEffect(() => {
+    dispatch(getone_user());
+  }, [dispatch]);
 
- const dispatch = useDispatch()
+  useEffect(() => {
+    if (getoneuser) {
+      setEmail(getoneuser.email || "");
+      setDesignation(getoneuser.designation || "");
+      setName(getoneuser.name || "");
+      setRole(getoneuser.role || "");
+      setStatus(getoneuser.status || "");
+    }
+  }, [getoneuser]);
 
-
- useEffect(()=>{
-    
-dispatch(getone_user())
-
- },[dispatch])
-
-
-console.log(getoneuser);
-
-
-
+  const handelupdate = (e) => {
+    e.preventDefault();
+    const updatedInfo = { email, designation, role, status, name };
+    dispatch(update_user_details(updatedInfo));
+  };
 
   return (
-    <>
-{/* Enquiry Section */}
-<section className="relative max-w-7xl mx-auto px-4 py-16">
-  {/* Header Section */}
-  <div className="text-center mb-12">
-    <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-      Change your Profile <span className="text-red-600">Details</span>
-    </h1>
-    <div className="w-20 h-1 bg-red-600 mx-auto mb-6" />
-    <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-      {/* We're here to help you begin your creative journey. Fill out the form below and our team will get back to you shortly. */}
-    </p>
-  </div>
-  {/* Form Container */}
-  <div className="bg-white rounded-xl shadow-2xl overflow-hidden">
-    <div className="md:flex">
-      {/* Left Side */}
+    <div className="w-full rounded-2xl h-[85%] flex flex-col">
+      <main className="w-full h-full flex flex-col overflow-y-auto p-6">
+        <motion.section
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="relative max-w-6xl mx-auto w-full"
+        >
+         
+          <div className="text-center mb-10">
+            <h1 className="text-4xl font-extrabold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
+              Edit <span className="text-red-600">Profile</span>
+            </h1>
+            <p className="text-gray-500 mt-2">
+              Update your personal details and manage your account settings.
+            </p>
+          </div>
 
-    
-      <div className="md:w-1/3 bg-gradient-to-br from-violet-600 to-blue-800 p-10 text-white flex flex-col justify-between">
-      <img className='rounded-full' src={User} alt="" />
-        <div>
-          <h2 className="text-2xl font-bold mb-4">{getoneuser.email}</h2>
-          <ul className="space-y-4">
-            <li className="flex items-start">
-              
-              <span>{getoneuser.designation}</span>
-            </li>
-            <li className="flex items-start">
-              
-              <span>{getoneuser.name}</span>
-            </li>
-            <li className="flex items-start">
-              
-              <span>{getoneuser.role}</span>
-            </li>
-            <li className="flex items-start">
-              
-              <span>{getoneuser.status}</span>
-            </li>
-          </ul>
-        </div>
-      </div>
-      {/* Right Side - Form */}
-      <div className="md:w-2/3 p-10">
-        <form className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Full Name */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-              <input type="text" name="fullName" placeholder="John Doe" className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500" required />
-            </div>
-            {/* Email */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-              <input type="email" name="email" placeholder="john@example.com" className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500" required />
-            </div>
-            {/* Mobile Number */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Mobile Number</label>
-              <input type="tel" name="mobileNumber" placeholder="+91 9876543210" className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500" required />
-            </div>
-            {/* Course Selection */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Role</label>
-              <select name="courses" className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500 bg-white" required>
-                <option value>Sales Manager</option>
-                <option value="user">user</option>
-                <option value="Admin">Admin</option>
-               
-              </select>
+       
+          <div className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden w-full border border-gray-200">
+            <div className="flex flex-col md:flex-row">
+             
+              <div className="md:w-1/3 bg-gradient-to-br from-violet-700 to-blue-800 p-10 text-white flex flex-col items-center gap-6">
+                <img
+                  className="w-32 h-32 rounded-full object-cover shadow-lg ring-4 ring-white/30"
+                  src={User}
+                  alt="User"
+                />
+                <div className="text-center">
+                  <h2 className="text-2xl font-bold">{getoneuser?.name}</h2>
+                  <p className="text-sm text-gray-200 mt-1">{getoneuser?.designation}</p>
+                  <ul className="mt-6 space-y-2 text-sm">
+                    <li className="flex items-center gap-2">
+                      <Mail size={16} /> {getoneuser?.email}
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Briefcase size={16} /> {getoneuser?.role}
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Shield size={16} /> {getoneuser?.status}
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              {/* Right Form */}
+              <div className="md:w-2/3 p-10">
+                <form onSubmit={handelupdate} className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Name */}
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-1">
+                        Full Name
+                      </label>
+                      <div className="relative">
+                        <UserIcon className="absolute left-3 top-3 text-gray-400" size={18} />
+                        <input
+                          type="text"
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-violet-500 focus:border-violet-500"
+                          placeholder="John Doe"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Email */}
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-1">
+                        Email Address
+                      </label>
+                      <div className="relative">
+                        <Mail className="absolute left-3 top-3 text-gray-400" size={18} />
+                        <input
+                          type="email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-violet-500 focus:border-violet-500"
+                          placeholder="john@example.com"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Designation */}
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-1">
+                        Designation
+                      </label>
+                      <div className="relative">
+                        <Briefcase className="absolute left-3 top-3 text-gray-400" size={18} />
+                        <input
+                          type="text"
+                          value={designation}
+                          onChange={(e) => setDesignation(e.target.value)}
+                          className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-violet-500 focus:border-violet-500"
+                          placeholder="Enter your designation"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Role */}
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-1">
+                        Role
+                      </label>
+                      <select
+                        value={role}
+                        onChange={(e) => setRole(e.target.value)}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-violet-500 focus:border-violet-500 bg-white"
+                      >
+                        <option value="">Select role</option>
+                        <option value="Sales Manager">Sales Manager</option>
+                        <option value="User">User</option>
+                        <option value="Admin">Admin</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Save Button */}
+                  <div>
+                    <button
+                      type="submit"
+                      className="w-full py-3 px-6 flex items-center justify-center gap-2 bg-gradient-to-r from-violet-600 to-blue-600 text-white font-medium rounded-lg shadow-md hover:opacity-90 transition duration-300"
+                    >
+                      <Save size={18} /> Save Changes
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
-          {/* Message */}
-          <div>
-            
-          </div>
-          {/* Submit */}
-          <div>
-            <button type="submit" className="w-full py-3 px-6 bg-violet-600 text-white font-medium rounded-lg shadow-sm hover:bg-violet-700 transition duration-300">
-              Save changes
-            </button>
-          </div>
-        </form>
-      </div>
+        </motion.section>
+      </main>
     </div>
-  </div>
-</section>
+  );
+};
 
-    
-    </>
-  )
-}
-
-export default Profile
+export default Profile;

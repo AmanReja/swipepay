@@ -6,7 +6,7 @@ import { useParams, useLocation } from "react-router-dom";
 import bg3 from "../assets/images/bg-3.png";
 import Subfooter from "./Subfooter";
 import { useSelector, useDispatch } from "react-redux";
-import { getall_payoutlog_data,getall_wallet_company_data,get_vertualaccountdetails} from "../redux/action";
+import { getall_payoutlog_data,getall_wallet_company_data,get_vertualaccountdetails,get_collections} from "../redux/action";
 import {BadgeCheck,ArrowDownLeft,ArrowUpRight,CreditCard} from "lucide-react"
 import Chart2 from "./Chart2";
 
@@ -20,7 +20,8 @@ const Summery = () => {
   const payoutdata = useSelector((state) => state.payoutlog.payoutlog.data);
   const walletdata = useSelector((state) => state.walletcompany.walletcompany.total);
   const vaaccountdata = useSelector((state) => state.vaaccount.vaaccount);
-  console.log(18,vaaccountdata);
+  const collectiondata = useSelector((state) => state.collections.collections.count);
+  console.log(18,collectiondata);
   
 
 
@@ -29,6 +30,7 @@ const Summery = () => {
     dispatch(getall_payoutlog_data())
     dispatch(getall_wallet_company_data())
     dispatch(get_vertualaccountdetails())
+    dispatch(get_collections())
     
   }, [dispatch]);
 
@@ -67,7 +69,7 @@ const Summery = () => {
     },
     {
       icon: <ArrowDownLeft size={44}  className="text-gray-600"/>,
-      num: 0,
+      num: collectiondata,
       text: "Collection",
       deg: "130deg",
     },
@@ -169,13 +171,14 @@ const Summery = () => {
           <section className="w-full flex flex-col sm:flex-row  gap-[20px]   sm:min-h-[400px] sm:h-[400px]  px-[20px]">
         
 
-            <div className="flex w-full sm:w-[50%]  h-[100%]  flex-col justify-center items-center">
            
-              <div className=" shadow-xl rounded-2xl shadow-sky-100 h-[80%] px-[5px]  border w-full border-gray-300 flex justify-center items-center">
+            <div className="flex w-full sm:w-[50%]  h-[100%]  flex-col justify-center items-center">
+              
+              <div className=" p-2 rounded-2xl shadow-xl shadow-sky-100 h-[89%] px-[5px]  border w-full border-gray-300 flex justify-center items-center">
                 <Chart2></Chart2>
               </div>
             </div>
-            <div className="flex w-full sm:w-[50%]  h-[100%]  flex-col justify-center items-center">
+            <div className=" rounded-2xl flex w-full sm:w-[50%]  h-[100%]  flex-col justify-center items-center">
               <header className="w-full h-[18%] flex justify-around items-center border border-gray-200 bg-gradient-to-r from-sky-50 to-sky-100 rounded-t-2xl shadow-sm">
                 <h1 className="text-[20px] font-semibold text-gray-700">
                   Earnings
@@ -189,7 +192,7 @@ const Summery = () => {
                   </option>
                 </select>
               </header>
-              <div className=" shadow-xl shadow-sky-100 h-[80%] px-[5px]  border w-full border-gray-300 flex justify-center items-center">
+              <div className= " rounded-bl-2xl  rounded-br-2xl shadow-xl shadow-sky-100 h-[80%] px-[5px]  border w-full border-gray-300 flex justify-center items-center">
                 <Chart></Chart>
               </div>
             </div>

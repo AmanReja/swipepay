@@ -1,10 +1,10 @@
-import React, { useEffect, useState,useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Chart from "./Chart";
 import Hdfc from "../assets/images/HDFC.png";
 import { useSelector, useDispatch } from "react-redux";
 import { getall_ledgerwallet_data } from "../redux/action";
 import "../App.css"
-import "flatpickr/dist/themes/airbnb.css"; 
+import "flatpickr/dist/themes/airbnb.css";
 import flatpickr from "flatpickr"
 
 const Ledger = () => {
@@ -12,8 +12,13 @@ const Ledger = () => {
   const [searchtr, setSearchtr] = useState("");
   const [trstatus, setTrstatus] = useState("");
   const [load, setLoad] = useState(false);
-  const [formdatastr,setFormdatastr]=useState("")
-  const [formdataend,setFormdataend]=useState("")
+  const [formdatastr, setFormdatastr] = useState("")
+  const [formdataend, setFormdataend] = useState("")
+  const [page, setPage] = useState(1)
+  const [perPage, setPerPage] = useState(10);
+
+
+  console.log(20, page);
 
 
 
@@ -21,7 +26,12 @@ const Ledger = () => {
 
 
 
-  const[date,setDate] =useState({startDate:null,endDate:null})
+
+
+
+
+
+  const [date, setDate] = useState({ startDate: null, endDate: null })
 
 
   const formatDate = (date) => new Intl.DateTimeFormat("en-CA").format(date);
@@ -34,7 +44,6 @@ const Ledger = () => {
     }
   }, [date]);
 
-  console.log(formdatastr,formdataend);
 
 
 
@@ -42,15 +51,16 @@ const Ledger = () => {
 
 
 
-  
+
+
   const dateRangeRef = useRef(null);
 
   useEffect(() => {
     flatpickr(dateRangeRef.current, {
       mode: "range",
-      dateFormat: "d-m-y", 
+      dateFormat: "d-m-y",
       defaultDate: ["15-07-2025", "16-07-2025"],
-      value:date,
+      value: date,
       onChange: function (selectedDates) {
         if (selectedDates.length === 2) {
           const [start, end] = selectedDates;
@@ -60,35 +70,46 @@ const Ledger = () => {
     });
   }, []);
 
+ 
 
 
   const dispatch = useDispatch();
 
-  const token = localStorage.getItem("token");
-  console.log(token);
+  // const token = localStorage.getItem("token");
+
 
   const trdata = useSelector(
     (state) => state.ledgerwallet.ledgerwallet.transactions
   );
 
-  console.log(55, trdata);
+  const total = trdata?.length;
+
+const totalPages = Math.ceil(total / perPage);
+
+
+const paginatedData = trdata?.slice((page - 1) * perPage, page * perPage);
+
+
+
+
+
 
   useEffect(() => {
 
-   async function fetch(){
+    async function fetch() {
       setLoad(true)
-    await dispatch(getall_ledgerwallet_data(searchtr, trstatus,formdatastr,formdataend));
+      await dispatch(getall_ledgerwallet_data(searchtr, trstatus, formdatastr, formdataend));
       setLoad(false)
     } fetch()
 
-   
-  }, [dispatch, searchtr, trstatus,formdatastr,formdataend]);
 
-  const downloadexcel = ()=>{
-    dispatch(getall_ledgerwallet_data(searchtr, trstatus,formdatastr,formdataend,true))
+  }, [dispatch, searchtr, trstatus, formdatastr, formdataend]);
+
+  const downloadexcel = () => {
+    dispatch(getall_ledgerwallet_data(searchtr, trstatus, formdatastr, formdataend, true ))
   }
 
- 
+
 
   return (
     <div className=" w-[100%] rounded-2xl 2xl:h-[85%] h-[80%] flex flex-col">
@@ -123,10 +144,10 @@ const Ledger = () => {
               </h2>
 
               <div className="flex gap-3 flex-wrap items-center">
-              <div className="border-gray-300 pl-[5px] border-[1px] p-1 rounded flex justify-center items-center gap-2" >
-    <i class="fa-solid fa-calendar-days text-gray-300"></i>
-    <input className="w-[180px] text-[14px]  content-center justify-center text-gray-400 outline-none  rounded" type="text" ref={dateRangeRef} />
-    </div>
+                <div className="border-gray-300 pl-[5px] border-[1px] p-1 rounded flex justify-center items-center gap-2" >
+                  <i class="fa-solid fa-calendar-days text-gray-300"></i>
+                  <input className="w-[180px] text-[14px]  content-center justify-center text-gray-400 outline-none  rounded" type="text" ref={dateRangeRef} />
+                </div>
 
                 <div className="relative border border-gray-300 px-2 py-1 rounded-lg bg-white">
                   <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
@@ -166,9 +187,9 @@ const Ledger = () => {
                 </button>
               </div>
             </div>
-               
 
-            {!load? <table className="w-full text-sm text-left text-gray-600 border border-gray-200 rounded-md overflow-hidden">
+
+            {!load ? <table className="w-full text-sm text-left text-gray-600 border border-gray-200 rounded-md overflow-hidden">
               <thead className="text-[11px] text-gray-500 uppercase bg-[#f9f9f9] border-b border-gray-300">
                 <tr>
                   <th className="px-4 py-3">#Txn Details</th>
@@ -233,11 +254,11 @@ const Ledger = () => {
               </thead>
 
 
-             
-              
+
+
 
               <tbody className="text-[13px] font-medium">
-                {trdata?.map((txn, i) => (
+                {paginatedData?.map((txn, i) => (
                   <tr
                     key={i}
                     className="border-b border-gray-100 hover:bg-gray-50 transition"
@@ -251,13 +272,13 @@ const Ledger = () => {
                           </span>
                         </p>
                         <div className="flex items-center space-x-2 text-xs font-semibold">{
-                          txn.txn_mode =="DR"?<span className="flex items-center justify-center w-6 h-6 bg-red-100 border border-red-300 text-red-700 rounded">
-                          DR
-                        </span>:<span className="flex items-center justify-center w-6 h-6 bg-green-100 border border-green-300 text-green-700 rounded">
+                          txn.txn_mode == "DR" ? <span className="flex items-center justify-center w-6 h-6 bg-red-100 border border-red-300 text-red-700 rounded">
+                            DR
+                          </span> : <span className="flex items-center justify-center w-6 h-6 bg-green-100 border border-green-300 text-green-700 rounded">
                             CR
                           </span>
                         }
-                          
+
                           <span className="text-gray-400">|</span>
                           <span className="flex items-center justify-center w-[80px] h-6 bg-gray-100 border border-gray-300 text-gray-700 rounded">
                             {txn.txn_type}
@@ -285,13 +306,12 @@ const Ledger = () => {
 
                     <td className="px-4 py-4">
                       <span
-                        className={`text-white rounded-[4px] px-3 py-1 min-w-[80px] text-center inline-block font-bold text-[12px] ${
-                          txn.txn_status === "SUCCESS"
+                        className={`text-white rounded-[4px] px-3 py-1 min-w-[80px] text-center inline-block font-bold text-[12px] ${txn.txn_status === "SUCCESS"
                             ? "bg-green-500"
                             : txn.txn_status === "PENDING"
-                            ? "bg-yellow-400 text-black"
-                            : "bg-red-400"
-                        }`}
+                              ? "bg-yellow-400 text-black"
+                              : "bg-red-400"
+                          }`}
                       >
                         {txn.txn_status}
                       </span>
@@ -299,73 +319,85 @@ const Ledger = () => {
                   </tr>
                 ))}
               </tbody>
-            </table>:<div className="flex w-full h-[200px] justify-center items-center">
-              
-            <div className="loader"></div>
+            </table> : <div className="flex w-full h-[200px] justify-center items-center">
+
+              <div className="loader"></div>
             </div>}
 
-        {trdata?.length!==0?<div className="flex items-center justify-between px-4 py-3 border-t border-gray-200 bg-white text-sm text-gray-600">
-              <div>
-                Show{" "}
-                <select
-                  className="rounded border-[1px] outline-none border-gray-300 px-[5px] py-[5px]"
-                  name=""
-                  id=""
-                >
-                  <option value="10">10</option>
-                  <option value="20">20</option>
-                  <option value="30">30</option>
-                </select>{" "}
-                per page
-              </div>
+            {total > 0 ? (
+  <div className="flex items-center justify-between px-4 py-3 border-t border-gray-200 bg-white text-sm text-gray-600">
+    <div>
+      Show{" "}
+      <select
+        className="rounded border outline-none border-gray-300 px-[5px] py-[5px]"
+        value={perPage}
+        onChange={(e) => {
+          setPerPage(Number(e.target.value));
+          setPage(1); // reset to first page
+        }}
+      >
+        <option value={10}>10</option>
+        <option value={20}>20</option>
+        <option value={30}>30</option>
+      </select>{" "}
+      per page
+    </div>
 
-              <div className="flex items-center space-x-2">
-                <p>1-10 of 7406</p>
-                <button className="px-3 py-1  border-gray-300 rounded-md  hover:bg-gray-200">
-                  <i class="fa-solid fa-arrow-left"></i>
-                </button>
-                <button className="px-3 py-1 border border-gray-300 rounded-md hover:bg-gray-100">
-                  1
-                </button>
-                <button className="px-3 py-1 border border-gray-300 rounded-md bg-gray-200 font-medium">
-                  2
-                </button>
-                <button className="px-3 py-1 border border-gray-300 rounded-md hover:bg-gray-100">
-                  3
-                </button>
-                <span className="px-2 text-gray-400">...</span>
+    <div className="flex items-center space-x-2">
+      <p>
+        {(page - 1) * perPage + 1}-{Math.min(page * perPage, total)} of {total}
+      </p>
 
-                <button className="px-3 py-1  border-gray-300 rounded-md  hover:bg-gray-200">
-                  <i class="fa-solid fa-arrow-right"></i>
-                </button>
-              </div>
-            </div>:<div className="flex items-center justify-between px-4 py-3 border-t border-gray-200 bg-white text-sm text-gray-600">
-                <h1 className="text-2xl w-full text-center">
-                  No data found
-                </h1>
+      {/* Prev Button */}
+      <button
+        onClick={() => setPage(page - 1)}
+        disabled={page === 1}
+        className={`px-3 py-1 border rounded-md ${
+          page === 1 ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-200"
+        }`}
+      >
+        <i className="fa-solid fa-arrow-left"></i>
+      </button>
 
-             
-            </div>
+      {/* Page Numbers (show few pages around current) */}
+      {Array.from({ length: totalPages }, (_, i) => i + 1)
+        .slice(Math.max(0, page - 2), Math.min(totalPages, page + 1))
+        .map((num) => (
+          <button
+            key={num}
+            onClick={() => setPage(num)}
+            className={`px-3 py-1 border rounded-md ${
+              num === page ? "bg-gray-200 font-semibold" : "hover:bg-gray-100"
+            }`}
+          >
+            {num}
+          </button>
+        ))}
+
+      {/* Next Button */}
+      <button
+        onClick={() => setPage(page + 1)}
+        disabled={page === totalPages}
+        className={`px-3 py-1 border rounded-md ${
+          page === totalPages ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-200"
+        }`}
+      >
+        <i className="fa-solid fa-arrow-right"></i>
+      </button>
+    </div>
+  </div>
+) : (
+  <div className="flex items-center justify-between px-4 py-3 border-t border-gray-200 bg-white text-sm text-gray-600">
+    <h1 className="text-2xl w-full text-center">No data found</h1>
+  </div>
+)}
 
 
-        }
 
-            
           </div>
         </div>
 
-        {/* <footer className="w-full min-h-[60px] flex px-[20px] justify-between items-center">
-          <h1 className="text-gray-500 text-[14px]">2024© Busybox.</h1>
-          <div
-            style={{ fontFamily: "montserrat" }}
-            className="flex min-w-[235px] text-[14px] w-[235px] h-full items-center gap-[10px] text-gray-500 justify-between"
-          >
-            <a href="">Docs</a>
-            <a href="">FAQ</a>
-            <a href="">Support</a>
-            <a href="">License</a>
-          </div>
-        </footer> */}
+
       </main>
     </div>
   );

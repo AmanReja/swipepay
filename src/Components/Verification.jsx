@@ -24,6 +24,18 @@ const Verification = () => {
     
   
   };
+  
+  const handleVerificationwithnum = async (e) => {
+
+   
+
+    
+
+    dispatch(verify_aadhar(aadhaarNumber))
+    console.log(aadhaarNumber);
+    
+  
+  };
 
   return (
     <div className=" w-[100%] rounded-2xl 2xl:h-[85%] xl:h-[80%] h-[78%] flex flex-col">
@@ -55,16 +67,19 @@ const Verification = () => {
       </div>
 
    
-      <div className="w-full  bg-white/80 backdrop-blur-md rounded-2xl shadow-lg border border-gray-200 p-8">
+      <div className="w-full   bg-white h-auto min-h-[220px] backdrop-blur-md rounded-2xl shadow-lg border border-gray-200 p-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         
           <div>
+
+            
             <label className="block text-sm font-semibold text-gray-700">Aadhaar Number</label>
-            <input
+            <input onChange={(e)=>{setAadhaarNumber(e.target.value)}}
               type="text"
               maxLength="12"
-              value={aadhaarNumber}
+              
              
+             value={aadhaarNumber}
               className="mt-2 block w-full border border-gray-300 rounded-lg px-4 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="Enter Aadhaar Number"
             />
@@ -107,7 +122,7 @@ const Verification = () => {
    
         <div className="mt-8 flex justify-end">
           <button
-            onClick={handleVerification}
+            onClick={handleVerificationwithnum}
             disabled={loading}
             className="px-6 py-2 text-white bg-indigo-600 rounded-lg shadow hover:bg-indigo-700 transition flex items-center gap-2 disabled:opacity-50"
           >

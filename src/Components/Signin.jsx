@@ -6,7 +6,7 @@ import group from "../assets/images/lap.svg";
 import group1 from "../assets/images/lap2.png";
 import busybox from "../assets/icons/busybox.png";
 import { ShieldCheck, Smartphone, Lock, X } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { ToastContainer, toast, Bounce, Slide } from "react-toastify";
 import backgroundgreed from "../assets/images/bg.svg"
 import { FaBriefcase, FaDollarSign, FaChartLine } from "react-icons/fa";
@@ -365,10 +365,13 @@ const handelotp = ()=>{
               >
                 Sign In Account
               </button>
-              <p onClick={(e) => { setPassopen(true) }} className=" text-gray-500  text-right hover:underline cursor-pointer">
+              <Link to={"/forgotpass"}>
+              <p className={`text-gray-500 text-right hover:underline cursor-pointer`}>
                 Forgot Password
 
               </p>
+              </Link>
+             
 
 
               <p className="text-xs text-gray-500 text-center">
@@ -383,7 +386,7 @@ const handelotp = ()=>{
               </p>
             </div>
           </div>
-          {passopen && (
+          {/* {passopen && (
             <form onSubmit={(e) => { giveotp?handelotp(e) : forgotpass(e),e.preventDefault() }} className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
               <div className="bg-white rounded-2xl shadow-2xl p-6 w-[90%] md:w-[400px] relative">
                 <button type="button"
@@ -410,7 +413,7 @@ const handelotp = ()=>{
                 </button>
               </div>
             </form>
-          )}
+          )} */}
         </div>
       </div>
     </>

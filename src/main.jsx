@@ -33,13 +33,18 @@ import Protectedroute from "./Components/Protectedroute.jsx";
 import Profile from "./Components/Profile";
 import Security from "./Components/Security";
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import Notokensecurity from "./Components/Notokensecurity";
+import Forgotpass from "./Components/Forgotpass";
+import Otpverification from "./Components/Otpverification";
+import Resetpass from "./Components/Resetpass";
+
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route element={<App />}>
       <Route path="/" element={<Signin />} />
-      <Route path="/forgotpass" element={<Notokensecurity />} />
+      <Route path="/forgotpass" element={<Forgotpass />} />
+      <Route path="/otpverification" element={<Otpverification />} />
+      <Route path="/resetpassword" element={<Resetpass />} />
       <Route element={<Protectedroute />}>
         <Route path="/dashboard" element={<Dashbord />}>
           <Route index path="summery" element={<Summery />} />
