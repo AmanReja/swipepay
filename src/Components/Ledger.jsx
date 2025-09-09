@@ -120,7 +120,7 @@ const paginatedData = trdata?.slice((page - 1) * perPage, page * perPage);
 
   return (
     <div
-    className={`w-[100%]  2xl:h-[85%] h-[80%] flex flex-col ${
+    className={`w-[100%]  2xl:h-[85%]  h-[78%]  flex flex-col ${
       theme === "dark" ? "bg-black text-white" : "bg-gray-100 text-gray-900"
     }`}
   >

@@ -33,15 +33,15 @@ const Navbar = () => {
 
   return (
     <div className={`w-[100%] ${theme === "dark" ? "" : "bg-gray-100 "} h-[40px] flex justify-between px-[10px] sm:px-[40px] items-center mt-[20px]`}>
-       <div
+      <div
 
-style={{ fontFamily: "Righteous" }}
-className={`flex tracking-wide transition-all duration-300 animate-gradient-x h-[53px] relative text-5xl font-normal 
+        style={{ fontFamily: "Righteous" }}
+        className={`flex tracking-wide transition-all duration-300 animate-gradient-x h-[53px] relative sm:text-5xl text-2xl font-normal 
 bg-gradient-to-r ${theme === "dark" ? "from-white via-yellow-500 to-violet-500 " : "from-black via-yellow-500 to-pink-500 "} 
 bg-clip-text text-transparent`}
->
-busybox
-</div>
+      >
+        busybox
+      </div>
 
       <div className="flex items-center gap-[20px]">
         <Link to={"/dashboard/addmoney"}>
@@ -54,7 +54,7 @@ busybox
         <img onClick={handelOpen} className="w-[30px] h-[30px] rounded-full" src={i5} alt="" />
       </div>
       <div className={` w-[300px] flex-col z-40 ${theme === "dark" ? "bg-gray-900" : "bg-gray-100 "}  overflow-hidden border-gray-200 border-[2px] h-[200px] shadow-2xl absolute right-[35px] ${open ? "flex" : "hidden"}  rounded-2xl top-[82px]`}>
-        <div className={`border-b-gray-200 gap-[20px] ${theme==="dark"?"bg-gray-900":"bg-gray-100 "}  border-b-[1px]  w-full items-center justify-center flex h-[80px]`}>
+        <div className={`border-b-gray-200 gap-[20px] ${theme === "dark" ? "bg-gray-900" : "bg-gray-100 "}  border-b-[1px]  w-full items-center justify-center flex h-[80px]`}>
           <img className="w-[50px] border-lime-400 border-[1px] h-[50px] rounded-full" src={i5} alt="" />
           <div className={`flex flex-col`}>
             <h1 className="font-bold text-xl">Aakash</h1>
