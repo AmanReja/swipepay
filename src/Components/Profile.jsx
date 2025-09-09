@@ -4,10 +4,10 @@ import { getone_user, update_user_details } from "../redux/action";
 import User from "../assets/images/5.png";
 import { motion } from "framer-motion";
 import { Save, User as UserIcon, Mail, Briefcase, Shield } from "lucide-react";
-import { ThemeContext } from "../Contexts/ThemeContext";
+import { Theme } from "../Contexts/Theme";
 
 const Profile = () => {
-  const {theme,setTheme} =useContext(ThemeContext)
+  const {theme,setTheme} =useContext(Theme)
   const [email, setEmail] = useState("");
   const [designation, setDesignation] = useState("");
   const [name, setName] = useState("");

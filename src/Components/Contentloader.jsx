@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
 
 
-import { ThemeContext } from "../Contexts/ThemeContext";
+import { Theme } from "../Contexts/Theme";
 
 
 const Contentloader = () => {
 
- const {theme,setTheme} =useContext(ThemeContext)
+ const {theme,setTheme} =useContext(Theme)
 
     const base = `animate-pulse rounded bg-gray-200 dark:bg-gray-700`;
     return (

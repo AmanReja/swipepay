@@ -6,14 +6,14 @@ import i1 from "../assets/icons/2.svg";
 import i2 from "../assets/icons/4.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { getall_bulkpay_data } from "../redux/action";
-import { ThemeContext } from "../Contexts/ThemeContext";
+import { Theme } from "../Contexts/Theme";
 import Contentloader from "./Contentloader";
 
 
 const Bulkpayout = () => {
   const [load,setLoad] =useState(false)
 
-  const {theme,setTheme} =useContext(ThemeContext)
+  const {theme,setTheme} =useContext(Theme)
   const dispatch = useDispatch();
   const bulkpayoutdata = useSelector(
     (state) => state.bulkpayout.bulkpayout.data

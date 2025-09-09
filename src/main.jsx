@@ -36,7 +36,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import Forgotpass from "./Components/Forgotpass";
 import Otpverification from "./Components/Otpverification";
 import Resetpass from "./Components/Resetpass";
-import { ThemeProvider } from "./Contexts/ThemeContext";
+import { ThemeProvider } from "./Contexts/Theme";
 
 
 
@@ -83,7 +83,7 @@ const router = createBrowserRouter(
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <ThemeProvider>
+<ThemeProvider>
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
 
 
