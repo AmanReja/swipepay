@@ -6,14 +6,14 @@ import { getall_ledgerwallet_data } from "../redux/action";
 import "../App.css"
 import "flatpickr/dist/themes/airbnb.css";
 import flatpickr from "flatpickr"
-import { themeContext } from "../Contexts/ThemeContext";
+import { ThemeContext } from "../Contexts/ThemeContext";
 import Contentloader from "./Contentloader";
 
 
 const Ledger = () => {
 
   
-  const {theme,setTheme} =useContext(themeContext)
+  const {theme,setTheme} =useContext(ThemeContext)
   console.log(theme,14);
   const [searchdate, setSearchdate] = useState("");
   const [searchtr, setSearchtr] = useState("");

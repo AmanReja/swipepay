@@ -10,12 +10,12 @@ import { getall_payoutlog_data,getall_wallet_company_data,get_vertualaccountdeta
 import {BadgeCheck,ArrowDownLeft,ArrowUpRight,CreditCard} from "lucide-react"
 import Chart2 from "./Chart2";
 
-import { themeContext } from "../Contexts/ThemeContext";
+import { ThemeContext } from "../Contexts/ThemeContext";
 
 
 
 const Summery = () => {
-  const {theme,setTheme} =useContext(themeContext)
+  const {theme,setTheme} =useContext(ThemeContext)
 
 
 

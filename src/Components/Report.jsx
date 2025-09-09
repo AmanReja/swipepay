@@ -8,12 +8,12 @@ import "flatpickr/dist/themes/airbnb.css";
 import flatpickr from "flatpickr";
 import Contentloader from "../Components/Contentloader";
 
-import { themeContext } from "../Contexts/ThemeContext";
+import { ThemeContext } from "../Contexts/ThemeContext";
 
 
 
 const Report = () => {
-  const {theme,setTheme} =useContext(themeContext);
+  const {theme,setTheme} =useContext(ThemeContext);
   const [load, setLoad] = useState(false);
   const [searchtr, setSearchtr] = useState("");
   const [trstatus, setTrstatus] = useState("");

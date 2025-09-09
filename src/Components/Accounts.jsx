@@ -19,12 +19,12 @@ import Subfooter from "./Subfooter";
 import robo from "../assets/icons/robo.png";
 import {getone_user} from "../redux/action"
 import { useSelector, useDispatch } from "react-redux";
-import { themeContext } from "../Contexts/ThemeContext";
+import { ThemeContext } from "../Contexts/ThemeContext";
 
 const Accounts = () => {
 
 
-  const {theme,setTheme} =useContext(themeContext)
+  const {theme,setTheme} =useContext(ThemeContext)
   const [user,setUser]=useState([])
   const dispatch = useDispatch();
   const getoneuserdata = useSelector((state)=>state.getoneuser.getoneuser.user)

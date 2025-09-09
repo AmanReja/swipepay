@@ -2,11 +2,11 @@ import { React, useState, useContext } from "react";
 import busybox from "../assets/icons/busybox.png";
 import i5 from "../assets/images/5.png";
 import { Link, useNavigate } from "react-router-dom";
-import { themeContext } from "../Contexts/ThemeContext";
+import { ThemeContext } from "../Contexts/ThemeContext";
 
 const Navbar = () => {
   const navigate = useNavigate()
-  const { theme, setTheme } = useContext(themeContext)
+  const { theme, setTheme } = useContext(ThemeContext)
 
   const [open, setOpen] = useState(false);
 

@@ -6,10 +6,10 @@ import { Link, NavLink, Outlet } from "react-router-dom";
 import Arrow from "../assets/icons/arrow.svg";
 import { ToastContainer } from "react-toastify";
 import Subfooter from "./Subfooter";
-import { themeContext } from "../Contexts/ThemeContext";
+import { ThemeContext } from "../Contexts/ThemeContext";
 
 const Dashbord = () => {
-  const {theme,setTheme} =useContext(themeContext)
+  const {theme,setTheme} =useContext(ThemeContext)
   const [shows, setShows] = useState(false);
   const [showp, setShowp] = useState(false);
   const [showc, setShowc] = useState(false);
