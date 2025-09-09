@@ -179,7 +179,7 @@ const handelotp = ()=>{
 
         </div>
 
-        {/* Right Section */}
+     
         <div className="w-full sm:w-1/2  flex items-center justify-center">
           <div
             

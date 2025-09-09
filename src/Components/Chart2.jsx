@@ -35,9 +35,9 @@ const Chart2 = () => {
         text: "Sales ($)",
       },
     },
-    colors: ["#3b82f6"], // Tailwind blue-500
+    colors: ["#3b82f6"], 
     title: {
-      text: "Monthly Sales Report",
+      // text: "Monthly Sales Report",
       align: "center",
       style: {
         fontSize: "18px",

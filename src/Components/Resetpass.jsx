@@ -149,7 +149,7 @@ const Resetpass = () => {
                     value={confirmPass}
                     required
                     type={checkpassconfirm ? "text" : "password"}
-                    placeholder="Password"
+                    placeholder="Confirm Password"
                     className="w-full h-12 pl-12 pr-4  outline-none  transition"
                   />
                   <svg

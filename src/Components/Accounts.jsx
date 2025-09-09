@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useContext } from "react";
 import Chart from "./Chart";
 import Hdfc from "../assets/images/HDFC.png";
 import { Outlet } from "react-router-dom";
@@ -19,9 +19,12 @@ import Subfooter from "./Subfooter";
 import robo from "../assets/icons/robo.png";
 import {getone_user} from "../redux/action"
 import { useSelector, useDispatch } from "react-redux";
+import { themeContext } from "../Contexts/Themecontext";
 
 const Accounts = () => {
 
+
+  const {theme,setTheme} =useContext(themeContext)
   const [user,setUser]=useState([])
   const dispatch = useDispatch();
   const getoneuserdata = useSelector((state)=>state.getoneuser.getoneuser.user)
@@ -261,7 +264,7 @@ const Accounts = () => {
 
   return (
     <>
-      <div className="w-full flex flex-col gap-[50px] mb-[10px] bg-white  overflow-hidden">
+      <div className={`w-full flex flex-col gap-[50px] mb-[10px] ${theme==="dark"?"bg-gray-800":"bg-white"}  overflow-hidden`}>
         <div className="flex flex-col border-gray-200 border h-auto    w-full shadow rounded-xl">
         <div className="relative overflow-hidden rounded-xl p-8 md:p-10 flex flex-col md:flex-row items-center justify-between gap-8 bg-gradient-to-br from-indigo-900 via-indigo-800 to-indigo-700 shadow-2xl">
 
@@ -335,7 +338,7 @@ const Accounts = () => {
             ))}
           </div>
         </div>
-        <div className="flex border-gray-200  border w-full rounded-2xl bg-white  h-auto mb-[10px] flex-col p-4 gap-[10px]">
+        <div className="flex border-gray-200  border w-full rounded-2xl   h-auto mb-[10px] flex-col p-4 gap-[10px]">
           <div className="flex  items-center gap-[10px]">
             <div className="bg-violet-400 shadow-md w-[40px] p-2 rounded-full">
               <svg
