@@ -36,7 +36,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import Forgotpass from "./Components/Forgotpass";
 import Otpverification from "./Components/Otpverification";
 import Resetpass from "./Components/Resetpass";
-import { ThemeContext } from "./Contexts/ThemeContext";
+import { ThemeProvider } from "./Contexts/ThemeContext";
 
 
 
