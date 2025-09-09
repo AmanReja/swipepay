@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
 
 
-import { themeContext } from "../Contexts/Themecontext";
+import { themeContext } from "../Contexts/ThemeContext";
 
 
 const Contentloader = () => {

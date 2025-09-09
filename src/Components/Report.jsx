@@ -8,7 +8,7 @@ import "flatpickr/dist/themes/airbnb.css";
 import flatpickr from "flatpickr";
 import Contentloader from "../Components/Contentloader";
 
-import { themeContext } from "../Contexts/Themecontext";
+import { themeContext } from "../Contexts/ThemeContext";
 
 
 

@@ -6,7 +6,7 @@ import i1 from "../assets/icons/2.svg";
 import i2 from "../assets/icons/4.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { getall_bulkpay_data } from "../redux/action";
-import { themeContext } from "../Contexts/Themecontext";
+import { themeContext } from "../Contexts/ThemeContext";
 import Contentloader from "./Contentloader";
 
 

@@ -4,7 +4,7 @@ import Hdfc from "../assets/images/HDFC.png";
 import { Outlet ,Link} from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getall_payoutlog_data } from "../redux/action";
-import { themeContext } from "../Contexts/Themecontext";
+import { themeContext } from "../Contexts/ThemeContext";
 
 const Payout = () => {
   const {theme,setTheme} =useContext(themeContext)

@@ -19,7 +19,7 @@ import Subfooter from "./Subfooter";
 import robo from "../assets/icons/robo.png";
 import {getone_user} from "../redux/action"
 import { useSelector, useDispatch } from "react-redux";
-import { themeContext } from "../Contexts/Themecontext";
+import { themeContext } from "../Contexts/ThemeContext";
 
 const Accounts = () => {
 

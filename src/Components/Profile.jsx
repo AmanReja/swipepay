@@ -4,7 +4,7 @@ import { getone_user, update_user_details } from "../redux/action";
 import User from "../assets/images/5.png";
 import { motion } from "framer-motion";
 import { Save, User as UserIcon, Mail, Briefcase, Shield } from "lucide-react";
-import { themeContext } from "../Contexts/Themecontext";
+import { themeContext } from "../Contexts/ThemeContext";
 
 const Profile = () => {
   const {theme,setTheme} =useContext(themeContext)

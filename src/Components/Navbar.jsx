@@ -2,7 +2,7 @@ import { React, useState, useContext } from "react";
 import busybox from "../assets/icons/busybox.png";
 import i5 from "../assets/images/5.png";
 import { Link, useNavigate } from "react-router-dom";
-import { themeContext } from "../Contexts/Themecontext";
+import { themeContext } from "../Contexts/ThemeContext";
 
 const Navbar = () => {
   const navigate = useNavigate()

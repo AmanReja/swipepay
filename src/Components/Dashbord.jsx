@@ -6,7 +6,7 @@ import { Link, NavLink, Outlet } from "react-router-dom";
 import Arrow from "../assets/icons/arrow.svg";
 import { ToastContainer } from "react-toastify";
 import Subfooter from "./Subfooter";
-import { themeContext } from "../Contexts/Themecontext";
+import { themeContext } from "../Contexts/ThemeContext";
 
 const Dashbord = () => {
   const {theme,setTheme} =useContext(themeContext)
