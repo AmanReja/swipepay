@@ -643,7 +643,7 @@ export const get_vertualaccountdetails = () => async (dispatch) => {
   dispatch({ type: "GETVERTUAL_ACCOUNT", payload: data });
  
 };
-export const verify_aadhar = (file) => async (dispatch) => {
+export const verify_aadhar = (file,setResult) => async (dispatch) => {
   console.log( 647,file);
 
   const token = localStorage.getItem("token") || {};
@@ -675,7 +675,11 @@ export const verify_aadhar = (file) => async (dispatch) => {
     console.log(66, data);
 
     if (res.ok) {
-      alert("Verified");
+      setResult({aadhaar: "Valid"})
+    }
+
+    if (res.status===500) {
+      setResult({aadhaar: "invalid"})
     }
 
     dispatch({ type: "VERIFY_AADHAR", payload: data });

@@ -195,7 +195,7 @@ const Summery = () => {
           </div>
           <div
             className={`border h-[60px] w-[22%] rounded-[5px] p-1 flex justify-center items-center 
-            ${theme === "dark" ? "bg-gray-700" : "bg-white"}`}
+            bg-white`}
           >
             <img
               className="object-contain w-[50px] h-[50px]"

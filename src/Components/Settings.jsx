@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import Chart from "./Chart";
 import Hdfc from "../assets/images/HDFC.png";
 import { NavLink, Outlet } from "react-router-dom";
@@ -11,16 +11,19 @@ import card from "../assets/icons/card.png";
 import bank from "../assets/icons/bank.png";
 import user from "../assets/icons/user.png";
 
+import { Theme } from "../Contexts/Theme";
+
 
 
 const Settings = () => {
 
+  const {theme,setTheme} =useContext(Theme)
 
  
   
 
   return (
-    <div className=" w-[100%]  rounded-2xl 2xl:h-[85%] xl:h-[80%] h-[78%] flex flex-col">
+    <div className=" w-[100%] rounded-2xl 2xl:h-[85%] xl:h-[80%] h-[78%] flex flex-col">
       <main className="w-full h-full flex flex-col overflow-y-scroll overflow-x-hidden">
         <section className="w-full flex flex-col sm:flex-col  gap-[20px] mt-[20px] sm:min-h-[600px] 2xl:h-[780px]  sm:h-[600px] px-[2px] sm:px-[20px]">
        
@@ -30,14 +33,14 @@ const Settings = () => {
               <NavLink
                 to={"/dashboard/settings/accounts"}
                 className={({ isActive }) =>
-                  `flex items-center gap-1 hover:border-b-violet-300 hover:border-b-[3px]${
+                  `flex items-center gap-1 ${theme==="dark"?"text-white":"text-gray-800"}  hover:border-b-violet-300 hover:border-b-[3px]${
                     isActive
                       ? "border-b-violet-400 font-bold border-b-[3px]"
                       : ""
                   }`
                 }
               >
-                {/* Account Icon */}
+            
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="w-4 h-4"
@@ -52,13 +55,14 @@ const Settings = () => {
                     d="M5.121 17.804A10.965 10.965 0 0112 15c2.21 0 4.27.64 5.879 1.804M15 12a3 3 0 11-6 0 3 3 0 016 0z"
                   />
                 </svg>
-                Account
+              Account
+                
               </NavLink>
 
               <NavLink
                 to={"/dashboard/settings/security"}
                 className={({ isActive }) =>
-                  `flex items-center gap-1 hover:border-b-violet-300 hover:border-b-[3px] ${
+                  `flex items-center ${theme==="dark"?"text-white":"text-gray-800"} gap-1 hover:border-b-violet-300 hover:border-b-[3px] ${
                     isActive
                       ? "border-b-violet-400 border-b-[3px] font-bold"
                       : ""
@@ -88,13 +92,13 @@ const Settings = () => {
   />
 </svg>
 
-                Security
+                <p> Security</p>
               </NavLink>
 
               <NavLink
                 to={"/dashboard/settings/developertooles"}
                 className={({ isActive }) =>
-                  `flex items-center gap-1 hover:border-b-violet-300 hover:border-b-[3px] ${
+                  `flex items-center gap-1 ${theme==="dark"?"text-white":"text-gray-800"} hover:border-b-violet-300 hover:border-b-[3px] ${
                     isActive
                       ? "border-b-violet-400 border-b-[3px] font-bold"
                       : ""
