@@ -56,7 +56,7 @@ console.log(32,result);
             </p>
           </motion.div>
   
-          {/* Steps */}
+          
           <div className="flex w-full items-center justify-center gap-6 my-8 text-sm font-medium text-gray-600 dark:text-gray-300">
             {["Enter Details", "Upload Docs", "Verify"].map((step, i) => (
               <div key={i} className="flex items-center gap-2">
@@ -69,7 +69,7 @@ console.log(32,result);
             ))}
           </div>
   
-          {/* Form */}
+       
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -80,7 +80,7 @@ console.log(32,result);
             }`}
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {/* Aadhaar */}
+            
               <div>
                 <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
                   Aadhaar Number
@@ -115,7 +115,7 @@ console.log(32,result);
                 </label>
               </div>
   
-              {/* PAN */}
+             
               <div>
                 <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
                   PAN Number
