@@ -384,7 +384,7 @@ const paginatedData = trdata?.slice((page - 1) * perPage, page * perPage);
                               txn.txn_status === "SUCCESS"
                                 ? "bg-green-500"
                                 : txn.txn_status === "PENDING"
-                                ? "bg-yellow-400 text-black"
+                                ? "bg-yellow-500 text-black"
                                 : "bg-red-400"
                             }`}
                           >
