@@ -69,6 +69,7 @@ const Dashbord = () => {
       show: showk,
       setShow: setShowk,
     },
+   
     {
       to: "https://documenter.getpostman.com/view/2871565/2s93sZ7u6G",
       icon: "fa-file-import",
@@ -218,6 +219,7 @@ const Dashbord = () => {
                       <NavLink
                         key={i}
                         to={item.to}
+                        onClick={()=>{setShow(false)}}
                         className={`px-3 py-2 rounded-md transition ${
                           theme === "dark"
                             ? "hover:bg-gray-700"

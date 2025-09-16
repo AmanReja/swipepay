@@ -138,17 +138,21 @@ const {theme,setTheme} = useContext(Theme);
   
           {/* CARDS + WIDGETS */}
           <div className="w-full flex flex-col gap-5">
-            <div className="flex gap-[30px]">
+            <div className="flex w-full sm:flex-row flex-col gap-[30px]">
               {/* Payout Fund */}
               <div
-                className={`flex w-[50%] items-center justify-between shadow rounded-xl p-5 h-[120px] ${
+                className={`flex sm:w-[50%] w-full items-center justify-between shadow rounded-xl p-5 h-[120px] ${
                   theme === "dark"
                     ? "bg-gray-700 text-white"
                     : "bg-[#fcfcfc] text-gray-800"
                 }`}
               >
                 <div className="flex items-center gap-3">
-                  <div className="bg-gray-300 rounded-3xl w-[60px] h-[60px] flex items-center justify-center">
+                  <div className={`${
+      theme === "dark"
+        ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700"
+        : "bg-gradient-to-br from-blue-50  to-violet-400"
+    } rounded-3xl w-[60px] h-[60px] flex items-center justify-center`}>
                     <i
                       className={`fa-solid fa-wallet text-xl ${
                         theme === "dark" ? "text-white" : "text-gray-800"
@@ -177,14 +181,18 @@ const {theme,setTheme} = useContext(Theme);
   
               {/* Card Balance */}
               <div
-                className={`flex items-center justify-between w-[50%] shadow rounded-xl p-5 h-[120px] ${
+                className={`flex items-center justify-between sm:w-[50%] w-full shadow rounded-xl p-5 h-[120px] ${
                   theme === "dark"
                     ? "bg-gray-700 text-white"
                     : "bg-[#fcfcfc] text-gray-800"
                 }`}
               >
                 <div className="flex items-center gap-3">
-                  <div className="bg-gray-300 rounded-3xl w-[60px] h-[60px] flex items-center justify-center">
+                  <div className={`${
+      theme === "dark"
+        ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700"
+        : "bg-gradient-to-br from-blue-50  to-pink-400"
+    } rounded-3xl w-[60px] h-[60px] flex items-center justify-center`}>
                     <i
                       className={`fa-solid fa-credit-card text-xl ${
                         theme === "dark" ? "text-white" : "text-gray-800"
@@ -213,91 +221,101 @@ const {theme,setTheme} = useContext(Theme);
             </div>
   
             {/* Account Details */}
-            <div className="flex w-full gap-[30px]">
-              {/* Left */}
-              <div
-                className={`shadow rounded-xl w-[50%] ${
-                  theme === "dark" ? "bg-gray-800" : "bg-white"
-                }`}
-              >
-                <div
-                  className={`w-full border rounded-lg overflow-hidden text-sm ${
-                    theme === "dark"
-                      ? "border-gray-700 text-gray-300"
-                      : "border-gray-300 text-gray-700"
-                  }`}
-                >
-                  <div
-                    className={`grid grid-cols-2 border-b px-4 py-4 ${
-                      theme === "dark"
-                        ? "border-gray-700 text-white"
-                        : "border-gray-300 text-gray-800"
-                    }`}
-                  >
-                    <h1 className="text-lg font-semibold">Account Details</h1>
-                  </div>
-                  <div className="grid grid-cols-2 border-b px-4 py-4 border-gray-300 dark:border-gray-700">
-                    <p className="font-medium">Account Name:</p>
-                    <p className="text-right font-semibold">Aakash</p>
-                  </div>
-                  <div className="grid grid-cols-2 border-b px-4 py-4 border-gray-300 dark:border-gray-700">
-                    <p className="font-medium">A/C No:</p>
-                    <p className="text-right font-semibold">BB559900000036</p>
-                  </div>
-                  <div className="grid grid-cols-2 border-b px-4 py-4 border-gray-300 dark:border-gray-700">
-                    <p className="font-medium">IFSC Code:</p>
-                    <p className="text-right font-semibold">HDFC0000060</p>
-                  </div>
-                  <div className="grid grid-cols-2 px-4 py-4">
-                    <p className="font-medium">Bank Name:</p>
-                    <p className="text-right font-semibold">HDFC Bank Ltd</p>
-                  </div>
-                </div>
-              </div>
-  
-              {/* Right */}
-              <div
-                className={`shadow rounded-xl w-[50%] ${
-                  theme === "dark" ? "bg-gray-800" : "bg-white"
-                }`}
-              >
-                <div
-                  className={`w-full border rounded-lg overflow-hidden text-sm ${
-                    theme === "dark"
-                      ? "border-gray-700 text-gray-300"
-                      : "border-gray-300 text-gray-700"
-                  }`}
-                >
-                  <div
-                    className={`grid grid-cols-2 border-b px-4 py-4 ${
-                      theme === "dark"
-                        ? "border-gray-700 text-white"
-                        : "border-gray-300 text-gray-800"
-                    }`}
-                  >
-                    <h1 className="text-lg font-semibold">Account Details</h1>
-                  </div>
-                  <div className="grid grid-cols-2 border-b px-4 py-4 border-gray-300 dark:border-gray-700">
-                    <p className="font-medium">Account Name:</p>
-                    <p className="text-right font-semibold">
-                      Busybox Payout Account
-                    </p>
-                  </div>
-                  <div className="grid grid-cols-2 border-b px-4 py-4 border-gray-300 dark:border-gray-700">
-                    <p className="font-medium">A/C No:</p>
-                    <p className="text-right font-semibold">016081300000116</p>
-                  </div>
-                  <div className="grid grid-cols-2 border-b px-4 py-4 border-gray-300 dark:border-gray-700">
-                    <p className="font-medium">IFSC Code:</p>
-                    <p className="text-right font-semibold">YESB0000160</p>
-                  </div>
-                  <div className="grid grid-cols-2 px-4 py-4">
-                    <p className="font-medium">Bank Name:</p>
-                    <p className="text-right font-semibold">Yes Bank Ltd</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <div className="flex w-full sm:flex-row flex-col gap-6">
+  {/* Left */}
+  <div
+    className={`relative shadow-xl rounded-2xl p-6 sm:w-1/2 w-full overflow-hidden transition ${
+      theme === "dark"
+        ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700"
+        : "bg-gradient-to-br from-indigo-50 via-white to-indigo-100"
+    }`}
+  >
+    {/* Background Glow */}
+    <div className="absolute inset-0  bg-gradient-to-tr from-blue-400/10 to-purple-500/10 blur-3xl"></div>
+
+    {/* Header */}
+    <div className="flex items-center justify-between mb-4 relative z-10">
+      <h1
+        className={`text-lg font-bold border-b pb-3 flex-1 ${
+          theme === "dark"
+            ? "text-white border-gray-700"
+            : "text-gray-900 border-gray-200"
+        }`}
+      >
+        Account Details
+      </h1>
+    
+    </div>
+
+    {/* Content */}
+    <div className="space-y-4 relative z-10">
+      <div className="flex justify-between items-center">
+        <p className="text-gray-500 dark:text-gray-400">Account Name</p>
+        <p className="font-semibold">Aakash</p>
+      </div>
+      <div className="flex justify-between items-center">
+        <p className="text-gray-500 dark:text-gray-400">A/C No</p>
+        <p className="font-semibold">BB559900000036</p>
+      </div>
+      <div className="flex justify-between items-center">
+        <p className="text-gray-500 dark:text-gray-400">IFSC Code</p>
+        <p className="font-semibold">HDFC0000060</p>
+      </div>
+      <div className="flex justify-between items-center">
+        <p className="text-gray-500 dark:text-gray-400">Bank Name</p>
+        <p className="font-semibold">HDFC Bank Ltd</p>
+      </div>
+    </div>
+  </div>
+
+  {/* Right */}
+  <div
+    className={`relative shadow-xl rounded-2xl p-6 sm:w-1/2 w-full overflow-hidden transition ${
+      theme === "dark"
+        ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700"
+        : "bg-gradient-to-br from-pink-50 via-white to-pink-100"
+    }`}
+  >
+    {/* Background Glow */}
+    <div className="absolute inset-0 bg-gradient-to-tr from-green-400/10 to-yellow-500/10 blur-3xl"></div>
+
+    {/* Header */}
+    <div className="flex items-center justify-between mb-4 relative z-10">
+      <h1
+        className={`text-lg font-bold border-b pb-3 flex-1 ${
+          theme === "dark"
+            ? "text-white border-gray-700"
+            : "text-gray-900 border-gray-200"
+        }`}
+      >
+        Account Details
+      </h1>
+    
+    </div>
+
+    {/* Content */}
+    <div className="space-y-4 relative z-10">
+      <div className="flex justify-between items-center">
+        <p className="text-gray-500 dark:text-gray-400">Account Name</p>
+        <p className="font-semibold">Busybox Payout Account</p>
+      </div>
+      <div className="flex justify-between items-center">
+        <p className="text-gray-500 dark:text-gray-400">A/C No</p>
+        <p className="font-semibold">016081300000116</p>
+      </div>
+      <div className="flex justify-between items-center">
+        <p className="text-gray-500 dark:text-gray-400">IFSC Code</p>
+        <p className="font-semibold">YESB0000160</p>
+      </div>
+      <div className="flex justify-between items-center">
+        <p className="text-gray-500 dark:text-gray-400">Bank Name</p>
+        <p className="font-semibold">Yes Bank Ltd</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
           </div>
         </div>
       </section>
