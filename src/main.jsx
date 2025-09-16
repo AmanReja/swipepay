@@ -38,6 +38,9 @@ import Otpverification from "./Components/Otpverification";
 import Resetpass from "./Components/Resetpass";
 import { ThemeProvider } from "./Contexts/Theme";
 
+import Invoice from "./Components/Invoice";
+
+
 
 
 
@@ -52,6 +55,7 @@ const router = createBrowserRouter(
       <Route element={<Protectedroute />}>
         <Route path="/dashboard" element={<Dashbord />}>
           <Route index path="summery" element={<Summery />} />
+          <Route index path="invoice" element={<Invoice />} />
           <Route path="addmoney" element={<Addmoney />} />
           <Route path="profile" element={<Profile />} />
           <Route path="ledger" element={<Ledger />} />

@@ -22,6 +22,10 @@ const Dashbord = () => {
   const [showCollection, setShowCollection] = useState(false);
   const [showSubscription, setShowSubscription] = useState(false);
   const [showVerification, setShowVerification] = useState(false);
+  const [openpayots,setOpenpayots] =useState(false)
+  const [opencollection,setOpencollection] =useState(false)
+  const [opensubscription,setOpensubscription] =useState(false)
+  const [openverification,setOpenverification] =useState(false)
   const items = [
     {
       to: "/dashboard/summery",
@@ -152,13 +156,15 @@ const Dashbord = () => {
         
           {[
             {
-              label: "Payoutimg",
+              label: "Payouts",
               items: [
                 { to: "/dashboard/payout", text: "Single payout" },
                 { to: "/dashboard/bulkpayout", text: "Bulk payout" },
                 { to: "/dashboard/report", text: "Report" },
-                { href: "#", text: "Invoices" },
+                { to: "/dashboard/invoice", text: "Invoices" },
               ],
+              show:openpayots,
+              setShow:setOpenpayots
             },
             {
               label: "Collection",
@@ -169,6 +175,8 @@ const Dashbord = () => {
                 { href: "#", text: "Report" },
                 { href: "#", text: "Invoices" },
               ],
+              show:opencollection,
+              setShow:setOpencollection
             },
             {
               label: "Subscription",
@@ -179,6 +187,8 @@ const Dashbord = () => {
                 { to: "/dashboard/transactionreport", text: "Transaction Report" },
                 { href: "#", text: "Invoices" },
               ],
+              show:opensubscription,
+              setShow:setOpensubscription
             },
             {
               label: "Verification",
@@ -189,15 +199,17 @@ const Dashbord = () => {
                 { href: "#", text: "Report" },
                 { href: "#", text: "Invoices" },
               ],
+              show:openverification,
+              setShow:setOpenverification
             },
-          ].map(({ label, items }, idx) => (
-            <div key={idx} className="relative group">
+          ].map(({ label, items,setShow,show }, idx) => (
+            <div key={idx}  className={`relative group`}>
               <a href="#" className="flex items-center cursor-pointer">
                 {label}
-                <img className="rotate-90 ml-2 w-3 h-3" src={Arrow} alt="" />
+                <img onClick={()=>{setShow(prev=>!prev)}} className="rotate-90 ml-2 w-3 h-3" src={Arrow} alt="" />
               </a>
               <div
-                className={`absolute top-[30px] left-0 w-[200px] shadow-lg rounded-lg p-4 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 
+                className={`absolute top-[30px] left-0 w-[200px] shadow-lg rounded-lg p-4 z-50 opacity-0 ${show?"opacity-100 visible ":"invisible opacity-0"} invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 
                 ${theme === "dark" ? "bg-gray-800 text-gray-200" : "bg-white text-gray-700"}`}
               >
                 <div className="flex flex-col gap-2 text-sm">
