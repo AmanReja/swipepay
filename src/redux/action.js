@@ -22,7 +22,7 @@ export const UPDATE_USER_DETAILS = "UPDATE_USER_DETAILS";
 
 
 
-const baseUrl = "http://192.168.1.43:3000";
+const baseUrl = "https://acs.busybox.in";
 
 
 
@@ -103,7 +103,7 @@ export const google_login = (navigate,accessToken)=>async(dispatch)=>{
   console.log("Backend response:", data);
 
   if (res.status === 200) {
-    alert("log success");
+   
     localStorage.setItem("token", data.token);
     navigate("/dashboard/summery?login=success");
    
@@ -204,7 +204,7 @@ export const login = (olduser,navigate,setWrong)=>async(dispatch)=>{
     }
 
     if (res.status === 200) {
-      alert("log success");
+      
       navigate("/dashboard/summery?login=success");
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
@@ -219,7 +219,13 @@ export const login = (olduser,navigate,setWrong)=>async(dispatch)=>{
 
 
 export const getall_ledgerwallet_data =
-  (searchtr, trstatus,searchdate_start,searchdate_end,downloadexcl=false) => async (dispatch) => {
+  (searchtr, trstatus,searchdate_start,searchdate_end,downloadexcl=false,page,pagelimit) => async (dispatch) => {
+
+    console.log(224,pagelimit);
+
+ 
+    console.log(225,searchtr);
+
     const token = localStorage.getItem("token") || {};
     const params = new URLSearchParams();
   if (searchtr) params.append("search", searchtr);
@@ -227,7 +233,8 @@ export const getall_ledgerwallet_data =
   if (searchdate_start) params.append("start_date", searchdate_start);
   if (searchdate_end) params.append("end_date", searchdate_end);
   if(downloadexcl) params.append("download", "excel");
- 
+  if (page) params.append("page", page);
+  if (pagelimit) params.append("limit", pagelimit);
 
 
   const res = await fetch(
@@ -263,7 +270,7 @@ export const getall_ledgerwallet_data =
     dispatch({ type: "GETALL_LEDGER_WALLET", payload: data });
   };
 
-export const getall_payoutlog_data = (searchtr,trstatus,searchdate_start,searchdate_end,downloadexcl=false) => async (dispatch) => {
+export const getall_payoutlog_data = (searchtr,trstatus,searchdate_start,searchdate_end,downloadexcl=false,page,pagelimit) => async (dispatch) => {
   const token = localStorage.getItem("token") || {};
 
   const params = new URLSearchParams();
@@ -272,6 +279,8 @@ export const getall_payoutlog_data = (searchtr,trstatus,searchdate_start,searchd
   if (searchdate_start) params.append("start_date", searchdate_start);
   if (searchdate_end) params.append("end_date", searchdate_end);
   if(downloadexcl) params.append("download", "excel");
+  if(page) params.append("page", page);
+  if(pagelimit) params.append("limit", pagelimit);
 
 
   const res = await fetch(

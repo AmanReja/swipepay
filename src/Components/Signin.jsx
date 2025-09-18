@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import apple from "../assets/icons/apple.svg";
 import google from "../assets/icons/google.svg";
 import play from "../assets/images/play.png";
@@ -10,9 +10,9 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { ToastContainer, toast, Bounce, Slide } from "react-toastify";
 import backgroundgreed from "../assets/images/bg.svg"
 import { FaBriefcase, FaDollarSign, FaChartLine } from "react-icons/fa";
-import { GoogleLogin ,useGoogleLogin} from '@react-oauth/google';
+import { GoogleLogin, useGoogleLogin } from '@react-oauth/google';
 import { useDispatch, useSelector } from "react-redux";
-import { login,google_login,send_otp,verify_otp } from "../redux/action";
+import { login, google_login, send_otp, verify_otp } from "../redux/action";
 
 
 
@@ -20,8 +20,8 @@ import { login,google_login,send_otp,verify_otp } from "../redux/action";
 
 const Signin = () => {
 
-  const dispatch =useDispatch()
-  
+  const dispatch = useDispatch()
+
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
@@ -31,21 +31,21 @@ const Signin = () => {
   console.log(14, pass, email);
   const [passopen, setPassopen] = useState(false);
   const [otp, setOtp] = useState("");
-  const [jwttoken,setJwttoken]=useState("")
-  const [forgetpassemail,setForgetpassemail] = useState()
-  const[giveotp,setGiveotp] =useState(false)
+  const [jwttoken, setJwttoken] = useState("")
+  const [forgetpassemail, setForgetpassemail] = useState()
+  const [giveotp, setGiveotp] = useState(false)
 
 
 
 
-   
 
 
 
-  console.log(38,forgetpassemail);
+
+  console.log(38, forgetpassemail);
 
 
-console.log(22,import.meta.env.VITE_GOOGLE_CLIENT_ID);
+  console.log(22, import.meta.env.VITE_GOOGLE_CLIENT_ID);
 
   const handelpassopen = () => {
 
@@ -64,22 +64,22 @@ console.log(22,import.meta.env.VITE_GOOGLE_CLIENT_ID);
 
 
   const glogin = useGoogleLogin({
-    flow: "implicit", 
+    flow: "implicit",
     onSuccess: async (response) => {
-     dispatch(google_login(navigate,response.access_token))
+      dispatch(google_login(navigate, response.access_token))
     },
     onError: (err) => console.error("Login Failed:", err),
   });
-  
-   
-
-
-    
 
 
 
-  
- 
+
+
+
+
+
+
+
   const userlogin = async (e) => {
     try {
       const olduser = {
@@ -87,32 +87,32 @@ console.log(22,import.meta.env.VITE_GOOGLE_CLIENT_ID);
         password: pass,
       };
 
-      dispatch(login(olduser,navigate,setWrong))
+      dispatch(login(olduser, navigate, setWrong))
 
 
 
-     
-      
+
+
     } catch (error) {
       console.log(error);
-    } 
+    }
 
   };
 
 
-  const forgotpass =()=>{
-    
+  const forgotpass = () => {
 
-    
+
+
     alert(forgetpassemail)
-    dispatch(send_otp(forgetpassemail,setGiveotp))
+    dispatch(send_otp(forgetpassemail, setGiveotp))
   }
 
 
-const handelotp = ()=>{
-  alert(forgetpassemail)
-  dispatch(verify_otp(forgetpassemail,setGiveotp,navigate))
-}
+  const handelotp = () => {
+    alert(forgetpassemail)
+    dispatch(verify_otp(forgetpassemail, setGiveotp, navigate))
+  }
 
 
   return (
@@ -137,53 +137,53 @@ const handelotp = ()=>{
             </div>
 
             <div className="flex flex-col relative top-[50px]">
-            <h1 className="text-4xl lg:text-5xl font-bold mb-6 leading-tight">
-              Welcome to the World of <br />
-              <span className="bg-gradient-to-r from-white via-violet-400 to-sky-400 bg-clip-text text-transparent">
-                New Age Banking
-              </span>
-            </h1>
+              <h1 className="text-4xl lg:text-5xl font-bold mb-6 leading-tight">
+                Welcome to the World of <br />
+                <span className="bg-gradient-to-r from-white via-violet-400 to-sky-400 bg-clip-text text-transparent">
+                  New Age Banking
+                </span>
+              </h1>
 
 
-            <p className="text-gray-300 text-sm md:text-base max-w-md leading-relaxed mb-10">
-              Powering businesses with seamless transactions, fast settlements, and
-              next-gen financial infrastructure built for growth.
-            </p>
+              <p className="text-gray-300 text-sm md:text-base max-w-md leading-relaxed mb-10">
+                Powering businesses with seamless transactions, fast settlements, and
+                next-gen financial infrastructure built for growth.
+              </p>
 
-            <div className="w-[500px] relative rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 shadow-lg">
-              <div className="flex justify-between items-center text-sm h-full divide-x divide-gray-300/30">
+              <div className="w-[500px] relative rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 shadow-lg">
+                <div className="flex justify-between items-center text-sm h-full divide-x divide-gray-300/30">
 
-                <div className="flex-1 flex flex-col items-center px-6 py-6 transition-transform hover:scale-105">
-                  <strong className="block text-xl font-bold text-white">1M+</strong>
-                  <p className="text-xs text-gray-300">Registered Businesses</p>
-                </div>
-
-
-                <div className="flex-1 flex flex-col items-center px-6 py-6 transition-transform hover:scale-105">
-                  <strong className="block text-xl font-bold text-white">$1B+</strong>
-                  <p className="text-xs text-gray-300">Monthly Payments</p>
-                </div>
+                  <div className="flex-1 flex flex-col items-center px-6 py-6 transition-transform hover:scale-105">
+                    <strong className="block text-xl font-bold text-white">1M+</strong>
+                    <p className="text-xs text-gray-300">Registered Businesses</p>
+                  </div>
 
 
-                <div className="flex-1 flex flex-col items-center px-6 py-6 transition-transform hover:scale-105">
-                  <strong className="block text-xl font-bold text-white">1M+</strong>
-                  <p className="text-xs text-gray-300">Daily Transactions</p>
+                  <div className="flex-1 flex flex-col items-center px-6 py-6 transition-transform hover:scale-105">
+                    <strong className="block text-xl font-bold text-white">$1B+</strong>
+                    <p className="text-xs text-gray-300">Monthly Payments</p>
+                  </div>
+
+
+                  <div className="flex-1 flex flex-col items-center px-6 py-6 transition-transform hover:scale-105">
+                    <strong className="block text-xl font-bold text-white">1M+</strong>
+                    <p className="text-xs text-gray-300">Daily Transactions</p>
+                  </div>
                 </div>
               </div>
             </div>
-            </div>
-           
+
 
           </div>
 
 
         </div>
 
-     
-        <div className="w-full sm:w-1/2  flex items-center justify-center">
+
+        <div className="w-full sm:w-1/2 h-full   flex items-center justify-center">
           <div
-            
-            className="p-10 lg:p-14 flex flex-col h-[550px] rounded bg-white  overflow-hidden justify-center"
+
+            className="p-10 lg:p-14 flex flex-col sm:h-[550px] h-full  rounded bg-white  overflow-hidden justify-center"
           >
             <div className="max-w-md mx-auto w-full space-y-4">
 
@@ -200,12 +200,12 @@ const handelotp = ()=>{
 
 
 
-              <button type="button" onClick={()=>{glogin()}}  className="w-full flex items-center justify-center gap-3 h-12 border border-gray-300 bg-white rounded-lg hover:bg-gray-50 transition shadow-sm">
-                
-   
-              <svg  className="w-6 h-6" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 0 48 48">
-<path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"></path><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"></path><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"></path><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"></path>
-</svg>
+              <button type="button" className="w-full flex items-center justify-center gap-3 h-12 border border-gray-300 bg-white rounded-lg hover:bg-gray-50 transition shadow-sm">
+
+
+                <svg className="w-6 h-6" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 0 48 48">
+                  <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"></path><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"></path><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"></path><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"></path>
+                </svg>
 
 
 
@@ -213,7 +213,7 @@ const handelotp = ()=>{
                   Sign up with Google
                 </span>
               </button>
-              <button  className="w-full flex items-center justify-center gap-3 h-12 border border-gray-300 bg-white rounded-lg hover:bg-gray-50 transition shadow-sm">
+              <button className="w-full flex items-center justify-center gap-3 h-12 border border-gray-300 bg-white rounded-lg hover:bg-gray-50 transition shadow-sm">
                 <svg
                   className="w-6 h-6"
                   xmlns="http://www.w3.org/2000/svg"
@@ -360,18 +360,18 @@ const handelotp = ()=>{
               </div>
 
               <button
-                type="submit" onClick={(e)=>{userlogin(e)}}
+                type="submit" onClick={(e) => { userlogin(e) }}
                 className="w-full h-12 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-xl hover:scale-[1.02] active:scale-[0.98] transition transform shadow-lg"
               >
                 Sign In Account
               </button>
               <Link to={"/forgotpass"}>
-              <p className={`text-gray-500 text-right hover:underline cursor-pointer`}>
-                Forgot Password
+                <p className={`text-gray-500 text-right hover:underline cursor-pointer`}>
+                  Forgot Password
 
-              </p>
+                </p>
               </Link>
-             
+
 
 
               <p className="text-xs text-gray-500 text-center">

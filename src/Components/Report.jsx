@@ -19,6 +19,8 @@ const Report = () => {
   const [trstatus, setTrstatus] = useState("");
   const [formdatastr, setFormdatastr] = useState("")
   const [formdataend, setFormdataend] = useState("")
+  const [page, setPage] = useState(1)
+  const [perPage, setPerPage] = useState(10);
 
 
 
@@ -45,7 +47,7 @@ const Report = () => {
   useEffect(() => {
     flatpickr(dateRangeRef.current, {
       mode: "range",
-      dateFormat: "y-m-d",
+      dateFormat: "d-m-y",
       defaultDate: ["15-07-2025", "16-07-2025"],
       value: date,
       onChange: function (selectedDates) {
@@ -60,19 +62,37 @@ const Report = () => {
 
 
 
-  const dispatch = useDispatch();
-  const payoutdata = useSelector((state) => state.payoutlog.payoutlog.data);
+
+
+  // const totaldata = useSelector(
+  //   (state) => state.ledgerwallet.ledgerwallet.totalpagerecords
+  // );
+
+
+
+
+
+
+
+
+
+
   const payoutreportdata = useSelector((state) => state.payoutreport.payoutreport);
 
-  console.log(22, payoutreportdata);
+
+ 
 
 
 
-  const handeldownload = () => {
-    dispatch(getall_payoutlog_data(searchtr, trstatus, formdatastr, formdataend, true));
-  };
 
 
+  const dispatch = useDispatch();
+  const payoutdata = useSelector((state) => state.payoutlog.payoutlog.data);
+  const totalpage = useSelector((state) => state.payoutlog.payoutlog.pagination?.totalPages);
+  const totaldata = useSelector((state) => state.payoutlog.payoutlog.pagination?.totalRecords);
+  console.log(92,totalpage);
+  
+  
 
 
 
@@ -81,13 +101,17 @@ const Report = () => {
     async function fetchdata() {
       setLoad(true)
 
-      await dispatch(getall_payoutlog_data(searchtr, trstatus, formdatastr, formdataend));
+      await dispatch(getall_payoutlog_data(searchtr, trstatus, formdatastr, formdataend,false,page,perPage));
       await dispatch(Payout_report())
       setLoad(false)
     } fetchdata()
 
-  }, [dispatch, searchtr, trstatus, formdatastr, formdataend]);
+  }, [dispatch, searchtr, trstatus, formdatastr, formdataend,page,perPage]);
 
+
+  const downloadexcel = () => {
+    dispatch(getall_payoutlog_data(searchtr, trstatus, formdatastr, formdataend, true));
+  };
 
 
 
@@ -200,92 +224,185 @@ const Report = () => {
                 }`}
             >
 
-              <div
-                className={`flex justify-between items-center p-4 w-full flex-wrap gap-4 rounded-md shadow-sm ${theme === "dark" ? "bg-gray-800" : "bg-white"
-                  }`}
-              >
-                <h2
-                  className={`text-lg font-semibold ${theme === "dark" ? "text-gray-100" : "text-gray-800"
-                    }`}
-                >
-                  Payout Transaction Report
-                </h2>
+<div
+  className={`flex justify-between items-center p-4 py-6 w-full flex-wrap gap-4 shadow-sm border-b ${
+    theme === "dark"
+      ? "bg-gray-900 border-gray-700 text-gray-100"
+      : "bg-white border-gray-200 text-gray-800"
+  }`}
+>
+  <h2
+    className={`text-lg font-semibold ${
+      theme === "dark" ? "text-gray-100" : "text-gray-800"
+    }`}
+  >
+    Wallet Ledger
+  </h2>
 
-                <div className="flex gap-3 flex-wrap items-center">
+  <div className="flex gap-3 flex-wrap items-center">
+    {/* 📅 Calendar Input */}
+    <div
+      className={`pl-[5px] border-[1px] p-1 rounded flex justify-center items-center gap-2 ${
+        theme === "dark"
+          ? "bg-gray-800 border-gray-600 text-gray-300"
+          : "bg-white border-gray-300 text-gray-400"
+      }`}
+    >
+      <i
+        className={`fa-solid fa-calendar-days ${
+          theme === "dark" ? "text-gray-500" : "text-gray-300"
+        }`}
+      ></i>
+      <input
+        className={`w-[180px] text-[14px] bg-transparent outline-none rounded ${
+          theme === "dark" ? "text-gray-300" : "text-gray-400"
+        }`}
+        type="text"
+        ref={dateRangeRef}
+      />
+    </div>
 
-                  <div
-                    className={`pl-[5px] border p-1 rounded flex items-center gap-2 ${theme === "dark"
-                        ? "border-gray-700 text-gray-300"
-                        : "border-gray-300 text-gray-400"
-                      }`}
-                  >
-                    <i className="fa-solid fa-calendar-days"></i>
-                    <input
-                      className={`w-[180px] text-[14px] outline-none rounded bg-transparent ${theme === "dark" ? "text-gray-300" : "text-gray-400"
-                        }`}
-                      type="text"
-                      ref={dateRangeRef}
-                    />
-                  </div>
+    {/* 🔽 Dropdown for Quick Ranges */}
+    <div
+      className={`px-3 py-1 rounded-lg border ${
+        theme === "dark"
+          ? "bg-gray-800 border-gray-600 text-gray-200"
+          : "bg-white border-gray-300 text-gray-700"
+      }`}
+    >
+      <select
+        onChange={(e) => {
+          const value = e.target.value;
+          const today = new Date();
+          let start, end;
 
+          if (value === "Custom Range") {
+            setDate({ startDate: null, endDate: null });
+            setFormdatastr("");
+            setFormdataend("");
+            if (dateRangeRef.current._flatpickr) {
+              dateRangeRef.current._flatpickr.clear();
+            }
+            return;
+          }
 
-                  <div
-                    className={`relative border px-2 py-1 rounded-lg ${theme === "dark"
-                        ? "border-gray-700 bg-gray-800"
-                        : "border-gray-300 bg-white"
-                      }`}
-                  >
-                    <span
-                      className={`absolute left-3 top-1/2 -translate-y-1/2 ${theme === "dark" ? "text-gray-400" : "text-gray-400"
-                        }`}
-                    >
-                      <i className="fa-solid fa-magnifying-glass"></i>
-                    </span>
-                    <input
-                      onChange={(e) => {
-                        setSearchtr(e.target.value);
-                      }}
-                      type="text"
-                      placeholder="Search transaction"
-                      className={`pl-8 pr-2 outline-none text-sm bg-transparent ${theme === "dark" ? "text-gray-200" : "text-gray-700"
-                        }`}
-                    />
-                  </div>
+          switch (value) {
+            case "Today":
+              start = end = today;
+              break;
+            case "Yesterday":
+              start = end = new Date(today);
+              start.setDate(today.getDate() - 1);
+              break;
+            case "Last 7 Days":
+              start = new Date(today);
+              start.setDate(today.getDate() - 6);
+              end = today;
+              break;
+            case "Last 30 Days":
+              start = new Date(today);
+              start.setDate(today.getDate() - 29);
+              end = today;
+              break;
+            case "This Month":
+              start = new Date(today.getFullYear(), today.getMonth(), 1);
+              end = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+              break;
+            case "Last Month":
+              start = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+              end = new Date(today.getFullYear(), today.getMonth(), 0);
+              break;
+            default:
+              return;
+          }
 
+          setDate({ startDate: start, endDate: end });
+          setFormdatastr(formatDate(start));
+          setFormdataend(formatDate(end));
 
-                  <div
-                    className={`border px-4 py-1 rounded-lg ${theme === "dark"
-                        ? "border-gray-700 bg-gray-800"
-                        : "border-gray-300 bg-white"
-                      }`}
-                  >
-                    <select
-                      onChange={(e) => {
-                        setTrstatus(e.target.value);
-                      }}
-                      className={`text-sm bg-transparent outline-none ${theme === "dark" ? "text-gray-200" : "text-gray-700"
-                        }`}
-                    >
-                      <option value="All">All Transactions</option>
-                      <option value="SUCCESS">Success</option>
-                      <option value="PENDING">Pending</option>
-                      <option value="FAILED">Failed</option>
-                    </select>
-                  </div>
+          if (dateRangeRef.current._flatpickr) {
+            dateRangeRef.current._flatpickr.setDate([start, end], true);
+          }
+        }}
+        className={`text-sm bg-transparent outline-none ${
+          theme === "dark" ? "text-gray-300" : "text-gray-600"
+        }`}
+      >
+        <option value="">Select Range</option>
+        <option value="Today">Today</option>
+        <option value="Yesterday">Yesterday</option>
+        <option value="Last 7 Days">Last 7 Days</option>
+        <option value="Last 30 Days">Last 30 Days</option>
+        <option value="This Month">This Month</option>
+        <option value="Last Month">Last Month</option>
+        <option value="Custom Range">Custom Range</option>
+      </select>
+    </div>
 
+    {/* 🔍 Search Transaction */}
+    <div
+      className={`relative border px-2 py-1 rounded-lg ${
+        theme === "dark"
+          ? "bg-gray-800 border-gray-600 text-gray-200"
+          : "bg-white border-gray-300 text-gray-700"
+      }`}
+    >
+      <span
+        className={`absolute left-3 top-1/2 -translate-y-1/2 ${
+          theme === "dark" ? "text-gray-500" : "text-gray-400"
+        }`}
+      >
+        <i className="fa-solid fa-magnifying-glass"></i>
+      </span>
+      <input
+        onChange={(e) => setSearchtr(e.target.value)}
+        type="text"
+        placeholder="Search transaction"
+        className={`pl-8 pr-2 outline-none text-sm bg-transparent ${
+          theme === "dark" ? "text-gray-200" : "text-gray-700"
+        }`}
+      />
+    </div>
 
-                  <button
-                    onClick={handeldownload}
-                    className={`text-sm font-medium hover:shadow-xl border px-4 py-1 rounded-lg transition ${theme === "dark"
-                        ? "border-gray-700 text-gray-200"
-                        : "border-gray-300 text-gray-700"
-                      }`}
-                  >
-                    <i className="fa-solid fa-download mr-1"></i>
-                    Download
-                  </button>
-                </div>
-              </div>
+    {/* 🔽 Status Filter */}
+    <div
+      className={`px-4 py-1 rounded-lg border ${
+        theme === "dark"
+          ? "bg-gray-800 border-gray-600 text-gray-200"
+          : "bg-white border-gray-300 text-gray-700"
+      }`}
+    >
+      <select
+        onChange={(e) => setTrstatus(e.target.value)}
+        className={`text-sm bg-transparent outline-none ${
+          theme === "dark" ? "text-gray-200" : "text-gray-700"
+        }`}
+      >
+        <option value="All">All Transactions</option>
+        <option value="SUCCESS">Success</option>
+        <option value="PENDING">Pending</option>
+        <option value="FAILED">Failed</option>
+      </select>
+    </div>
+
+    {/* ⬇️ Download Button */}
+    <button
+      onClick={downloadexcel}
+      className={`text-sm font-medium hover:shadow-xl px-4 py-1 rounded-lg transition border ${
+        theme === "dark"
+          ? "bg-gray-800 border-gray-600 text-gray-200"
+          : "bg-white border-gray-300 text-gray-700"
+      }`}
+    >
+      <i
+        className={`fa-solid fa-download ${
+          theme === "dark" ? "text-gray-500" : "text-gray-400"
+        }`}
+      ></i>{" "}
+      Download
+    </button>
+  </div>
+</div>
 
 
               <table
@@ -349,6 +466,104 @@ const Report = () => {
                     ))}
                 </tbody>
               </table>
+              {totalpage > 0 ? (
+              <div
+                className={`flex items-center justify-between px-4 py-3 border-t text-sm ${theme === "dark"
+                    ? "bg-gray-900 text-gray-300 border-gray-700"
+                    : "bg-white text-gray-600 border-gray-200"
+                  }`}
+              >
+                <div>
+                  Show{" "}
+                  <select
+                    className={`rounded border outline-none px-[5px] py-[5px] ${theme === "dark"
+                        ? "bg-gray-800 text-gray-200 border-gray-600"
+                        : "bg-white text-gray-700 border-gray-300"
+                      }`}
+                    value={perPage}
+                    onChange={(e) => {
+                      setPerPage(Number(e.target.value));
+                      setPage(1);
+                    }}
+                  >
+                    <option value={10}>10</option>
+                    <option value={20}>20</option>
+                    <option value={30}>30</option>
+                  </select>{" "}
+                  per page
+                </div>
+
+                <div className="flex items-center space-x-2">
+                  {/* Showing range */}
+                  <p>
+                    {(page - 1) * perPage + 1}-
+                    {Math.min(page * perPage, totaldata)} of {totaldata}
+                  </p>
+
+                  {/* Prev button */}
+                  <button
+                    onClick={() => setPage(page - 1)}
+                    disabled={page === 1}
+                    className={`px-3 py-1 border rounded-md ${page === 1
+                        ? "opacity-50 cursor-not-allowed"
+                        : theme === "dark"
+                          ? "hover:bg-gray-700"
+                          : "hover:bg-gray-200"
+                      }`}
+                  >
+                    <i className="fa-solid fa-arrow-left"></i>
+                  </button>
+
+                  {/* Page numbers */}
+                  {Array.from({ length: 3 }, (_, i) => page + i).map((num) => (
+  num <= totalpage && ( 
+    <button
+      key={num}
+      onClick={() => setPage(num)}
+      className={`px-3 py-1  rounded-md ${
+        num === page
+          ? theme === "dark"
+            ? "bg-gray-700 font-semibold"
+            : "bg-gray-200 font-semibold"
+          : theme === "dark"
+          ? "hover:bg-gray-800"
+          : "hover:bg-gray-100"
+      }`}
+    >
+      {num}
+    </button>
+  )
+))}
+
+
+                  {/* Next button */}
+                  <button
+                    onClick={() => setPage(page + 1)}
+                    disabled={page === totalpage}
+                    className={`px-3 py-1 border rounded-md ${page === totalpage
+                        ? "opacity-50 cursor-not-allowed"
+                        : theme === "dark"
+                          ? "hover:bg-gray-700"
+                          : "hover:bg-gray-200"
+                      }`}
+                  >
+                    <i className="fa-solid fa-arrow-right"></i>
+                  </button>
+                </div>
+
+              </div>
+            ) : (
+              <div
+                className={`flex items-center justify-between px-4 py-3 border-t text-sm ${theme === "dark"
+                    ? "bg-gray-900 text-gray-300 border-gray-700"
+                    : "bg-white text-gray-600 border-gray-200"
+                  }`}
+              >
+                <h1 className="text-2xl w-full text-center">No data found</h1>
+              </div>
+            )}
+          
+        
             </div>
           </div>
         </section>

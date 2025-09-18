@@ -210,10 +210,10 @@ const Dashbord = () => {
                 <img onClick={()=>{setShow(prev=>!prev)}} className="rotate-90 ml-2 w-3 h-3" src={Arrow} alt="" />
               </a>
               <div
-                className={`absolute top-[30px] left-0 w-[200px] shadow-lg rounded-lg p-4 z-50 opacity-0 ${show?"opacity-100 visible ":"invisible opacity-0"} invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 
+                className={`absolute top-[30px] left-0 w-[250px] shadow-lg rounded-lg p-4 z-50 opacity-0 ${show?"opacity-100 visible ":"invisible opacity-0"} invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 
                 ${theme === "dark" ? "bg-gray-800 text-gray-200" : "bg-white text-gray-700"}`}
               >
-                <div className="flex flex-col gap-2 text-sm">
+                <div className="flex flex-col gap-2 text-sm ">
                   {items.map((item, i) =>
                     item.to ? (
                       <NavLink
@@ -232,7 +232,7 @@ const Dashbord = () => {
                       <a
                         key={i}
                         href={item.href}
-                        className={`px-3 py-2 rounded-md transition ${
+                        className={`px-3 py-2 rounded-md transition  ${
                           theme === "dark"
                             ? "hover:bg-gray-700"
                             : "hover:bg-gray-100"

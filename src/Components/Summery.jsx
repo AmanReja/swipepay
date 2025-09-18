@@ -21,6 +21,8 @@ const Summery = () => {
 
   const dispatch = useDispatch();
   const payoutdata = useSelector((state) => state.payoutlog.payoutlog.data);
+
+  console.log(payoutdata);
   const walletdata = useSelector((state) => state.walletcompany.walletcompany.total);
   const vaaccountdata = useSelector((state) => state.vaaccount.vaaccount);
   const collectiondata = useSelector((state) => state.collections.collections.count);
@@ -47,7 +49,7 @@ const Summery = () => {
   }, [dispatch]);
 
 
-  const totallpayouts = payoutdata?.length;
+  const totallpayouts = useSelector((state) => state.payoutlog.payoutlog.pagination?.totalRecords);;
 
   const location = useLocation();
   const params = new URLSearchParams(location.search);
