@@ -6,7 +6,7 @@ import { useParams, useLocation } from "react-router-dom";
 import bg3 from "../assets/images/bg-3.png";
 import Subfooter from "./Subfooter";
 import { useSelector, useDispatch } from "react-redux";
-import { getall_payoutlog_data,getall_wallet_company_data,get_vertualaccountdetails,get_collections} from "../redux/action";
+import { getall_payoutlog_data,getall_wallet_company_data,get_vertualaccountdetails,get_collections,collection_report} from "../redux/action";
 import {BadgeCheck,ArrowDownLeft,ArrowUpRight,CreditCard} from "lucide-react"
 import Chart2 from "./Chart2";
 
@@ -45,11 +45,15 @@ const Summery = () => {
     dispatch(getall_wallet_company_data())
     dispatch(get_vertualaccountdetails())
     dispatch(get_collections())
+    dispatch(collection_report())
     
   }, [dispatch]);
 
 
-  const totallpayouts = useSelector((state) => state.payoutlog.payoutlog.pagination?.totalRecords);;
+  const totallpayouts = useSelector((state) => state.payoutlog.payoutlog.pagination?.totalRecords);
+  const totallcollections = useSelector((state) => state.collections.collections.total
+  );
+  
 
   const location = useLocation();
   const params = new URLSearchParams(location.search);
@@ -83,7 +87,7 @@ const Summery = () => {
     },
     {
       icon: <ArrowDownLeft size={44} className={`${theme==="dark"?"text-white":"text-gray-600"}`}/>,
-      num: collectiondata,
+      num: totallcollections,
       text: "Collection",
       deg: "130deg",
     },

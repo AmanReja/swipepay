@@ -17,6 +17,7 @@ export const GLOGIN = "GLOGIN";
 export const SENDOTP = "SENDOTP";
 export const VERIFY_OTP = "VERIFY_OTP";
 export const UPDATE_USER_DETAILS = "UPDATE_USER_DETAILS";
+export const COLLECTION_REPORT = "COLLECTION_REPORT";
 
 
 
@@ -363,6 +364,32 @@ export const getall_wallet_company_data = () => async (dispatch) => {
   dispatch({ type: "GETALL_WALLET_COMPANY_DATA", payload: data });
   
 };
+export const collection_report = () => async (dispatch) => {
+  const token = localStorage.getItem("token") || {};
+  const res = await fetch(
+    `${baseUrl}/v1/user/col-transactions-report
+    `,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  if (res.status === 401) {
+    localStorage.removeItem("token");
+    window.location.href = "/";
+    return;
+  }
+
+  const data = await res.json();
+  dispatch({ type: "COLLECTION_REPORT", payload: data })
+
+
+  
+};
 
 
 export const getone_user = () => async (dispatch) => {
@@ -413,25 +440,53 @@ export const Payout_report = () => async (dispatch) => {
 };
 
 
-export const get_collections = () => async (dispatch) => {
+export const get_collections = (searchtr,trstatus,searchdate_start,searchdate_end,downloadexcl=false,page,pagelimit) => async (dispatch) => {
+
+  console.log(224,pagelimit);
+
+ 
+  console.log(225,searchtr);
+
   const token = localStorage.getItem("token") || {};
-  const res = await fetch(
-    `${baseUrl}/v1/user/col-transactions`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  const params = new URLSearchParams();
+if (searchtr) params.append("search", searchtr);
+if (trstatus) params.append("status", trstatus);
+if (searchdate_start) params.append("start_date", searchdate_start);
+if (searchdate_end) params.append("end_date", searchdate_end);
+if(downloadexcl) params.append("download", "excel");
+if (page) params.append("page", page);
+if (pagelimit) params.append("limit", pagelimit);
 
-  if (res.status === 401) {
-    localStorage.removeItem("token");
-    window.location.href = "/";
-    return;
+
+const res = await fetch(
+  `${baseUrl}/v1/user/col-transactions?${params.toString()}`,
+  {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
   }
+);
 
+if (res.status === 401) {
+  localStorage.removeItem("token");
+  window.location.href = "/";
+  return;
+}
+
+
+if (downloadexcl==true) {
+  const blob = await res.blob();
+  const fileURL = window.URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = fileURL;
+  link.setAttribute("download", "payout_logs.xlsx");
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  return; 
+}
   const data = await res.json();
   dispatch({ type: "GETCOLLECTIONS", payload: data });
 };

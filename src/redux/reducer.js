@@ -13,7 +13,7 @@ import {
   UPDATEENTITY_CALLBACK,
   FORGOT_PASSWORD,
   GETCOLLECTIONS,
-  GETVERTUAL_ACCOUNT,VERIFY_AADHAR,LOGIN,GLOGIN,SENDOTP
+  GETVERTUAL_ACCOUNT,VERIFY_AADHAR,LOGIN,GLOGIN,SENDOTP,COLLECTION_REPORT
 } from "./action";
 
 
@@ -113,6 +113,24 @@ export const ledgerwalletReducer = (
     return {
       ...state,
       ledgerwallet: action.payload,
+    };
+  } else {
+    return state;
+  }
+};
+
+const colreportState = {
+  colreport: [],
+};
+
+export const colreportReducer = (
+  state = colreportState,
+  action
+) => {
+  if (action.type === COLLECTION_REPORT) {
+    return {
+      ...state,
+      colreport: action.payload,
     };
   } else {
     return state;
