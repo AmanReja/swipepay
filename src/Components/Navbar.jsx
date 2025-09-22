@@ -99,9 +99,7 @@ const Navbar = () => {
         <p className="text-sm text-gray-500">aakash@busybox.in</p>
       </div>
       <button
-        onClick={() => {
-          navigate("/dashboard/profile");
-        }}
+       
         className="p-1 bg-blue-200 rounded-[5px] border-blue-600 border-[1px] text-blue-500 text-sm"
       >
         Pro

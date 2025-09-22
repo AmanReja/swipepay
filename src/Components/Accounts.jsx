@@ -265,10 +265,10 @@ const Accounts = () => {
   return (
     <>
       <div className={`w-full flex flex-col gap-[50px] mb-[10px] ${theme==="dark"?"bg-gray-800":"bg-white"}  overflow-hidden`}>
-        <div className="flex flex-col border-gray-200 border h-auto    w-full shadow rounded-xl">
-        <div className="relative overflow-hidden rounded-xl p-8 md:p-10 flex flex-col md:flex-row items-center justify-between gap-8 bg-gradient-to-br from-indigo-900 via-indigo-800 to-indigo-700 shadow-2xl">
+        <div className="flex flex-col border-gray-200  h-auto  w-full shadow rounded-xl">
+        <div className="relative overflow-hidden rounded-xl p-8 md:p-10 flex flex-col md:flex-row items-center justify-between gap-10 bg-gradient-to-br from-indigo-900 via-indigo-800 to-indigo-700 shadow-2xl">
 
-<div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.05)_1px,transparent_1px)] [background-size:40px_40px] animate-[slowpan_20s_linear_infinite]"></div>
+<div className="absolute inset-0 -z-10"></div>
 
 
 

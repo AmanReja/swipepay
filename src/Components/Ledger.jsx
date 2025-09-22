@@ -244,7 +244,7 @@ const Ledger = () => {
     <div
       className={`px-3 py-1 rounded-lg border ${
         theme === "dark"
-          ? "bg-gray-800 border-gray-600 text-gray-200"
+          ? "bg-gray-800 border-gray-600 text-white"
           : "bg-white border-gray-300 text-gray-700"
       }`}
     >
@@ -303,17 +303,17 @@ const Ledger = () => {
           }
         }}
         className={`text-sm bg-transparent outline-none ${
-          theme === "dark" ? "text-gray-300" : "text-gray-600"
+          theme === "dark" ? "text-white bg-black" : "text-gray-600"
         }`}
       >
-        <option value="">Select Range</option>
-        <option value="Today">Today</option>
-        <option value="Yesterday">Yesterday</option>
-        <option value="Last 7 Days">Last 7 Days</option>
-        <option value="Last 30 Days">Last 30 Days</option>
-        <option value="This Month">This Month</option>
-        <option value="Last Month">Last Month</option>
-        <option value="Custom Range">Custom Range</option>
+        <option className={`${theme==="dark"?"bg-gray-800 text-white":"bg-white text-gray-800"}`} value="">Select Range</option>
+        <option className={`${theme==="dark"?"bg-gray-800 text-white":"bg-white text-gray-800"}`} value="Today">Today</option>
+        <option className={`${theme==="dark"?"bg-gray-800 text-white":"bg-white text-gray-800"}`} value="Yesterday">Yesterday</option>
+        <option className={`${theme==="dark"?"bg-gray-800 text-white":"bg-white text-gray-800"}`} value="Last 7 Days">Last 7 Days</option>
+        <option className={`${theme==="dark"?"bg-gray-800 text-white":"bg-white text-gray-800"}`} value="Last 30 Days">Last 30 Days</option>
+        <option className={`${theme==="dark"?"bg-gray-800 text-white":"bg-white text-gray-800"}`} value="This Month">This Month</option>
+        <option className={`${theme==="dark"?"bg-gray-800 text-white":"bg-white text-gray-800"}`} value="Last Month">Last Month</option>
+        <option className={`${theme==="dark"?"bg-gray-800 text-white":"bg-white text-gray-800"}`} value="Custom Range">Custom Range</option>
       </select>
     </div>
 
@@ -356,10 +356,10 @@ const Ledger = () => {
           theme === "dark" ? "text-gray-200" : "text-gray-700"
         }`}
       >
-        <option value="All">All Transactions</option>
-        <option value="SUCCESS">Success</option>
-        <option value="PENDING">Pending</option>
-        <option value="FAILED">Failed</option>
+        <option className={`${theme==="dark"?"bg-gray-800 text-white":"bg-white text-gray-800"}`} value="All">All Transactions</option>
+        <option className={`${theme==="dark"?"bg-gray-800 text-white":"bg-white text-gray-800"}`} value="SUCCESS">Success</option>
+        <option className={`${theme==="dark"?"bg-gray-800 text-white":"bg-white text-gray-800"}`} value="PENDING">Pending</option>
+        <option className={`${theme==="dark"?"bg-gray-800 text-white":"bg-white text-gray-800"}`} value="FAILED">Failed</option>
       </select>
     </div>
 

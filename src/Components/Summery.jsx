@@ -61,7 +61,7 @@ const Summery = () => {
 
   const sucesslog = () => {
     if (loginSuccess === "success") {
-      toast.success("🦄 log success", {
+      toast.success("login Successfull", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,

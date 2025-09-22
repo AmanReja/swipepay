@@ -20,10 +20,11 @@ export const UPDATE_USER_DETAILS = "UPDATE_USER_DETAILS";
 export const COLLECTION_REPORT = "COLLECTION_REPORT";
 
 
+// https://acs.busybox.in //
+// http://192.168.1.43:3000 //
 
 
-
-const baseUrl = "https://acs.busybox.in";
+const baseUrl = "http://192.168.1.43:3000";
 
 
 

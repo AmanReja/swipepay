@@ -143,7 +143,7 @@ const Security = () => {
 
       {/* Modal - Enable 2FA */}
       {passopen && (
-        <form onSubmit={(e)=>{passupdate(e)}} className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+        <form  className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
           <div className="bg-white rounded-2xl shadow-2xl p-6 w-[90%] md:w-[400px] relative">
             <button
               onClick={handelpassopen}
