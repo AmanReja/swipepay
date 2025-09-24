@@ -10,7 +10,7 @@ import {
   entitycallbackReducer,
   forgotpassReducer,
   collectionsReducer,
-  vaReducer,aadharReducer,loginReducer,gloginReducer,otpReducer,colreportReducer
+  vaReducer,aadharReducer,loginReducer,gloginReducer,otpReducer,colreportReducer,summaryReducer
 } from "./reducer";
 const store = configureStore({
   reducer: {
@@ -28,7 +28,8 @@ const store = configureStore({
     login:loginReducer,
     glogin:gloginReducer,
     otp:otpReducer,
-    colreport:colreportReducer
+    colreport:colreportReducer,
+    summarydata:summaryReducer
 
   },
 });

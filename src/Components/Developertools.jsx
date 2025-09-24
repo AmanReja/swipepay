@@ -1,16 +1,16 @@
-import { React, useState, useEffect ,useContext} from "react";
+import { React, useState, useEffect, useContext } from "react";
 import hand from "../assets/images/hand.png";
 
 import { X } from "lucide-react";
 import { getentitycallbackevent, addentitycallbackevent, deleteentitycallbackevent, updateeteentitycallbackevent } from "../redux/action";
 import { useDispatch, useSelector } from "react-redux";
 
-import {Theme} from "../Contexts/Theme"
+import { Theme } from "../Contexts/Theme"
 
 
 const Developertools = () => {
-  
-  const {theme,setTheme} =useContext(Theme)
+
+  const { theme, setTheme } = useContext(Theme)
 
   const dispatch = useDispatch();
 
@@ -101,8 +101,8 @@ const Developertools = () => {
     setEntpra_corp(entity.corp_id)
     setEntpra_envname(entity.callback_event_name)
     setEntpra_envstatus(entity.status)
-   
-    
+
+
   };
 
 
@@ -111,17 +111,17 @@ const Developertools = () => {
     // console.log(55,entity.corp_id,entity.callback_event_name, entity.status);
 
     try {
-    
-     
-      
-      
-     
+
+
+
+
+
 
       const oldEntity = {
 
-          new_callback_event_name: callbackeventname,
-          new_callback_url: callbackurl,
-          new_status: status,
+        new_callback_event_name: callbackeventname,
+        new_callback_url: callbackurl,
+        new_status: status,
 
       };
       dispatch(updateeteentitycallbackevent(oldEntity, entpra_corp, entpra_envname, entpra_envstatus))
@@ -134,8 +134,8 @@ const Developertools = () => {
       setStatus("")
       setIsediting(false)
       setEntpra_corp("")
-    setEntpra_envname("")
-    setEntpra_envstatus("")
+      setEntpra_envname("")
+      setEntpra_envstatus("")
     }
 
 
@@ -153,10 +153,10 @@ const Developertools = () => {
 
         <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.05)_1px,transparent_1px)] [background-size:40px_40px] animate-[slowpan_20s_linear_infinite]"></div>
 
-    
 
 
-     
+
+
         <div className="flex flex-col gap-4 text-center md:text-left max-w-2xl">
           <h1 className="text-2xl md:text-3xl font-bold text-white tracking-tight">
             Developer Controls
@@ -174,7 +174,7 @@ const Developertools = () => {
           </p>
         </div>
 
- 
+
         <img
           className="w-40 md:w-48 h-auto object-contain drop-shadow-lg"
           src={hand}
@@ -182,11 +182,11 @@ const Developertools = () => {
         />
       </div>
 
-      
-      <div className={`flex flex-col md:flex-row justify-between items-center gap-6 border border-gray-200 rounded-2xl${theme==="dark"?"bg-gray-800":"bg-white"} rounded-xl  shadow-lg p-6 hover:shadow-xl transition-all duration-300`}>
+
+      <div className={`flex flex-col md:flex-row justify-between items-center gap-6 border border-gray-200 rounded-2xl${theme === "dark" ? "bg-gray-800" : "bg-white"} rounded-xl  shadow-lg p-6 hover:shadow-xl transition-all duration-300`}>
         <div className="flex flex-col gap-2">
-          <h2 className={`text-lg font-bold ${theme==="dark"?"text-gray-200":"text-gray-900"} `}>API Key</h2>
-          <p className={`text-sm ${theme==="dark"?"text-gray-200":"text-gray-700"} max-w-xl leading-relaxed`}>
+          <h2 className={`text-lg font-bold ${theme === "dark" ? "text-gray-200" : "text-gray-900"} `}>API Key</h2>
+          <p className={`text-sm ${theme === "dark" ? "text-gray-200" : "text-gray-700"} max-w-xl leading-relaxed`}>
             Securely access our banking APIs with your unique API key.
             Authenticate requests, manage transactions programmatically, and
             keep your key private.{" "}
@@ -219,57 +219,84 @@ const Developertools = () => {
         </div>
       </div>
 
-      <form onSubmit={(e) => { isediting ? handelupdate(e) : addentity(e), e.preventDefault() }} className={`space-y-6 absolute ${!open ? "hidden" : "block"}  top-[60%] right-[3%] ${theme==="dark"?"text-gray-200 bg-gray-800" :"text-gray-900 bg-white"} p-6 z-40 rounded-2xl`}>
-        <div className="flex justify-center items-center"> <h1 className="text-center font-bold text-3xl">Entity</h1>
-          <div onClick={handelentityopen} className="relative left-[30%] bg-violet-300 w-[50px] h-[30px] flex justify-center items-center rounded-2xl shadow-2xl"><X className="text-white" /></div>
+        
+          
+      <form
+  onSubmit={(e) => {
+    e.preventDefault();
+    isediting ? handelupdate(e) : addentity(e);
+  }}
+  className={`${open?"fixed":"hidden"} inset-0 bg-black/40 flex items-center justify-center z-50`}
+>
+  <div className="bg-white rounded-2xl shadow-2xl p-6 w-[90%] md:w-[400px] relative max-h-[90vh] overflow-y-auto">
+ 
+    <button
+      onClick={handelentityopen}
+      type="button"
+      className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
+    >
+      <X />
+    </button>
 
-        </div>
+  
+    <h2 className="text-lg font-bold mb-4">Entity</h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div className="grid grid-cols-1 gap-4">
+      <div>
+        <label className="block text-sm font-medium mb-1">
+          Call Back Event Name
+        </label>
+        <select
+          value={callbackeventname}
+          onChange={(e) => setCallbackeventname(e.target.value)}
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+        >
+          <option value="Select callback event">Select callback event</option>
+          <option value="payout_failed">payout_failed</option>
+          <option value="payout_pending">payout_pending</option>
+        </select>
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium mb-1">Call Back URL</label>
+        <input
+          value={callbackurl}
+          onChange={(e) => setCallbackurl(e.target.value)}
+          type="text"
+          placeholder="http://example"
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium mb-1">Status</label>
+        <select
+          value={status}
+          onChange={(e) => setStatus(e.target.value)}
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+        >
+          <option value="Select Status">Select Status</option>
+          <option value="ACTIVE">ACTIVE</option>
+          <option value="INACTIVE">INACTIVE</option>
+        </select>
+      </div>
+    </div>
+
+    
+    <button
+      type="submit"
+      className="w-full mt-6 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700 transition"
+    >
+      {isediting ? "Update Entity" : "Post Entity"}
+    </button>
+  </div>
+</form>
 
 
-          <div>
-            <label className="block text-sm font-medium mb-1">Call Back Event Name</label>
-            <select value={callbackeventname} onChange={(e) => { setCallbackeventname(e.target.value) }} name="callbackeventname" className={`w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500 ${theme==="dark"?"text-gray-200 bg-gray-800" :"text-gray-900 bg-white"}`} >
-
-            <option selected value="Select callback event">Select callback event</option>
-              <option  value="payout_failed">payout_failed</option>
-
-              <option value="payout_pending">payout_pending</option>
-
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium  mb-1">Call Back URL</label>
-            <input value={callbackurl} onChange={(e) => { setCallbackurl(e.target.value) }} type="text" name="url" placeholder="http://example" className={`w-full px-4 py-3 border border-gray-300 rounded-lg ${theme==="dark"?"text-gray-200 bg-gray-800" :"text-gray-900 bg-white"} shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500`} />
-          </div>
-          <div>
-            <label className="block text-sm font-medium  mb-1">Status</label>
-            <select value={status} onChange={(e) => { setStatus(e.target.value) }} name="callbackeventname" className={`w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500 ${theme==="dark"?"text-gray-200 bg-gray-800" :"text-gray-900 bg-white"}`} >
-
-              <option selected value="Select Status">Select Status</option>
-              <option  value="ACTIVE">ACTIVE</option>
-              <option value="INACTIVE">INACTIVE</option>
-
-            </select>
-          </div>
-
-        </div>
-
-
-
-        <div>
-          <button type="submit" className="w-full py-3 px-6 bg-violet-600 text-white font-medium rounded-lg shadow-sm hover:bg-violet-700 transition duration-300">
-            Post Entity
-          </button>
-        </div>
-      </form>
-
-      <div className={`border flex justify-between border-gray-200 rounded-2xl ${theme==="dark"?"bg-gray-800":"bg-white"}  mb-[20px] p-6 hover:shadow-xl transition-all duration-300`}>
+      <div className={`border flex justify-between border-gray-200 rounded-2xl ${theme === "dark" ? "bg-gray-800" : "bg-white"}  mb-[20px] p-6 hover:shadow-xl transition-all duration-300`}>
         <div className="flex flex-col">
-          <h2 className={`text-lg font-bold  ${theme==="dark"?"text-gray-200":"text-gray-900"} mb-2`}>Webhooks</h2>
-          <p className={`text-sm ${theme==="dark"?"text-gray-200":"text-gray-900"}`}>
+          <h2 className={`text-lg font-bold  ${theme === "dark" ? "text-gray-200" : "text-gray-900"} mb-2`}>Webhooks</h2>
+          <p className={`text-sm ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}>
             Receive real-time callbacks for every transaction to automate your
             workflows.{" "}
             <a className="underline font-semibold text-indigo-600" href="">
@@ -294,7 +321,7 @@ const Developertools = () => {
               <div className="flex items-center space-x-1">
                 <p>Callback event</p>
                 <div className="flex flex-col justify-center items-center leading-none">
-                
+
                 </div>
               </div>
             </th>
@@ -302,7 +329,7 @@ const Developertools = () => {
               <div className="flex items-center space-x-1">
                 <p>Callback Url</p>
                 <div className="flex flex-col justify-center items-center leading-none">
-                 
+
                 </div>
               </div>
             </th>
@@ -336,7 +363,7 @@ const Developertools = () => {
               <td className="px-4 py-4"> {
                 entity.create_on
 
-          }</td>
+              }</td>
 
               <td className="px-4 py-4">
                 {

@@ -18,6 +18,7 @@ export const SENDOTP = "SENDOTP";
 export const VERIFY_OTP = "VERIFY_OTP";
 export const UPDATE_USER_DETAILS = "UPDATE_USER_DETAILS";
 export const COLLECTION_REPORT = "COLLECTION_REPORT";
+export const SUMMARY = "SUMMARY";
 
 
 // https://acs.busybox.in //
@@ -365,10 +366,20 @@ export const getall_wallet_company_data = () => async (dispatch) => {
   dispatch({ type: "GETALL_WALLET_COMPANY_DATA", payload: data });
   
 };
-export const collection_report = () => async (dispatch) => {
+export const collection_report = (date) => async (dispatch) => {
+
+  console.log(370,date);
+
+
+  const params =new URLSearchParams();
+  if (date) params.append("filter_type",date);
+
+  
+
+
   const token = localStorage.getItem("token") || {};
   const res = await fetch(
-    `${baseUrl}/v1/user/col-transactions-report
+    `${baseUrl}/v1/user/col-transactions-report?${params.toString}
     `,
     {
       method: "GET",
@@ -416,11 +427,64 @@ export const getone_user = () => async (dispatch) => {
   dispatch({ type: "GETONE_USER", payload: data });
 };
 
+///summary report ///
 
-export const Payout_report = () => async (dispatch) => {
+
+export const summaryreport = (date) => async (dispatch) => {
+
+  
+
+  const params = new URLSearchParams();
+  if (date) params.append("filter_type",date);
+
+  console.log(437,date);
+  
+ const token = localStorage.getItem("token") || {};
+ const res = await fetch(
+   `${baseUrl}/v1/user/summary-report?${params.toString()}`,
+   {
+     method: "GET",
+     headers: {
+       "Content-Type": "application/json",
+       Authorization: `Bearer ${token}`,
+     },
+   }
+ );
+
+ if (res.status === 401) {
+   localStorage.removeItem("token");
+   window.location.href = "/";
+   return;
+ }
+
+ const data = await res.json();
+ dispatch({ type: "SUMMARY", payload: data });
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+export const Payout_report = (date) => async (dispatch) => {
+
+  
+
+   const params = new URLSearchParams();
+   if (date) params.append("filter_type",date);
+
+   console.log(437,date);
+   
   const token = localStorage.getItem("token") || {};
   const res = await fetch(
-    `${baseUrl}/v1/user/payouts-report`,
+    `${baseUrl}/v1/user/payouts-report?${params.toString()}`,
     {
       method: "GET",
       headers: {

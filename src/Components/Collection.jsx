@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef, useContext } from "react";
 import Chart from "./Chart";
 import Hdfc from "../assets/images/HDFC.png";
 import { useSelector, useDispatch } from "react-redux";
-import { getall_payoutlog_data, Payout_report, get_collections,collection_report } from "../redux/action";
+import { getall_payoutlog_data, Payout_report, get_collections, collection_report } from "../redux/action";
 import "../App.css"
 import "flatpickr/dist/themes/airbnb.css";
 import flatpickr from "flatpickr";
@@ -81,21 +81,24 @@ const Collection = () => {
 
 
   const dispatch = useDispatch();
-  const collectiondata = useSelector((state) => state.collections.collections.transactions);
-  const collectionreport = useSelector((state) => state.colreport.colreport);
-  console.log(92, collectionreport);
-  const totalpage = useSelector((state) => state.collections.collections.totalPages
+  const collectiondata = useSelector((state) => state.collections.collections.data);
+  const collectiondatareport = useSelector((state) => state.collections.collections.summary);
 
-  );
-
-  
-  console.log(totalpage);
-
-
-  const totaldata = useSelector((state) => state.collections.collections.total
-  );
-  
  
+  const totalpage = useSelector((state) => state.collections.collections.pagination?.
+  totalPages
+
+  );
+
+
+  console.log(93,totalpage);
+
+
+  const totaldata = useSelector((state) => state.collections.collections.pagination?.totalRecords
+
+  );
+
+
 
 
 
@@ -107,8 +110,8 @@ const Collection = () => {
       setLoad(true)
 
       await dispatch(get_collections(searchtr, trstatus, formdatastr, formdataend, false, page, perPage));
-      await dispatch(Payout_report())
-      await dispatch(collection_report())
+
+
       setLoad(false)
     } fetchdata()
 
@@ -116,7 +119,7 @@ const Collection = () => {
 
 
   const downloadexcel = () => {
-    dispatch(getall_payoutlog_data(searchtr, trstatus, formdatastr, formdataend, true));
+    dispatch(get_collections(searchtr, trstatus, formdatastr, formdataend, true));
   };
 
 
@@ -183,46 +186,58 @@ const Collection = () => {
           <div
             className={`flex flex-col sm:flex-row gap-5 rounded-xl p-5 ${theme === "dark" ? "bg-gray-900" : "bg-white"
               }`}
-          >
-            {[
-              {
-                label: "Payout Value",
-                value: collectionreport.total_collection_value
-                || "00",
-              },
-              {
-                label: "Success Rate",
-                value: `${collectionreport.success_rate === undefined
+          > {load? Array.from({length:3}).map((_,i)=>(<div className={`flex-1 min-h-[80px] animate-pulse flex flex-col items-center justify-center text-center rounded-lg p-4 shadow-sm hover:shadow-md transition ${theme === "dark"
+          ? "bg-gray-800 text-white"
+          : "bg-gray-200 text-gray-800"
+          }`}>
+            <div role="status">
+    <svg aria-hidden="true" class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
+        <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
+    </svg>
+    <span class="sr-only">Loading...</span>
+</div>
+          </div>)): [
+            {
+              label: "Collection Value",
+              value:"₹" +collectiondatareport?.total_value || "0.00",
+            },
+            {
+              label: "Success Rate",
+              value: `${collectiondatareport?.success_rate
+                === undefined
                   ? "00"
-                  : collectionreport.success_rate + "%"
-                  }`,
-              },
-              {
-                label: "Pending Payouts",
-                value: collectionreport.pending_value
-                || "00",
-              },
-              {
-                label: "Failure",
-                value: collectionreport.failed_value || "00",
-              },
-            ].map((item, index) => (
-              <div
-                key={index}
-                className={`flex-1 flex flex-col items-center justify-center text-center rounded-lg p-4 shadow-sm hover:shadow-md transition ${theme === "dark"
-                  ? "bg-gray-800 text-white"
-                  : "bg-white text-gray-800"
+                  : collectiondatareport?.success_rate +"%"
+                }`,
+            },
+            {
+              label: "Pending Collections",
+              value: "₹"+collectiondatareport?.pending_value || "0.00",
+            },
+            {
+              label: "Failure",
+              value: "₹"+ collectiondatareport?.failed_value || "0.00",
+            },
+          ].map((item, index) => (
+           
+            <div
+              key={index}
+              className={`flex-1 flex flex-col items-center justify-center text-center rounded-lg p-4 shadow-sm hover:shadow-md transition ${theme === "dark"
+                ? "bg-gray-800 text-white"
+                : "bg-white text-gray-800"
+                }`}
+            >
+              <h1 className="text-2xl font-semibold">{item.value}</h1>
+              <p
+                className={`text-sm mt-1 ${theme === "dark" ? "text-gray-400" : "text-gray-500"
                   }`}
               >
-                <h1 className="text-2xl font-semibold">{item.value}</h1>
-                <p
-                  className={`text-sm mt-1 ${theme === "dark" ? "text-gray-400" : "text-gray-500"
-                    }`}
-                >
-                  {item.label}
-                </p>
-              </div>
-            ))}
+                {item.label}
+              </p>
+            </div>
+          ))}
+          
+           
           </div>
           <div className="w-full px-[20px] mt-[20px]">
             <div
@@ -234,8 +249,8 @@ const Collection = () => {
 
               <div
                 className={`flex justify-between items-center p-4 py-6 w-full flex-wrap gap-4 shadow-sm border-b ${theme === "dark"
-                    ? "bg-gray-900 border-gray-700 text-gray-100"
-                    : "bg-white border-gray-200 text-gray-800"
+                  ? "bg-gray-900 border-gray-700 text-gray-100"
+                  : "bg-white border-gray-200 text-gray-800"
                   }`}
               >
                 <h2
@@ -249,8 +264,8 @@ const Collection = () => {
                   {/* 📅 Calendar Input */}
                   <div
                     className={`pl-[5px] border-[1px] p-1 rounded flex justify-center items-center gap-2 ${theme === "dark"
-                        ? "bg-gray-800 border-gray-600 text-gray-300"
-                        : "bg-white border-gray-300 text-gray-400"
+                      ? "bg-gray-800 border-gray-600 text-gray-300"
+                      : "bg-white border-gray-300 text-gray-400"
                       }`}
                   >
                     <i
@@ -268,8 +283,8 @@ const Collection = () => {
                   {/* 🔽 Dropdown for Quick Ranges */}
                   <div
                     className={`px-3 py-1 rounded-lg border ${theme === "dark"
-                        ? "bg-gray-800 border-gray-600 text-gray-200"
-                        : "bg-white border-gray-300 text-gray-700"
+                      ? "bg-gray-800 border-gray-600 text-gray-200"
+                      : "bg-white border-gray-300 text-gray-700"
                       }`}
                   >
                     <select
@@ -329,22 +344,22 @@ const Collection = () => {
                       className={`text-sm bg-transparent outline-none ${theme === "dark" ? "text-gray-300" : "text-gray-600"
                         }`}
                     >
-                      <option className={`${theme==="dark"?"bg-gray-800 text-white":"bg-white text-gray-800"}`} value="">Select Range</option>
-                      <option className={`${theme==="dark"?"bg-gray-800 text-white":"bg-white text-gray-800"}`} value="Today">Today</option>
-                      <option className={`${theme==="dark"?"bg-gray-800 text-white":"bg-white text-gray-800"}`} value="Yesterday">Yesterday</option>
-                      <option className={`${theme==="dark"?"bg-gray-800 text-white":"bg-white text-gray-800"}`} value="Last 7 Days">Last 7 Days</option>
-                      <option className={`${theme==="dark"?"bg-gray-800 text-white":"bg-white text-gray-800"}`} value="Last 30 Days">Last 30 Days</option>
-                      <option className={`${theme==="dark"?"bg-gray-800 text-white":"bg-white text-gray-800"}`} value="This Month">This Month</option>
-                      <option className={`${theme==="dark"?"bg-gray-800 text-white":"bg-white text-gray-800"}`} value="Last Month">Last Month</option>
-                      <option className={`${theme==="dark"?"bg-gray-800 text-white":"bg-white text-gray-800"}`} value="Custom Range">Custom Range</option>
+                      <option className={`${theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800"}`} value="">Select Range</option>
+                      <option className={`${theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800"}`} value="Today">Today</option>
+                      <option className={`${theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800"}`} value="Yesterday">Yesterday</option>
+                      <option className={`${theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800"}`} value="Last 7 Days">Last 7 Days</option>
+                      <option className={`${theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800"}`} value="Last 30 Days">Last 30 Days</option>
+                      <option className={`${theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800"}`} value="This Month">This Month</option>
+                      <option className={`${theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800"}`} value="Last Month">Last Month</option>
+                      <option className={`${theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800"}`} value="Custom Range">Custom Range</option>
                     </select>
                   </div>
 
                   {/* 🔍 Search Transaction */}
                   <div
                     className={`relative border px-2 py-1 rounded-lg ${theme === "dark"
-                        ? "bg-gray-800 border-gray-600 text-gray-200"
-                        : "bg-white border-gray-300 text-gray-700"
+                      ? "bg-gray-800 border-gray-600 text-gray-200"
+                      : "bg-white border-gray-300 text-gray-700"
                       }`}
                   >
                     <span
@@ -365,8 +380,8 @@ const Collection = () => {
                   {/* 🔽 Status Filter */}
                   <div
                     className={`px-4 py-1 rounded-lg border ${theme === "dark"
-                        ? "bg-gray-800 border-gray-600 text-gray-200"
-                        : "bg-white border-gray-300 text-gray-700"
+                      ? "bg-gray-800 border-gray-600 text-gray-200"
+                      : "bg-white border-gray-300 text-gray-700"
                       }`}
                   >
                     <select
@@ -374,10 +389,10 @@ const Collection = () => {
                       className={`text-sm bg-transparent outline-none ${theme === "dark" ? "text-gray-200" : "text-gray-700"
                         }`}
                     >
-                      <option className={`${theme==="dark"?"bg-gray-800 text-white":"bg-white text-gray-800"}`} value="All">All Transactions</option>
-                      <option className={`${theme==="dark"?"bg-gray-800 text-white":"bg-white text-gray-800"}`} value="SUCCESS">Success</option>
-                      <option className={`${theme==="dark"?"bg-gray-800 text-white":"bg-white text-gray-800"}`} value="PENDING">Pending</option>
-                      <option className={`${theme==="dark"?"bg-gray-800 text-white":"bg-white text-gray-800"}`} value="FAILED">Failed</option>
+                      <option className={`${theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800"}`} value="All">All Transactions</option>
+                      <option className={`${theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800"}`} value="SUCCESS">Success</option>
+                      <option className={`${theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800"}`} value="PENDING">Pending</option>
+                      <option className={`${theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800"}`} value="FAILED">Failed</option>
                     </select>
                   </div>
 
@@ -385,8 +400,8 @@ const Collection = () => {
                   <button
                     onClick={downloadexcel}
                     className={`text-sm font-medium hover:shadow-xl px-4 py-1 rounded-lg transition border ${theme === "dark"
-                        ? "bg-gray-800 border-gray-600 text-gray-200"
-                        : "bg-white border-gray-300 text-gray-700"
+                      ? "bg-gray-800 border-gray-600 text-gray-200"
+                      : "bg-white border-gray-300 text-gray-700"
                       }`}
                   >
                     <i
@@ -416,7 +431,7 @@ const Collection = () => {
                     <th className="px-4 py-3">Account Details</th>
                     <th className="px-4 py-3">Amount</th>
                     <th className="px-4 py-3">payment_mode
-</th>
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="text-[12px] font-semibold">
@@ -443,11 +458,11 @@ const Collection = () => {
                           </span>
                         </td>
                         <td className="px-4 py-5">{txn.date
-}</td>
+                        }</td>
                         <td className="px-4 py-5">
                           <div className="flex flex-col">
                             <p>UTR: {txn.utr
-}</p>
+                            }</p>
                             <p>[request ID: #{txn.transaction_id}]</p>
                           </div>
                         </td>
@@ -455,12 +470,12 @@ const Collection = () => {
                           <div className="flex flex-col">
                             <p>A/C: {txn.remitter_acc_number}</p>
                             <p>[IFSC Code: {txn.remitter_ifsc_code
-}]</p>
+                            }]</p>
                           </div>
                         </td>
                         <td className="px-4 py-5">{txn.amount}</td>
                         <td className="px-4 py-5">{txn.payment_mode
-}</td>
+                        }</td>
                       </tr>
                     ))}
                 </tbody>
@@ -520,12 +535,12 @@ const Collection = () => {
                           key={num}
                           onClick={() => setPage(num)}
                           className={`px-3 py-1  rounded-md ${num === page
-                              ? theme === "dark"
-                                ? "bg-gray-700 font-semibold"
-                                : "bg-gray-200 font-semibold"
-                              : theme === "dark"
-                                ? "hover:bg-gray-800"
-                                : "hover:bg-gray-100"
+                            ? theme === "dark"
+                              ? "bg-gray-700 font-semibold"
+                              : "bg-gray-200 font-semibold"
+                            : theme === "dark"
+                              ? "hover:bg-gray-800"
+                              : "hover:bg-gray-100"
                             }`}
                         >
                           {num}

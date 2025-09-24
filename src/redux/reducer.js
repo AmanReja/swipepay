@@ -13,8 +13,37 @@ import {
   UPDATEENTITY_CALLBACK,
   FORGOT_PASSWORD,
   GETCOLLECTIONS,
-  GETVERTUAL_ACCOUNT,VERIFY_AADHAR,LOGIN,GLOGIN,SENDOTP,COLLECTION_REPORT
+  GETVERTUAL_ACCOUNT,VERIFY_AADHAR,LOGIN,GLOGIN,SENDOTP,COLLECTION_REPORT,SUMMARY
 } from "./action";
+
+
+
+
+
+//// summery ///
+
+const initialsummary={
+  summarydata:[],
+}
+
+export const summaryReducer =(state=initialsummary,action)=>{
+
+  if (action.type===SUMMARY) {
+    return { ...state,
+      summarydata : action.payload
+    }
+    
+  } else {
+    return state
+  }
+}
+
+
+
+
+
+
+
 
 
 
