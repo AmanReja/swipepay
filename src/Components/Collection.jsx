@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef, useContext } from "react";
 import Chart from "./Chart";
 import Hdfc from "../assets/images/HDFC.png";
 import { useSelector, useDispatch } from "react-redux";
-import { getall_payoutlog_data, Payout_report, get_collections, collection_report } from "../redux/action";
+import { getall_payoutlog_data, get_collections, collection_report } from "../redux/action";
 import "../App.css"
 import "flatpickr/dist/themes/airbnb.css";
 import flatpickr from "flatpickr";
@@ -45,10 +45,11 @@ const Collection = () => {
   const dateRangeRef = useRef(null);
 
   useEffect(() => {
+    const toady = new Date()
     flatpickr(dateRangeRef.current, {
       mode: "range",
       dateFormat: "d-m-y",
-      defaultDate: ["15-07-2025", "16-07-2025"],
+      defaultDate: [toady,toady],
       value: date,
       onChange: function (selectedDates) {
         if (selectedDates.length === 2) {
@@ -200,7 +201,13 @@ const Collection = () => {
           </div>)): [
             {
               label: "Collection Value",
-              value:"₹" +collectiondatareport?.total_value || "0.00",
+             
+              value:collectiondatareport?.total_value != null
+                ? Number(collectiondatareport.total_value).toLocaleString('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })
+                : '0.00'
             },
             {
               label: "Success Rate",
@@ -212,11 +219,25 @@ const Collection = () => {
             },
             {
               label: "Pending Collections",
-              value: "₹"+collectiondatareport?.pending_value || "0.00",
+             
+              
+              value:collectiondatareport?.pending_value != null
+                ? Number(collectiondatareport.pending_value).toLocaleString('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })
+                : '0.00'
+              
             },
             {
               label: "Failure",
-              value: "₹"+ collectiondatareport?.failed_value || "0.00",
+            
+              value:collectiondatareport?.failed_value != null
+              ? Number(collectiondatareport.failed_value).toLocaleString('en-US', {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })
+              : '0.00'
             },
           ].map((item, index) => (
            
@@ -261,7 +282,8 @@ const Collection = () => {
                 </h2>
 
                 <div className="flex gap-3 flex-wrap items-center">
-                  {/* 📅 Calendar Input */}
+              
+
                   <div
                     className={`pl-[5px] border-[1px] p-1 rounded flex justify-center items-center gap-2 ${theme === "dark"
                       ? "bg-gray-800 border-gray-600 text-gray-300"
@@ -287,72 +309,74 @@ const Collection = () => {
                       : "bg-white border-gray-300 text-gray-700"
                       }`}
                   >
-                    <select
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        const today = new Date();
-                        let start, end;
+                  <select
+  onChange={(e) => {
+    const value = e.target.value;
+    const today = new Date();
+    let start, end;
 
-                        if (value === "Custom Range") {
-                          setDate({ startDate: null, endDate: null });
-                          setFormdatastr("");
-                          setFormdataend("");
-                          if (dateRangeRef.current._flatpickr) {
-                            dateRangeRef.current._flatpickr.clear();
-                          }
-                          return;
-                        }
+    switch (value) {
+      case "Today":
+        start = end = today;
+        break;
+      case "Yesterday":
+        start = end = new Date(today);
+        start.setDate(today.getDate() - 1);
+        break;
+      case "Last 7 Days":
+        start = new Date(today);
+        start.setDate(today.getDate() - 6);
+        end = today;
+        break;
+      case "Last 30 Days":
+        start = new Date(today);
+        start.setDate(today.getDate() - 29);
+        end = today;
+        break;
+      case "This Month":
+        start = new Date(today.getFullYear(), today.getMonth(), 1);
+        end = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+        break;
+      case "Last Month":
+        start = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+        end = new Date(today.getFullYear(), today.getMonth(), 0);
+        break;
+      case "Custom Range":
+      case "":  // handle "Select Range"
+        start = end = null;
+        setFormdatastr("");
+        setFormdataend("");
+        setDate({ startDate: null, endDate: null });
+        if (dateRangeRef.current._flatpickr) {
+          dateRangeRef.current._flatpickr.clear();
+        }
+        return; // exit early
+      default:
+        return;
+    }
+    
 
-                        switch (value) {
-                          case "Today":
-                            start = end = today;
-                            break;
-                          case "Yesterday":
-                            start = end = new Date(today);
-                            start.setDate(today.getDate() - 1);
-                            break;
-                          case "Last 7 Days":
-                            start = new Date(today);
-                            start.setDate(today.getDate() - 6);
-                            end = today;
-                            break;
-                          case "Last 30 Days":
-                            start = new Date(today);
-                            start.setDate(today.getDate() - 29);
-                            end = today;
-                            break;
-                          case "This Month":
-                            start = new Date(today.getFullYear(), today.getMonth(), 1);
-                            end = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-                            break;
-                          case "Last Month":
-                            start = new Date(today.getFullYear(), today.getMonth() - 1, 1);
-                            end = new Date(today.getFullYear(), today.getMonth(), 0);
-                            break;
-                          default:
-                            return;
-                        }
+    // For all other ranges, update state
+    setDate({ startDate: start, endDate: end });
+    setFormdatastr(start ? formatDate(start) : "");
+    setFormdataend(end ? formatDate(end) : "");
 
-                        setDate({ startDate: start, endDate: end });
-                        setFormdatastr(formatDate(start));
-                        setFormdataend(formatDate(end));
+    if (dateRangeRef.current._flatpickr && start && end) {
+      dateRangeRef.current._flatpickr.setDate([start, end], true);
+    }
+  }}
+  className={`text-sm bg-transparent outline-none ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}
+>
+  <option className={`${theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800"}`} value="">Select Range</option>
+  <option value="Today">Today</option>
+  <option value="Yesterday">Yesterday</option>
+  <option value="Last 7 Days">Last 7 Days</option>
+  <option value="Last 30 Days">Last 30 Days</option>
+  <option value="This Month">This Month</option>
+  <option value="Last Month">Last Month</option>
+  <option value="Custom Range">Custom Range</option>
+</select>
 
-                        if (dateRangeRef.current._flatpickr) {
-                          dateRangeRef.current._flatpickr.setDate([start, end], true);
-                        }
-                      }}
-                      className={`text-sm bg-transparent outline-none ${theme === "dark" ? "text-gray-300" : "text-gray-600"
-                        }`}
-                    >
-                      <option className={`${theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800"}`} value="">Select Range</option>
-                      <option className={`${theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800"}`} value="Today">Today</option>
-                      <option className={`${theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800"}`} value="Yesterday">Yesterday</option>
-                      <option className={`${theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800"}`} value="Last 7 Days">Last 7 Days</option>
-                      <option className={`${theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800"}`} value="Last 30 Days">Last 30 Days</option>
-                      <option className={`${theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800"}`} value="This Month">This Month</option>
-                      <option className={`${theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800"}`} value="Last Month">Last Month</option>
-                      <option className={`${theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800"}`} value="Custom Range">Custom Range</option>
-                    </select>
                   </div>
 
                   {/* 🔍 Search Transaction */}
@@ -473,8 +497,14 @@ const Collection = () => {
                             }]</p>
                           </div>
                         </td>
-                        <td className="px-4 py-5">{txn.amount}</td>
-                        <td className="px-4 py-5">{txn.payment_mode
+                        <td className="px-4 py-5">{txn.amount != null
+                ? Number(txn.amount).toLocaleString('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })
+                : '0.00'}</td>
+                       
+                        <td className="px-4 py-5 text-center">{txn.payment_mode
                         }</td>
                       </tr>
                     ))}
@@ -508,7 +538,7 @@ const Collection = () => {
                   </div>
 
                   <div className="flex items-center space-x-2">
-                    {/* Showing range */}
+                    
                     <p>
                       {(page - 1) * perPage + 1}-
                       {Math.min(page * perPage, totaldata)} of {totaldata}
@@ -518,7 +548,7 @@ const Collection = () => {
                     <button
                       onClick={() => setPage(page - 1)}
                       disabled={page === 1}
-                      className={`px-3 py-1 border rounded-md ${page === 1
+                      className={`px-3 py-1  rounded-md ${page === 1
                         ? "opacity-50 cursor-not-allowed"
                         : theme === "dark"
                           ? "hover:bg-gray-700"
@@ -553,7 +583,7 @@ const Collection = () => {
                     <button
                       onClick={() => setPage(page + 1)}
                       disabled={page === totalpage}
-                      className={`px-3 py-1 border rounded-md ${page === totalpage
+                      className={`px-3 py-1  rounded-md ${page === totalpage
                         ? "opacity-50 cursor-not-allowed"
                         : theme === "dark"
                           ? "hover:bg-gray-700"

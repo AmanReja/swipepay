@@ -153,19 +153,19 @@ const Signin = () => {
               <div className="w-[500px] relative rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 shadow-lg">
                 <div className="flex justify-between items-center text-sm h-full divide-x divide-gray-300/30">
 
-                  <div className="flex-1 flex flex-col items-center px-6 py-6 transition-transform hover:scale-105">
+                  <div className="flex-1 flex flex-col items-center  px-4 py-6 transition-transform hover:scale-105">
                     <strong className="block text-xl font-bold text-white">1M+</strong>
                     <p className="text-xs text-gray-300">Registered Businesses</p>
                   </div>
 
 
-                  <div className="flex-1 flex flex-col items-center px-6 py-6 transition-transform hover:scale-105">
+                  <div className="flex-1 flex flex-col items-center px-4 py-6 transition-transform hover:scale-105">
                     <strong className="block text-xl font-bold text-white">$1B+</strong>
                     <p className="text-xs text-gray-300">Monthly Payments</p>
                   </div>
 
 
-                  <div className="flex-1 flex flex-col items-center px-6 py-6 transition-transform hover:scale-105">
+                  <div className="flex-1 flex flex-col items-center px-4 py-6 transition-transform hover:scale-105">
                     <strong className="block text-xl font-bold text-white">1M+</strong>
                     <p className="text-xs text-gray-300">Daily Transactions</p>
                   </div>
@@ -363,7 +363,7 @@ const Signin = () => {
                 type="submit" onClick={(e) => { userlogin(e) }}
                 className="w-full h-12 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-xl hover:scale-[1.02] active:scale-[0.98] transition transform shadow-lg"
               >
-                Sign In Account
+                Sign In
               </button>
               <Link to={"/forgotpass"}>
                 <p className={`text-gray-500 text-right hover:underline cursor-pointer`}>

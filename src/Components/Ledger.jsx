@@ -63,10 +63,11 @@ const Ledger = () => {
   const dateRangeRef = useRef(null);
 
   useEffect(() => {
+    const today = new Date();
     flatpickr(dateRangeRef.current, {
       mode: "range",
       dateFormat: "d-m-y",
-      defaultDate: ["15-07-2025", "16-07-2025"],
+      defaultDate: [today, today],
       value: date,
       onChange: function (selectedDates) {
         if (selectedDates.length === 2) {
@@ -151,47 +152,33 @@ const Ledger = () => {
     >
       <main className="w-full h-full flex flex-col overflow-y-scroll">
         <section className="w-full flex flex-col sm:flex-col gap-[10px] mt-[20px]  2xl:h-[780px] sm:h-[600px] px-[2px] sm:px-[20px]">
-          <div
-            className={`w-full h-[80px] flex items-center px-5 rounded-xl ${theme === "dark" ? "bg-gray-900" : "bg-white"
-          }`}
-          >
-            <div className="flex gap-[5px] h-full items-center w-full">
-              <h1
-                className={`text-xl font-semibold ${theme === "dark" ? "text-gray-100" : "text-gray-800"
-              }`}
-              >
-                Wallet Ledger
-              </h1>
+        <div
+  className={`w-full h-auto min-h-[80px] flex flex-col sm:flex-row sm:items-center justify-between px-5 py-3 rounded-xl ${
+    theme === "dark" ? "bg-gray-900" : "bg-white"
+  }`}
+>
+  {/* Title & description */}
+  <div className="flex flex-col">
+    <h1
+      className={`text-xl font-semibold ${
+        theme === "dark" ? "text-gray-100" : "text-gray-800"
+      }`}
+    >
+      Wallet Ledger
+    </h1>
+    <p
+      className={`text-sm mt-1 ${
+        theme === "dark" ? "text-gray-400" : "text-gray-500"
+      }`}
+    >
+      View all wallet transactions, balances, and recent activity in one place.
+    </p>
+  </div>
 
-              <div
-                className={`flex items-center text-sm space-x-1 mt-1 sm:mt-0 ${theme === "dark" ? "text-gray-400" : "text-gray-500"
-                  }`}
-              >
-                <a
-                  href="#"
-                  className={`hover:underline ${theme === "dark" ? "text-gray-500" : "text-gray-400"
-                    }`}
-                >
-                  Home
-                </a>
-                <span>/</span>
-                <a
-                  href="#"
-                  className={`hover:underline ${theme === "dark" ? "text-gray-500" : "text-gray-400"
-                    }`}
-                >
-                  Report
-                </a>
-                <span>/</span>
-                <span
-                  className={`font-medium ${theme === "dark" ? "text-gray-200" : "text-gray-700"
-                    }`}
-                >
-                  My Ledger
-                </span>
-              </div>
-            </div>
-          </div>
+ 
+
+</div>
+
         </section>
 
         <div className="w-full px-[20px] mt-[20px]">
@@ -248,73 +235,82 @@ const Ledger = () => {
           : "bg-white border-gray-300 text-gray-700"
       }`}
     >
-      <select
-        onChange={(e) => {
-          const value = e.target.value;
-          const today = new Date();
-          let start, end;
+  <select
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        const today = new Date();
+                        let start, end;
 
-          if (value === "Custom Range") {
-            setDate({ startDate: null, endDate: null });
-            setFormdatastr("");
-            setFormdataend("");
-            if (dateRangeRef.current._flatpickr) {
-              dateRangeRef.current._flatpickr.clear();
-            }
-            return;
-          }
+                        if (value === "Custom Range") {
+                          setDate({ startDate: null, endDate: null });
+                          setFormdatastr("");
+                          setFormdataend("");
+                          if (dateRangeRef.current._flatpickr) {
+                            dateRangeRef.current._flatpickr.clear();
+                          }
+                          return;
+                        }
 
-          switch (value) {
-            case "Today":
-              start = end = today;
-              break;
-            case "Yesterday":
-              start = end = new Date(today);
-              start.setDate(today.getDate() - 1);
-              break;
-            case "Last 7 Days":
-              start = new Date(today);
-              start.setDate(today.getDate() - 6);
-              end = today;
-              break;
-            case "Last 30 Days":
-              start = new Date(today);
-              start.setDate(today.getDate() - 29);
-              end = today;
-              break;
-            case "This Month":
-              start = new Date(today.getFullYear(), today.getMonth(), 1);
-              end = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-              break;
-            case "Last Month":
-              start = new Date(today.getFullYear(), today.getMonth() - 1, 1);
-              end = new Date(today.getFullYear(), today.getMonth(), 0);
-              break;
-            default:
-              return;
-          }
+                        switch (value) {
+                          case "Today":
+                            start = end = today;
+                            break;
+                          case "Yesterday":
+                            start = end = new Date(today);
+                            start.setDate(today.getDate() - 1);
+                            break;
+                          case "Last 7 Days":
+                            start = new Date(today);
+                            start.setDate(today.getDate() - 6);
+                            end = today;
+                            break;
+                          case "Last 30 Days":
+                            start = new Date(today);
+                            start.setDate(today.getDate() - 29);
+                            end = today;
+                            break;
+                          case "This Month":
+                            start = new Date(today.getFullYear(), today.getMonth(), 1);
+                            end = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+                            break;
+                          case "Last Month":
+                            start = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+                            end = new Date(today.getFullYear(), today.getMonth(), 0);
+                            break;
+                          case "Custom Range":
+                          case "":  
+                            start = end = null;
+                            setFormdatastr("");
+                            setFormdataend("");
+                            setDate({ startDate: null, endDate: null });
+                            if (dateRangeRef.current._flatpickr) {
+                              dateRangeRef.current._flatpickr.clear();
+                            }
+                            return; 
+                          default:
+                            return;
+                        }
 
-          setDate({ startDate: start, endDate: end });
-          setFormdatastr(formatDate(start));
-          setFormdataend(formatDate(end));
+                        setDate({ startDate: start, endDate: end });
+                        setFormdatastr(formatDate(start));
+                        setFormdataend(formatDate(end));
 
-          if (dateRangeRef.current._flatpickr) {
-            dateRangeRef.current._flatpickr.setDate([start, end], true);
-          }
-        }}
-        className={`text-sm bg-transparent outline-none ${
-          theme === "dark" ? "text-white bg-black" : "text-gray-600"
-        }`}
-      >
-        <option className={`${theme==="dark"?"bg-gray-800 text-white":"bg-white text-gray-800"}`} value="">Select Range</option>
-        <option className={`${theme==="dark"?"bg-gray-800 text-white":"bg-white text-gray-800"}`} value="Today">Today</option>
-        <option className={`${theme==="dark"?"bg-gray-800 text-white":"bg-white text-gray-800"}`} value="Yesterday">Yesterday</option>
-        <option className={`${theme==="dark"?"bg-gray-800 text-white":"bg-white text-gray-800"}`} value="Last 7 Days">Last 7 Days</option>
-        <option className={`${theme==="dark"?"bg-gray-800 text-white":"bg-white text-gray-800"}`} value="Last 30 Days">Last 30 Days</option>
-        <option className={`${theme==="dark"?"bg-gray-800 text-white":"bg-white text-gray-800"}`} value="This Month">This Month</option>
-        <option className={`${theme==="dark"?"bg-gray-800 text-white":"bg-white text-gray-800"}`} value="Last Month">Last Month</option>
-        <option className={`${theme==="dark"?"bg-gray-800 text-white":"bg-white text-gray-800"}`} value="Custom Range">Custom Range</option>
-      </select>
+                        if (dateRangeRef.current._flatpickr) {
+                          dateRangeRef.current._flatpickr.setDate([start, end], true);
+                        }
+                      }}
+                      className={`text-sm bg-transparent outline-none ${theme === "dark" ? "text-gray-300" : "text-gray-600"
+                        }`}
+                    >
+                      <option className={`${theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800"}`} value="">Select Range</option>
+                      <option className={`${theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800"}`} value="Today">Today</option>
+                      <option className={`${theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800"}`} value="Yesterday">Yesterday</option>
+                      <option className={`${theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800"}`} value="Last 7 Days">Last 7 Days</option>
+                      <option className={`${theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800"}`} value="Last 30 Days">Last 30 Days</option>
+                      <option className={`${theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800"}`} value="This Month">This Month</option>
+                      <option className={`${theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800"}`} value="Last Month">Last Month</option>
+                      <option className={`${theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800"}`} value="Custom Range">Custom Range</option>
+                    </select>
     </div>
 
     {/* 🔍 Search Transaction */}
@@ -357,9 +353,9 @@ const Ledger = () => {
         }`}
       >
         <option className={`${theme==="dark"?"bg-gray-800 text-white":"bg-white text-gray-800"}`} value="All">All Transactions</option>
-        <option className={`${theme==="dark"?"bg-gray-800 text-white":"bg-white text-gray-800"}`} value="SUCCESS">Success</option>
-        <option className={`${theme==="dark"?"bg-gray-800 text-white":"bg-white text-gray-800"}`} value="PENDING">Pending</option>
-        <option className={`${theme==="dark"?"bg-gray-800 text-white":"bg-white text-gray-800"}`} value="FAILED">Failed</option>
+        <option className={`${theme==="dark"?"bg-gray-800 text-white":"bg-white text-gray-800"}`} value="CR">Credit</option>
+        <option className={`${theme==="dark"?"bg-gray-800 text-white":"bg-white text-gray-800"}`} value="DR">Debit</option>
+
       </select>
     </div>
 
@@ -466,7 +462,12 @@ const Ledger = () => {
                       </div>
                     </td>
 
-                    <td className="px-4 py-4">{txn.post_balance}</td>
+                    <td className="px-4 py-4">{txn.post_balance != null
+                ? Number(txn.post_balance).toLocaleString('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })
+                : '0.00'}</td>
                     <td className="px-4 py-4">{txn.remark}</td>
 
                     <td className="px-4 py-4">
@@ -522,7 +523,7 @@ const Ledger = () => {
                     {Math.min(page * perPage, totaldata)} of {totaldata}
                   </p>
 
-                  {/* Prev button */}
+           
                   <button
                     onClick={() => setPage(page - 1)}
                     disabled={page === 1}
@@ -536,7 +537,7 @@ const Ledger = () => {
                     <i className="fa-solid fa-arrow-left"></i>
                   </button>
 
-                  {/* Page numbers */}
+                 
                   {Array.from({ length: 3 }, (_, i) => page + i).map((num) => (
   num <= totalpage && ( 
     <button
@@ -558,7 +559,7 @@ const Ledger = () => {
 ))}
 
 
-                  {/* Next button */}
+                 
                   <button
                     onClick={() => setPage(page + 1)}
                     disabled={page === totalpage}

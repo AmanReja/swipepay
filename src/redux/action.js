@@ -320,6 +320,13 @@ export const getall_payoutlog_data = (searchtr,trstatus,searchdate_start,searchd
   const data = await res.json();
   dispatch({ type: "GETALL_PAYOUTLOG_DATA", payload: data });
 };
+
+
+
+
+
+
+
 export const getall_bulkpay_data = () => async (dispatch) => {
   const token = localStorage.getItem("token") || {};
   const res = await fetch(

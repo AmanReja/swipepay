@@ -6,8 +6,8 @@ import { useParams, useLocation } from "react-router-dom";
 import bg3 from "../assets/images/bg-3.png";
 import Subfooter from "./Subfooter";
 import { useSelector, useDispatch } from "react-redux";
-import { getall_payoutlog_data, getall_wallet_company_data, get_vertualaccountdetails, get_collections, collection_report, Payout_report,summaryreport } from "../redux/action";
-import { BadgeCheck, ArrowDownLeft, ArrowUpRight, CreditCard } from "lucide-react"
+import { getall_payoutlog_data, getall_wallet_company_data, get_vertualaccountdetails, get_collections, collection_report, Payout_report, summaryreport } from "../redux/action";
+import { BadgeCheck, ArrowDownLeft, ChevronDown, ArrowUpRight, CreditCard,Check } from "lucide-react"
 import Chart2 from "./Chart2";
 
 import { Theme } from "../Contexts/Theme";
@@ -17,6 +17,8 @@ import { Theme } from "../Contexts/Theme";
 const Summery = () => {
   const { theme, setTheme } = useContext(Theme)
   const [daterange, setDaterange] = useState("")
+  const [open, setOpen] = useState(false);
+  const [selected,setSelected] = useState("")
 
 
   console.log(22, daterange);
@@ -32,9 +34,9 @@ const Summery = () => {
   const vaaccountdata = useSelector((state) => state.vaaccount.vaaccount);
 
 
-  const summaryReport = useSelector((state)=>state.summarydata.summarydata);
-  console.log(36,summaryReport);
- 
+  const summaryReport = useSelector((state) => state.summarydata.summarydata);
+  console.log(36, summaryReport);
+
 
 
 
@@ -54,13 +56,13 @@ const Summery = () => {
     dispatch(getall_wallet_company_data())
     dispatch(get_vertualaccountdetails())
     dispatch(get_collections())
-    dispatch(summaryreport(daterange))
+    dispatch(summaryreport(selected))
 
-  }, [dispatch, daterange]);
+  }, [dispatch, selected,daterange]);
 
 
- 
-  
+
+
 
 
   const location = useLocation();
@@ -89,7 +91,7 @@ const Summery = () => {
   const icons = [
     {
       icon: <ArrowUpRight size={44} className={`${theme === "dark" ? "text-white" : "text-gray-600"}`} />,
-      num:summaryReport?.totalPayoutCount
+      num: summaryReport?.totalPayoutCount
 
       ,
       text: "Payouts",
@@ -97,7 +99,7 @@ const Summery = () => {
     },
     {
       icon: <ArrowDownLeft size={44} className={`${theme === "dark" ? "text-white" : "text-gray-600"}`} />,
-      num:summaryReport?.totalCollectionCount
+      num: summaryReport?.totalCollectionCount
 
       ,
       text: "Collection",
@@ -117,6 +119,29 @@ const Summery = () => {
     },
   ];
 
+
+
+  const opt = [
+    { value: "today" },
+    { value: "yesterday" },
+    { value: "week" },
+    { value: "month" }
+  ];
+
+
+  const handelselectopen = () => {
+    setOpen((prev) => !prev)
+  }
+
+  const handleSelect =(opt)=>{
+     setSelected(opt.value)
+  }
+
+
+console.log(141,selected);
+
+
+
   return (
 
     <>
@@ -135,26 +160,47 @@ const Summery = () => {
               Dashboard Summary
             </h1>
 
-            <div className="h-full w-full sm:w-[360px] gap-[10px] flex">
+            <div className="h-full w-full sm:w-[560px] gap-[10px] flex">
+
+          
+
+<div className="relative w-[180px]">
+  
+  <button
+    onClick={() => handelselectopen()}
+    className=" flex justify-between w-full items-center px-4 py-2 bg-white rounded-xl border-[1px] border-gray-300 transition-all"
+  >
+    <span>{selected ? selected : "Select date"}</span>
+    <ChevronDown
+      className={`w-5 h-5 transition-transform ${open ? "rotate-180" : ""}`}
+    />
+  </button>
+
+  
+  {open && (
+    <ul
+      onClick={() => handelselectopen()}
+      className="absolute left-0 right-0 mt-2 bg-white rounded-xl shadow-lg max-h-60 overflow-y-auto z-10 animate-fade-in"
+    >
+      {opt.map((option, i) => (
+        <li
+          key={i}
+          onClick={() => handleSelect(option)}
+          className="px-4 py-2 flex justify-between items-center cursor-pointer hover:bg-gray-100 transition-colors"
+        >
+          <span>{option.value}</span>
+          {selected === option.value && (
+            <Check className="w-4 h-4 text-blue-500" />
+          )}
+        </li>
+      ))}
+    </ul>
+  )}
+</div>
+
 
               <div
-                className={`border-[1px] rounded-sm flex h-[40px] w-[125px]  gap-[2px] p-[5px] 
-          ${theme === "dark" ? "border-gray-600" : "border-gray-400"}`}
-              >
-                <select value={daterange} onChange={(e) => {
-                  setDaterange(e.target.value)
-                }} className="outline-none" name="daterange" id="">
-                  
-                  <option selected value="today">Today</option>
-                  <option value="yesterday">Yesterday</option>
-                  <option value="week">Last 7 Dayes</option>
-                  <option value="month">Last Month</option>
-                 
-                </select>
-              </div>
-
-              <div
-                className={`border-dashed rounded flex flex-col w-[105px] text-center gap-[2px] p-[5px] 
+                className={`border-dashed rounded flex flex-col w-[145px]  border-[1px] text-center gap-[2px] p-[5px] 
           ${theme === "dark" ? "border-gray-600" : "border-gray-400"}`}
               >
                 <p
@@ -173,7 +219,7 @@ const Summery = () => {
 
 
               <div
-                className={`border-dashed rounded flex flex-col w-[105px] text-center gap-[2px] p-[5px] 
+                className={`border-dashed rounded flex flex-col w-[145px]  border-[1px] text-center gap-[2px] p-[5px] 
           ${theme === "dark" ? "border-gray-600" : "border-gray-400"}`}
               >
                 <p
@@ -192,7 +238,7 @@ const Summery = () => {
 
 
               <div
-                className={`border-dashed rounded flex flex-col w-[105px] text-center gap-[2px] p-[5px] 
+                className={`border-dashed rounded flex flex-col w-[145px] text-center gap-[2px]  border-[1px] p-[5px] 
           ${theme === "dark" ? "border-gray-600" : "border-gray-400"}`}
               >
                 <p
@@ -300,11 +346,11 @@ const Summery = () => {
 
             <div className="rounded-2xl flex w-full sm:w-[50%] h-[100%] flex-col justify-center items-center">
               <header
-                className={`w-full h-[18%] flex justify-around items-center rounded-t-2xl shadow-sm border 
+                className={`w-full h-[18%] flex justify-between items-center rounded-t-2xl shadow-sm p-4 border 
           ${theme === "dark" ? "border-gray-700 bg-gradient-to-r from-gray-700 to-gray-800" : "border-gray-200 bg-gradient-to-r from-sky-50 to-sky-100"}`}
               >
                 <h1
-                  className={`text-[20px] font-semibold ${theme === "dark" ? "text-gray-200" : "text-gray-700"
+                  className={`text-[20px]  font-semibold ${theme === "dark" ? "text-gray-200" : "text-gray-700"
                     }`}
                 >
                   Earnings
