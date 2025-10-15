@@ -7,8 +7,9 @@ import "../App.css"
 import "flatpickr/dist/themes/airbnb.css";
 import flatpickr from "flatpickr";
 import Contentloader from "../Components/Contentloader";
-
+import {Check,ChevronDown} from "lucide-react";
 import { Theme } from "../Contexts/Theme";
+
 
 
 
@@ -17,10 +18,42 @@ const Report = () => {
   const [load, setLoad] = useState(false);
   const [searchtr, setSearchtr] = useState("");
   const [trstatus, setTrstatus] = useState("");
-  const [formdatastr, setFormdatastr] = useState("")
-  const [formdataend, setFormdataend] = useState("")
-  const [page, setPage] = useState(1)
+  const [formdatastr, setFormdatastr] = useState("");
+  const [formdataend, setFormdataend] = useState("");
+  const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
+  const [selected,setSelected]=useState("select range");
+  const [open,setOpen]=useState(false);
+
+
+
+
+
+
+
+  const options = [
+    "Today",
+    "Yesterday",
+    "Last 7 Days",
+    "Last 30 Days",
+    "This Month",
+    "Last Month",
+    "Custom Range",
+  ];
+
+
+
+
+  const handelselectopen = () => {
+    setOpen((prev) => !prev)
+  }
+
+  const handleSelect =(opt)=>{
+     setSelected(opt)
+  }
+
+  console.log(selected,57);
+
 
 
 
@@ -305,89 +338,105 @@ const Report = () => {
                   </div>
 
                   {/* 🔽 Dropdown for Quick Ranges */}
-                  <div
-                    className={`px-3 py-1 rounded-lg border ${theme === "dark"
-                      ? "bg-gray-800 border-gray-600 text-gray-200"
-                      : "bg-white border-gray-300 text-gray-700"
-                      }`}
-                  >
-                    <select
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        const today = new Date();
-                        let start, end;
+                  <div className="relative w-[180px]">
+  <button
+    onClick={() => setOpen(!open)}
+    className={`flex justify-between w-full items-center px-4 py-2 rounded-lg border text-sm transition-all ${
+      theme === "dark"
+        ? "bg-gray-800 border-gray-600 text-gray-200"
+        : "bg-white border-gray-300 text-gray-700"
+    }`}
+  >
+    <span>{selected}</span>
+    <ChevronDown
+      className={`w-4 h-4 transition-transform ${open ? "rotate-180" : ""}`}
+    />
+  </button>
 
-                        if (value === "Custom Range") {
-                          setDate({ startDate: null, endDate: null });
-                          setFormdatastr("");
-                          setFormdataend("");
-                          if (dateRangeRef.current._flatpickr) {
-                            dateRangeRef.current._flatpickr.clear();
-                          }
-                          return;
-                        }
+  {open && (
+    <ul
+      className={`absolute left-0 right-0 mt-2 rounded-lg shadow-lg border z-20 max-h-60 overflow-y-auto ${
+        theme === "dark"
+          ? "bg-gray-800 border-gray-600 text-gray-100"
+          : "bg-white border-gray-200 text-gray-800"
+      }`}
+    >
+      {options.map((option) => (
+        <li
+          key={option}
+          onClick={() => {
+            setSelected(option);
+            setOpen(false);
 
-                        switch (value) {
-                          case "Today":
-                            start = end = today;
-                            break;
-                          case "Yesterday":
-                            start = end = new Date(today);
-                            start.setDate(today.getDate() - 1);
-                            break;
-                          case "Last 7 Days":
-                            start = new Date(today);
-                            start.setDate(today.getDate() - 6);
-                            end = today;
-                            break;
-                          case "Last 30 Days":
-                            start = new Date(today);
-                            start.setDate(today.getDate() - 29);
-                            end = today;
-                            break;
-                          case "This Month":
-                            start = new Date(today.getFullYear(), today.getMonth(), 1);
-                            end = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-                            break;
-                          case "Last Month":
-                            start = new Date(today.getFullYear(), today.getMonth() - 1, 1);
-                            end = new Date(today.getFullYear(), today.getMonth(), 0);
-                            break;
-                          case "Custom Range":
-                          case "":  
-                            start = end = null;
-                            setFormdatastr("");
-                            setFormdataend("");
-                            setDate({ startDate: null, endDate: null });
-                            if (dateRangeRef.current._flatpickr) {
-                              dateRangeRef.current._flatpickr.clear();
-                            }
-                            return; 
-                          default:
-                            return;
-                        }
+            const today = new Date();
+            let start, end;
 
-                        setDate({ startDate: start, endDate: end });
-                        setFormdatastr(formatDate(start));
-                        setFormdataend(formatDate(end));
+            if (option === "Custom Range") {
+              setDate({ startDate: null, endDate: null });
+              setFormdatastr("");
+              setFormdataend("");
+              if (dateRangeRef.current?._flatpickr)
+                dateRangeRef.current._flatpickr.clear();
+              return;
+            }
 
-                        if (dateRangeRef.current._flatpickr) {
-                          dateRangeRef.current._flatpickr.setDate([start, end], true);
-                        }
-                      }}
-                      className={`text-sm bg-transparent outline-none ${theme === "dark" ? "text-gray-300" : "text-gray-600"
-                        }`}
-                    >
-                      <option className={`${theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800"}`} value="">Select Range</option>
-                      <option className={`${theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800"}`} value="Today">Today</option>
-                      <option className={`${theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800"}`} value="Yesterday">Yesterday</option>
-                      <option className={`${theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800"}`} value="Last 7 Days">Last 7 Days</option>
-                      <option className={`${theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800"}`} value="Last 30 Days">Last 30 Days</option>
-                      <option className={`${theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800"}`} value="This Month">This Month</option>
-                      <option className={`${theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800"}`} value="Last Month">Last Month</option>
-                      <option className={`${theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800"}`} value="Custom Range">Custom Range</option>
-                    </select>
-                  </div>
+            switch (option) {
+              case "Today":
+                start = end = today;
+                break;
+              case "Yesterday":
+                start = end = new Date(today);
+                start.setDate(today.getDate() - 1);
+                break;
+              case "Last 7 Days":
+                start = new Date(today);
+                start.setDate(today.getDate() - 6);
+                end = today;
+                break;
+              case "Last 30 Days":
+                start = new Date(today);
+                start.setDate(today.getDate() - 29);
+                end = today;
+                break;
+              case "This Month":
+                start = new Date(today.getFullYear(), today.getMonth(), 1);
+                end = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+                break;
+              case "Last Month":
+                start = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+                end = new Date(today.getFullYear(), today.getMonth(), 0);
+                break;
+              default:
+                start = end = null;
+            }
+
+            if (start && end) {
+              setDate({ startDate: start, endDate: end });
+              setFormdatastr(formatDate(start));
+              setFormdataend(formatDate(end));
+              if (dateRangeRef.current?._flatpickr)
+                dateRangeRef.current._flatpickr.setDate([start, end], true);
+            }
+          }}
+          className={`px-4 py-2 flex justify-between items-center cursor-pointer text-sm transition-colors ${
+            theme === "dark"
+              ? "hover:bg-gray-700"
+              : "hover:bg-gray-100"
+          } ${selected === option ? "font-semibold" : ""}`}
+        >
+          <span>{option}</span>
+          {selected === option && (
+            <Check
+              className={`w-4 h-4 ${
+                theme === "dark" ? "text-blue-400" : "text-blue-600"
+              }`}
+            />
+          )}
+        </li>
+      ))}
+    </ul>
+  )}
+</div>
 
                   {/* 🔍 Search Transaction */}
                   <div

@@ -64,6 +64,8 @@ export const loginReducer = (state=initialloginState,action)=>{
   }
   
 }
+
+
 const initialsendotp ={
   otp:[],
 }
