@@ -44,8 +44,6 @@ const Report = () => {
     setSelected(opt);
   };
 
-  console.log(selected, 57);
-
   const [date, setDate] = useState({ startDate: null, endDate: null });
 
   const formatDate = (date) => new Intl.DateTimeFormat("en-CA").format(date);
@@ -85,11 +83,8 @@ const Report = () => {
   const payoutlogreport = useSelector(
     (state) => state.payoutlog.payoutlog.summary
   );
-  console.log(86, payoutlogreport);
 
   const payoutlogdata = useSelector((state) => state.payoutlog.payoutlog.data);
-
-  console.log(93, payoutlogdata);
 
   const totalpage = useSelector(
     (state) => state.payoutlog.payoutlog.pagination?.totalPages
@@ -120,8 +115,6 @@ const Report = () => {
     }
     fetchdata();
   }, [dispatch, searchtr, trstatus, formdatastr, formdataend, page, perPage]);
-
-  console.log(132, formdatastr, formdataend);
 
   const downloadexcel = () => {
     dispatch(
