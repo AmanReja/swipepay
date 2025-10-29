@@ -21,6 +21,7 @@ export const COLLECTION_REPORT = "COLLECTION_REPORT";
 export const SUMMARY = "SUMMARY";
 
 
+
 // https://acs.busybox.in //
 // http://192.168.1.43:3000 //
 
@@ -185,39 +186,41 @@ export const verify_otp = (otp,setLoad,setError,navigate)=>async(dispatch)=>{
 }
 
 
-
-export const login = (olduser,navigate,setWrong)=>async(dispatch)=>{
-
-  
+export const login = (olduser, navigate, setWrong) => async (dispatch) => {
+  try {
     const request = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(olduser),
       credentials: "include",
     };
-   
 
     const res = await fetch(`${baseUrl}/v1/user/login`, request);
     const data = await res.json();
-    console.log(22, data);
-    if (res.status === 401) {
-      alert("invalid");
-      setWrong(true)
-     
+    console.log("Login Response:", data);
+
+    if (!res.ok) {
+      setWrong(true);
+      alert(data?.message || "Invalid email or password!");
+      return; // Stop further execution
     }
 
-    if (res.status === 200) {
-      
-      navigate("/dashboard/summery?login=success");
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
-      setWrong(false)
-      
-    };
-   
-  dispatch({ type: "LOGIN", payload: data });
+    // ✅ On Success
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("user", JSON.stringify(data.user));
+    setWrong(false);
+    navigate("/dashboard/summery");
+    localStorage.setItem("showLoginToast", "true");
+ 
 
+    dispatch({ type: "LOGIN", payload: data });
+  } catch (error) {
+    console.error("Login Error:", error);
+    setWrong(true);
+    alert("Something went wrong! Please try again later.");
   }
+};
+
 
 
 
@@ -274,51 +277,63 @@ export const getall_ledgerwallet_data =
   };
 
 export const getall_payoutlog_data = (searchtr,trstatus,searchdate_start,searchdate_end,downloadexcl=false,page,pagelimit) => async (dispatch) => {
-  const token = localStorage.getItem("token") || {};
-
-  const params = new URLSearchParams();
-  if (searchtr) params.append("search", searchtr);
-  if (trstatus) params.append("status", trstatus);
-  if (searchdate_start) params.append("start_date", searchdate_start);
-  if (searchdate_end) params.append("end_date", searchdate_end);
-  if(downloadexcl) params.append("download", "excel");
-  if(page) params.append("page", page);
-  if(pagelimit) params.append("limit", pagelimit);
 
 
-  const res = await fetch(
-    `${baseUrl}/v1/user/payouts-logs?${params.toString()}`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
+
+  try {
+    const token = localStorage.getItem("token") || {};
+
+    const params = new URLSearchParams();
+    if (searchtr) params.append("search", searchtr);
+    if (trstatus) params.append("status", trstatus);
+    if (searchdate_start) params.append("start_date", searchdate_start);
+    if (searchdate_end) params.append("end_date", searchdate_end);
+    if(downloadexcl) params.append("download", "excel");
+    if(page) params.append("page", page);
+    if(pagelimit) params.append("limit", pagelimit);
+  
+  
+    const res = await fetch(
+      `${baseUrl}/v1/user/payouts-logs?${params.toString()}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  
+    if (res.status === 401) {
+      localStorage.removeItem("token");
+      window.location.href = "/";
+      return;
     }
-  );
+  
+  
+    if (downloadexcl==true) {
+      const blob = await res.blob();
+      const fileURL = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = fileURL;
+      link.setAttribute("download", "payout_logs.xlsx");
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      return; 
+    }
+  
+  
+    const data = await res.json();
+    dispatch({ type: "GETALL_PAYOUTLOG_DATA", payload: data });
+    
+  } catch (error) {
 
-  if (res.status === 401) {
-    localStorage.removeItem("token");
-    window.location.href = "/";
-    return;
+    console.error("something wet worng");
+    alert("something wet worng")
+    
   }
-
-
-  if (downloadexcl==true) {
-    const blob = await res.blob();
-    const fileURL = window.URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = fileURL;
-    link.setAttribute("download", "payout_logs.xlsx");
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    return; 
-  }
-
-
-  const data = await res.json();
-  dispatch({ type: "GETALL_PAYOUTLOG_DATA", payload: data });
+ 
 };
 
 
@@ -328,6 +343,15 @@ export const getall_payoutlog_data = (searchtr,trstatus,searchdate_start,searchd
 
 
 export const getall_bulkpay_data = () => async (dispatch) => {
+
+
+try {
+  
+} catch (error) {
+  
+}
+
+
   const token = localStorage.getItem("token") || {};
   const res = await fetch(
     `${baseUrl}/v1/user/bulk-pay`,

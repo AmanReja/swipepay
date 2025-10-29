@@ -186,7 +186,7 @@ const Ledger = () => {
   }`}
 >
   {/* Title & description */}
-  <div className="flex flex-col">
+  <div className="flex flex-col ">
     <h1
       className={`text-xl font-semibold ${
         theme === "dark" ? "text-gray-100" : "text-gray-800"
@@ -211,9 +211,9 @@ const Ledger = () => {
 
         <div className="w-full px-[20px] mt-[20px]">
           <div
-            className={`flex w-[100%] h-full flex-col rounded-xl overflow-y-auto border ${theme === "dark"
+            className={`flex w-[100%] h-full flex-col rounded-xl overflow-y-auto border-[1px] ${theme === "dark"
                 ? "bg-gray-900 border-gray-700 text-gray-200"
-                : "bg-white border-gray-100 text-gray-800"
+                : "bg-white border-gray-300 text-gray-800"
               }`}
           >
 

@@ -1,7 +1,7 @@
 import { React, useEffect, useContext, useState } from "react";
 import Hdfc from "../assets/images/HDFC.png";
 import Chart from "./Chart";
-import { ToastContainer, toast, Slide } from "react-toastify";
+import { toast ,Toaster } from "sonner";
 import { useParams, useLocation } from "react-router-dom";
 import bg3 from "../assets/images/bg-3.png";
 import Subfooter from "./Subfooter";
@@ -63,30 +63,24 @@ const Summery = () => {
 
 
 
-
-
-  const location = useLocation();
-  const params = new URLSearchParams(location.search);
-  const loginSuccess = params.get("login");
-
-  const sucesslog = () => {
-    if (loginSuccess === "success") {
-      toast.success("login Successfull", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Slide,
-      });
-    }
-  };
   useEffect(() => {
-    sucesslog();
-  }, [loginSuccess]);
+    const shouldShow = localStorage.getItem("showLoginToast");
+  
+    if (shouldShow === "true") {
+      toast.success("🚀 Login Successful!", {
+        description: "Welcome back to BusyBox!",
+        duration: 2500,
+      });
+  
+     
+        localStorage.removeItem("showLoginToast");
+      
+    }
+  }, []);
+
+
+
+
 
   const icons = [
     {
@@ -147,7 +141,18 @@ console.log(141,selected);
   return (
 
     <>
-      <ToastContainer></ToastContainer>
+       <Toaster
+        position="top-right"
+        richColors
+        closeButton
+        toastOptions={{
+          style: {
+            borderRadius: "10px",
+            fontSize: "14px",
+            padding: "10px 14px",
+           }
+        }}
+      />
       <div
         className={`w-[100%] 2xl:h-[85%] xl:h-[80%] h-[78%] flex flex-col 
   ${theme === "dark" ? "bg-gray-900 text-gray-100" : "bg-white text-gray-900"}`}

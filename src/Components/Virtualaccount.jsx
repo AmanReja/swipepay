@@ -206,7 +206,7 @@ const Virtualaccount = () => {
 </th>
                   <th className="px-4 py-3">
   <div className="flex items-center space-x-1">
-    <p>Account Number</p>
+    <p>Account Details</p>
     <div className="flex flex-col justify-center items-center leading-none">
       <svg xmlns="http://www.w3.org/2000/svg" height="14px" viewBox="0 -960 960 960" width="14px" fill="#1f1f1f" className="-mb-[4px]">
         <path d="M480-528 296-344l-56-56 240-240 240 240-56 56-184-184Z"/>
@@ -219,7 +219,7 @@ const Virtualaccount = () => {
 </th>
 
                   <th className="px-4 py-3"> <div className="flex items-center space-x-1">
-    <p>Contact Details</p>
+    <p>Created</p>
     <div className="flex flex-col justify-center items-center leading-none">
       <svg xmlns="http://www.w3.org/2000/svg" height="14px" viewBox="0 -960 960 960" width="14px" fill="#dbdad7" className="-mb-[4px]">
         <path d="M480-528 296-344l-56-56 240-240 240 240-56 56-184-184Z"/>
@@ -230,7 +230,7 @@ const Virtualaccount = () => {
     </div>
   </div></th>
                   <th className="px-4 py-3"> <div className="flex items-center space-x-1">
-    <p>Creation Date
+    <p>Validity
 </p>
     <div className="flex flex-col justify-center items-center leading-none">
       <svg xmlns="http://www.w3.org/2000/svg" height="14px" viewBox="0 -960 960 960" width="14px" fill="#1f1f1f" className="-mb-[4px]">

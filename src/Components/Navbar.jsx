@@ -3,9 +3,14 @@ import busybox from "../assets/icons/busybox.png";
 import i5 from "../assets/images/5.png";
 import { Link, useNavigate } from "react-router-dom";
 import { Theme } from "../Contexts/Theme";
+import { getone_user, update_user_details } from "../redux/action";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "sonner";
 
 const Navbar = () => {
+  
   const navigate = useNavigate()
+  const dispatch =useDispatch()
   const { theme, setTheme } = useContext(Theme)
 
   const [open, setOpen] = useState(false);
@@ -29,6 +34,15 @@ const Navbar = () => {
   }
 
   console.log(31, theme);
+
+
+
+useEffect(()=>{dispatch(getone_user())},[dispatch]);
+const getoneuser = useSelector((state) => state.getoneuser.getoneuser.user);
+
+
+
+
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
@@ -95,11 +109,18 @@ const Navbar = () => {
         alt=""
       />
       <div className="flex flex-col">
-        <h1 className="font-bold text-xl">Aakash</h1>
-        <p className="text-sm text-gray-500">aakash@busybox.in</p>
+        <h1 className="font-bold text-xl">{getoneuser?.name}</h1>
+        <p className="text-sm text-gray-500">{getoneuser?.email}</p>
       </div>
       <button
-       
+       onClick={()=>{toast("Event has been created", {
+        description: "Sunday, December 03, 2023 at 9:00 AM",
+        action: {
+          label: "Undo",} })}
+        
+        
+      
+    }
         className="p-1 bg-blue-200 rounded-[5px] border-blue-600 border-[1px] text-blue-500 text-sm"
       >
         Pro
