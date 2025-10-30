@@ -9,6 +9,7 @@ import flatpickr from "flatpickr";
 import Contentloader from "../Components/Contentloader";
 
 import { Theme } from "../Contexts/Theme";
+import {ChevronDown ,Check } from  "lucide-react"
 
 
 
@@ -21,10 +22,22 @@ const Collection = () => {
   const [formdataend, setFormdataend] = useState("")
   const [page, setPage] = useState(1)
   const [perPage, setPerPage] = useState(10);
+  const [selected, setSelected] = useState("Today");
+  const [open, setOpen] = useState(false);
+
 
 
 
   const [date, setDate] = useState({ startDate: null, endDate: null })
+
+  useEffect(() => {
+    const today = new Date();
+    setSelected("Today");
+    setDate({ startDate: today, endDate: today });
+    setFormdatastr(formatDate(today));
+    setFormdataend(formatDate(today));
+  }, []);
+
 
 
   const formatDate = (date) => new Intl.DateTimeFormat("en-CA").format(date);
@@ -39,7 +52,15 @@ const Collection = () => {
 
 
 
-
+  const options = [
+    "Today",
+    "Yesterday",
+    "Last 7 Days",
+    "Last 30 Days",
+    "This Month",
+    "Last Month",
+    "Custom Range",
+  ];
 
 
   const dateRangeRef = useRef(null);
@@ -106,7 +127,7 @@ const Collection = () => {
 
 
   useEffect(() => {
-
+    if (!formdatastr || !formdataend) return; 
     async function fetchdata() {
       setLoad(true)
 
@@ -145,42 +166,33 @@ const Collection = () => {
             className={`w-full h-[80px] flex items-center px-5 rounded-xl ${theme === "dark" ? "bg-gray-900" : "bg-white"
               }`}
           >
-            <div className="flex gap-[5px] h-full items-center w-full">
-              <h1
-                className={`text-xl font-semibold ${theme === "dark" ? "text-gray-100" : "text-gray-800"
-                  }`}
-              >
-                Collection Report
-              </h1>
+         <div className="flex flex-col w-full mb-4">
+  {/* Title */}
+  <h1
+    className={`text-2xl font-semibold ${
+      theme === "dark" ? "text-gray-100" : "text-gray-800"
+    }`}
+  >
+    Collection Report
+  </h1>
 
-              <div
-                className={`flex items-center text-sm space-x-1 mt-1 sm:mt-0 ${theme === "dark" ? "text-gray-400" : "text-gray-500"
-                  }`}
-              >
-                <a
-                  href="#"
-                  className={`hover:underline ${theme === "dark" ? "text-gray-400" : "text-gray-400"
-                    }`}
-                >
-                  Home
-                </a>
-                <span>/</span>
-                <a
-                  href="#"
-                  className={`hover:underline ${theme === "dark" ? "text-gray-400" : "text-gray-400"
-                    }`}
-                >
-                  Report
-                </a>
-                <span>/</span>
-                <span
-                  className={`font-medium ${theme === "dark" ? "text-gray-200" : "text-gray-700"
-                    }`}
-                >
-                  Collection Transaction Report
-                </span>
-              </div>
-            </div>
+  {/* Subtitle */}
+  <p
+    className={`text-sm mt-1 ${
+      theme === "dark" ? "text-gray-400" : "text-gray-600"
+    }`}
+  >
+    Overview of all collection transactions including transaction ID, amount, status, and date.
+  </p>
+
+  {/* Decorative Divider */}
+  <div
+    className={`mt-3 h-[1px] w-full ${
+      theme === "dark" ? "bg-gray-700" : "bg-gray-200"
+    }`}
+  />
+</div>
+
           </div>
 
 
@@ -264,7 +276,7 @@ const Collection = () => {
             <div
               className={`flex w-full h-full flex-col rounded-xl overflow-y-auto border ${theme === "dark"
                 ? "bg-gray-900 border-gray-700"
-                : "bg-white border-gray-100"
+                : "bg-white border-gray-400"
                 }`}
             >
 
@@ -303,81 +315,128 @@ const Collection = () => {
                   </div>
 
                   {/* 🔽 Dropdown for Quick Ranges */}
-                  <div
-                    className={`px-3 py-1 rounded-lg border ${theme === "dark"
-                      ? "bg-gray-800 border-gray-600 text-gray-200"
-                      : "bg-white border-gray-300 text-gray-700"
-                      }`}
+                  <div className="relative w-[180px]">
+                  <button
+                    onClick={() => setOpen(!open)}
+                    className={`flex justify-between w-full items-center px-4 py-2 rounded-lg border text-sm transition-all ${
+                      theme === "dark"
+                        ? "bg-gray-800 border-gray-600 text-gray-200"
+                        : "bg-white border-gray-300 text-gray-700"
+                    }`}
                   >
-                  <select
-  onChange={(e) => {
-    const value = e.target.value;
-    const today = new Date();
-    let start, end;
+                    <span>{selected}</span>
+                    <ChevronDown
+                      className={`w-4 h-4 transition-transform ${
+                        open ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
 
-    switch (value) {
-      case "Today":
-        start = end = today;
-        break;
-      case "Yesterday":
-        start = end = new Date(today);
-        start.setDate(today.getDate() - 1);
-        break;
-      case "Last 7 Days":
-        start = new Date(today);
-        start.setDate(today.getDate() - 6);
-        end = today;
-        break;
-      case "Last 30 Days":
-        start = new Date(today);
-        start.setDate(today.getDate() - 29);
-        end = today;
-        break;
-      case "This Month":
-        start = new Date(today.getFullYear(), today.getMonth(), 1);
-        end = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-        break;
-      case "Last Month":
-        start = new Date(today.getFullYear(), today.getMonth() - 1, 1);
-        end = new Date(today.getFullYear(), today.getMonth(), 0);
-        break;
-      case "Custom Range":
-      case "":  // handle "Select Range"
-        start = end = null;
-        setFormdatastr("");
-        setFormdataend("");
-        setDate({ startDate: null, endDate: null });
-        if (dateRangeRef.current._flatpickr) {
-          dateRangeRef.current._flatpickr.clear();
-        }
-        return; // exit early
-      default:
-        return;
-    }
-    
+                  {open && (
+                    <ul
+                      className={`fixed top-[48%] w-[200px] left-[400px] right-0 mt-2 rounded-lg shadow-lg border z-20 max-h-60 overflow-y-auto ${
+                        theme === "dark"
+                          ? "bg-gray-800 border-gray-600 text-gray-100"
+                          : "bg-white border-gray-200 text-gray-800"
+                      }`}
+                    >
+                      {options.map((option) => (
+                        <li
+                          key={option}
+                          onClick={() => {
+                            setSelected(option);
+                            setOpen(false);
 
-    // For all other ranges, update state
-    setDate({ startDate: start, endDate: end });
-    setFormdatastr(start ? formatDate(start) : "");
-    setFormdataend(end ? formatDate(end) : "");
+                            const today = new Date();
+                            let start, end;
 
-    if (dateRangeRef.current._flatpickr && start && end) {
-      dateRangeRef.current._flatpickr.setDate([start, end], true);
-    }
-  }}
-  className={`text-sm bg-transparent outline-none ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}
->
-  <option className={`${theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800"}`} value="">Select Range</option>
-  <option value="Today">Today</option>
-  <option value="Yesterday">Yesterday</option>
-  <option value="Last 7 Days">Last 7 Days</option>
-  <option value="Last 30 Days">Last 30 Days</option>
-  <option value="This Month">This Month</option>
-  <option value="Last Month">Last Month</option>
-  <option value="Custom Range">Custom Range</option>
-</select>
+                            if (option === "Custom Range") {
+                              setDate({ startDate: null, endDate: null });
+                              setFormdatastr("");
+                              setFormdataend("");
+                              if (dateRangeRef.current?._flatpickr)
+                                dateRangeRef.current._flatpickr.clear();
+                              return;
+                            }
 
-                  </div>
+                            switch (option) {
+                              case "Today":
+                                start = end = today;
+                                break;
+                              case "Yesterday":
+                                start = end = new Date(today);
+                                start.setDate(today.getDate() - 1);
+                                break;
+                              case "Last 7 Days":
+                                start = new Date(today);
+                                start.setDate(today.getDate() - 6);
+                                end = today;
+                                break;
+                              case "Last 30 Days":
+                                start = new Date(today);
+                                start.setDate(today.getDate() - 29);
+                                end = today;
+                                break;
+                              case "This Month":
+                                start = new Date(
+                                  today.getFullYear(),
+                                  today.getMonth(),
+                                  1
+                                );
+                                end = new Date(
+                                  today.getFullYear(),
+                                  today.getMonth() + 1,
+                                  0
+                                );
+                                break;
+                              case "Last Month":
+                                start = new Date(
+                                  today.getFullYear(),
+                                  today.getMonth() - 1,
+                                  1
+                                );
+                                end = new Date(
+                                  today.getFullYear(),
+                                  today.getMonth(),
+                                  0
+                                );
+                                break;
+                              default:
+                                start = end = null;
+                            }
+
+                            if (start && end) {
+                              setDate({ startDate: start, endDate: end });
+                              setFormdatastr(formatDate(start));
+                              setFormdataend(formatDate(end));
+                              if (dateRangeRef.current?._flatpickr)
+                                dateRangeRef.current._flatpickr.setDate(
+                                  [start, end],
+                                  true
+                                );
+                            }
+                          }}
+                          className={`px-4 py-2 flex justify-between items-center cursor-pointer text-sm transition-colors ${
+                            theme === "dark"
+                              ? "hover:bg-gray-700"
+                              : "hover:bg-gray-100"
+                          } ${selected === option ? "font-semibold" : ""}`}
+                        >
+                          <span>{option}</span>
+                          {selected === option && (
+                            <Check
+                              className={`w-4 h-4 ${
+                                theme === "dark"
+                                  ? "text-blue-400"
+                                  : "text-blue-600"
+                              }`}
+                            />
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
 
                   {/* 🔍 Search Transaction */}
                   <div
@@ -461,7 +520,7 @@ const Collection = () => {
                 <tbody className="text-[12px] font-semibold">
                   {load
                     ? Array.from({ length: 3 }).map((_, i) => <Contentloader />)
-                    : collectiondata?.map((txn, i) => (
+                    : Array.isArray(collectiondata)&&collectiondata.length>0?collectiondata.map((txn, i) => (
                       <tr
                         key={i}
                         className={`border-b ${theme === "dark"
@@ -471,7 +530,7 @@ const Collection = () => {
                       >
                         <td className="px-4 py-2">
                           <span
-                            className={`text-white rounded-[3px] px-[13px] py-[2px] text-center min-w-[80px] font-bold text-[12px] ${txn.status === "success"
+                            className={`text-white rounded-[4px] uppercase  min-w-[80px] text-center px-[5px] py-[2px] font-semibold text-[11px] ${txn.status === "success"
                               ? "bg-green-400"
                               : txn.status === "pending"
                                 ? "bg-yellow-400"
@@ -507,7 +566,11 @@ const Collection = () => {
                         <td className="px-4 py-5 text-center">{txn.payment_mode
                         }</td>
                       </tr>
-                    ))}
+                    )):<tr>
+                    <td colSpan={8} className="text-center py-4 text-gray-600">
+                      No data found
+                    </td>
+                  </tr>}
                 </tbody>
               </table>
               {totalpage > 0 ? (
@@ -596,14 +659,7 @@ const Collection = () => {
 
                 </div>
               ) : (
-                <div
-                  className={`flex items-center justify-between px-4 py-3 border-t text-sm ${theme === "dark"
-                    ? "bg-gray-900 text-gray-300 border-gray-700"
-                    : "bg-white text-gray-600 border-gray-200"
-                    }`}
-                >
-                  <h1 className="text-2xl w-full text-center">No data found</h1>
-                </div>
+               ""
               )}
 
 

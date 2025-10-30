@@ -23,7 +23,7 @@ const Report = () => {
   const [formdataend, setFormdataend] = useState("");
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
-  const [selected, setSelected] = useState("select range");
+  const [selected, setSelected] = useState("Today");
   const [open, setOpen] = useState(false);
 
   const options = [
@@ -45,6 +45,19 @@ const Report = () => {
   };
 
   const [date, setDate] = useState({ startDate: null, endDate: null });
+
+
+  useEffect(() => {
+    const today = new Date();
+    setSelected("Today");
+    setDate({ startDate: today, endDate: today });
+    setFormdatastr(formatDate(today));
+    setFormdataend(formatDate(today));
+  }, []);
+
+
+
+
 
   const formatDate = (date) => new Intl.DateTimeFormat("en-CA").format(date);
 
@@ -95,6 +108,7 @@ const Report = () => {
   );
 
   useEffect(() => {
+    if (!formdatastr || !formdataend) return; 
     async function fetchdata() {
       setLoad(true);
 
@@ -109,7 +123,7 @@ const Report = () => {
           perPage
         )
       );
-      await getall_payoutlog_data();
+    
 
       setLoad(false);
     }
@@ -118,7 +132,7 @@ const Report = () => {
 
   const downloadexcel = () => {
     dispatch(
-      get_collections(searchtr, trstatus, formdatastr, formdataend, true)
+      getall_payoutlog_data(searchtr, trstatus, formdatastr, formdataend, true)
     );
   };
 
@@ -331,7 +345,7 @@ const Report = () => {
 
                     {open && (
                       <ul
-                        className={`absolute left-0 right-0 mt-2 rounded-lg shadow-lg border z-20 max-h-60 overflow-y-auto ${
+                        className={`fixed top-[48%] w-[200px] left-[400px]  right-0 mt-2 rounded-lg shadow-lg border z-20 max-h-60 overflow-y-auto ${
                           theme === "dark"
                             ? "bg-gray-800 border-gray-600 text-gray-100"
                             : "bg-white border-gray-200 text-gray-800"
@@ -622,17 +636,11 @@ const Report = () => {
                       </tr>
                     ))
                   ) : (
-                    <div
-                      className={`flex items-center justify-between px-4 py-3 border-t text-sm ${
-                        theme === "dark"
-                          ? "bg-gray-900 text-gray-300 border-gray-700"
-                          : "bg-white text-gray-600 border-gray-200"
-                      }`}
-                    >
-                      <h1 className="text-2xl w-full text-center">
-                        No data found
-                      </h1>
-                    </div>
+                    <tr>
+                    <td colSpan={8} className="text-center py-4 text-gray-600">
+                      No data found
+                    </td>
+                  </tr>
                   )}
                 </tbody>
               </table>

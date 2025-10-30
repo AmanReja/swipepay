@@ -10,8 +10,13 @@ import { Theme } from "../Contexts/Theme";
 import Contentloader from "./Contentloader";
 import { Check, ChevronDown } from "lucide-react";
 
+
+
 const Ledger = () => {
   const { theme, setTheme } = useContext(Theme);
+
+
+
 
   const [searchdate, setSearchdate] = useState("");
   const [searchtr, setSearchtr] = useState("");
@@ -21,7 +26,7 @@ const Ledger = () => {
   const [formdataend, setFormdataend] = useState("");
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
-  const [selected, setSelected] = useState("select range");
+  const [selected, setSelected] = useState("Today");
   const [open, setOpen] = useState(false);
 
   const options = [
@@ -35,6 +40,17 @@ const Ledger = () => {
   ];
 
   const [date, setDate] = useState({ startDate: null, endDate: null });
+
+  useEffect(() => {
+    const today = new Date();
+    setSelected("Today");
+    setDate({ startDate: today, endDate: today });
+    setFormdatastr(formatDate(today));
+    setFormdataend(formatDate(today));
+  }, []);
+
+
+
 
   const formatDate = (date) => new Intl.DateTimeFormat("en-CA").format(date);
 
@@ -84,6 +100,7 @@ const Ledger = () => {
   const limit = useSelector((state) => state.ledgerwallet.ledgerwallet.limit);
 
   useEffect(() => {
+    if (!formdatastr || !formdataend) return; 
     async function fetch() {
       setLoad(true);
       await dispatch(
@@ -95,6 +112,7 @@ const Ledger = () => {
           false, // downloadexcel
           page, // current page
           perPage // per page
+         
         )
       );
       setLoad(false);
@@ -114,91 +132,105 @@ const Ledger = () => {
     );
   };
 
+
+
   return (
+
+
+
+
+
+
+
     <div
-      className={`w-[100%]  2xl:h-[85%] xl:h-[80%] h-[78%] flex flex-col ${
-        theme === "dark"
-          ? "bg-gray-900 text-gray-300"
-          : "bg-white text-gray-800"
-      }`}
+      className={`w-[100%]  2xl:h-[85%] xl:h-[80%] h-[78%] flex flex-col ${theme === "dark" ? "bg-gray-900 text-gray-300" : "bg-white text-gray-800"
+        }`}
     >
       <main className="w-full h-full flex flex-col overflow-y-scroll">
-        <section className="w-full flex flex-col sm:flex-col gap-[10px] mt-[20px]  2xl:h-[780px] sm:h-[600px] px-[2px] sm:px-[20px]">
-          <div
-            className={`w-full h-auto min-h-[80px] flex flex-col sm:flex-row sm:items-center justify-between px-5 py-3 rounded-xl ${
-              theme === "dark" ? "bg-gray-900" : "bg-white"
-            }`}
-          >
-            {/* Title & description */}
-            <div className="flex flex-col ">
-              <h1
-                className={`text-xl font-semibold ${
-                  theme === "dark" ? "text-gray-100" : "text-gray-800"
-                }`}
-              >
-                Wallet Ledger
-              </h1>
-              <p
-                className={`text-sm mt-1 ${
-                  theme === "dark" ? "text-gray-400" : "text-gray-500"
-                }`}
-              >
-                View all wallet transactions, balances, and recent activity in
-                one place.
-              </p>
-            </div>
-          </div>
-        </section>
+        <section className="w-full flex flex-col sm:flex-col gap-[20px] mt-[20px] sm:min-h-[600px] 2xl:h-[780px] sm:h-[600px] px-[2px] sm:px-[20px]">
 
-        <div className="w-full px-[20px] mt-[20px]">
+
           <div
-            className={`flex w-[100%] h-full flex-col rounded-xl overflow-y-auto border-[1px] ${
-              theme === "dark"
-                ? "bg-gray-900 border-gray-700 text-gray-200"
-                : "bg-white border-gray-500 text-gray-800"
-            }`}
+            className={`w-full h-[80px] flex items-center px-5 rounded-xl ${theme === "dark" ? "bg-gray-900" : "bg-white"
+              }`}
           >
+           <div className="flex flex-col w-full mb-4">
+  {/* Title */}
+  <h1
+    className={`text-2xl font-semibold ${
+      theme === "dark" ? "text-gray-100" : "text-gray-800"
+    }`}
+  >
+    Wallet Ledger
+  </h1>
+
+  {/* Subtitle / Description */}
+  <p
+    className={`text-sm mt-1 ${
+      theme === "dark" ? "text-gray-400" : "text-gray-600"
+    }`}
+  >
+    Overview of all wallet transactions including balance changes, status, and date.
+  </p>
+
+  {/* Optional divider for style */}
+  <div
+    className={`mt-3 h-[1px] w-full ${
+      theme === "dark" ? "bg-gray-700" : "bg-gray-200"
+    }`}
+  />
+</div>
+
+          </div>
+
+
+       
+          <div className="w-full px-[20px] mt-[20px]">
             <div
-              className={`flex justify-between items-center p-4 py-6 w-full flex-wrap gap-4 shadow-sm border-b ${
-                theme === "dark"
+              className={`flex w-full h-full flex-col rounded-xl overflow-y-auto border ${theme === "dark"
+                ? "bg-gray-900 border-gray-700"
+                : "bg-white border-gray-400"
+                }`}
+            >
+
+              <div
+                className={`flex justify-between items-center p-4 py-6 w-full flex-wrap gap-4 shadow-sm border-b ${theme === "dark"
                   ? "bg-gray-900 border-gray-700 text-gray-100"
                   : "bg-white border-gray-200 text-gray-800"
-              }`}
-            >
-              <h2
-                className={`text-lg font-semibold ${
-                  theme === "dark" ? "text-gray-100" : "text-gray-800"
-                }`}
+                  }`}
               >
-                Wallet Ledger
-              </h2>
+                <h2
+                  className={`text-lg font-semibold ${theme === "dark" ? "text-gray-100" : "text-gray-800"
+                    }`}
+                >
+                     Wallet Ledger
+                </h2>
 
-              <div className="flex gap-3 flex-wrap items-center">
-                {/* 📅 Calendar Input */}
-                <div
-                  className={`pl-[5px] border-[1px] p-1 rounded flex justify-center items-center gap-2 ${
-                    theme === "dark"
+                <div className="flex gap-3 flex-wrap items-center">
+              
+
+                  <div
+                    className={`pl-[5px] border-[1px] p-1 rounded flex justify-center items-center gap-2 ${theme === "dark"
                       ? "bg-gray-800 border-gray-600 text-gray-300"
                       : "bg-white border-gray-300 text-gray-400"
-                  }`}
-                >
-                  <i
-                    className={`fa-solid fa-calendar-days ${
-                      theme === "dark" ? "text-gray-500" : "text-gray-500"
-                    }`}
-                  ></i>
-                  <input
-                    className={`w-[180px] text-[14px] bg-transparent outline-none rounded ${
-                      theme === "dark" ? "text-gray-300" : "text-gray-600"
-                    }`}
-                    type="text"
-                    ref={dateRangeRef}
-                  />
-                </div>
+                      }`}
+                  >
+                    <i
+                      className={`fa-solid fa-calendar-days ${theme === "dark" ? "text-gray-500" : "text-gray-300"
+                        }`}
+                    ></i>
+                    <input
+                      className={`w-[180px] text-[14px] bg-transparent outline-none rounded ${theme === "dark" ? "text-gray-300" : "text-gray-400"
+                        }`}
+                      type="text"
+                      ref={dateRangeRef}
+                    />
+                  </div>
 
-                {/* 🔽 Dropdown for Quick Ranges */}
+                  {/* 🔽 Dropdown for Quick Ranges */}
+              {/* 🔽 Dropdown for Quick Ranges */}
 
-                <div className="relative w-[180px]">
+              <div className="relative w-[180px]">
                   <button
                     onClick={() => setOpen(!open)}
                     className={`flex justify-between w-full items-center px-4 py-2 rounded-lg border text-sm transition-all ${
@@ -217,7 +249,7 @@ const Ledger = () => {
 
                   {open && (
                     <ul
-                      className={`absolute left-0 right-0 mt-2 rounded-lg shadow-lg border z-20 max-h-60 overflow-y-auto ${
+                      className={`fixed w-[200px] left-[400px] right-0 mt-2 rounded-lg shadow-lg border z-20 max-h-60 overflow-y-auto ${
                         theme === "dark"
                           ? "bg-gray-800 border-gray-600 text-gray-100"
                           : "bg-white border-gray-200 text-gray-800"
@@ -321,33 +353,31 @@ const Ledger = () => {
                   )}
                 </div>
 
-                {/* 🔍 Search Transaction */}
-                <div
-                  className={`relative border px-2 py-1 rounded-lg ${
-                    theme === "dark"
+
+                  {/* 🔍 Search Transaction */}
+                  <div
+                    className={`relative border px-2 py-1 rounded-lg ${theme === "dark"
                       ? "bg-gray-800 border-gray-600 text-gray-200"
                       : "bg-white border-gray-300 text-gray-700"
-                  }`}
-                >
-                  <span
-                    className={`absolute left-3 top-1/2 -translate-y-1/2 ${
-                      theme === "dark" ? "text-gray-500" : "text-gray-400"
-                    }`}
+                      }`}
                   >
-                    <i className="fa-solid fa-magnifying-glass"></i>
-                  </span>
-                  <input
-                    onChange={(e) => setSearchtr(e.target.value)}
-                    type="text"
-                    placeholder="Search transaction"
-                    className={`pl-8 pr-2 outline-none text-sm bg-transparent ${
-                      theme === "dark" ? "text-gray-200" : "text-gray-700"
-                    }`}
-                  />
-                </div>
+                    <span
+                      className={`absolute left-3 top-1/2 -translate-y-1/2 ${theme === "dark" ? "text-gray-500" : "text-gray-400"
+                        }`}
+                    >
+                      <i className="fa-solid fa-magnifying-glass"></i>
+                    </span>
+                    <input
+                      onChange={(e) => setSearchtr(e.target.value)}
+                      type="text"
+                      placeholder="Search transaction"
+                      className={`pl-8 pr-2 outline-none text-sm bg-transparent ${theme === "dark" ? "text-gray-200" : "text-gray-700"
+                        }`}
+                    />
+                  </div>
 
-                {/* 🔽 Status Filter */}
-                <div
+                  {/* 🔽 Status Filter */}
+                 <div
                   className={`px-4 py-1 rounded-lg border ${
                     theme === "dark"
                       ? "bg-gray-800 border-gray-600 text-gray-200"
@@ -393,27 +423,28 @@ const Ledger = () => {
                   </select>
                 </div>
 
-                {/* ⬇️ Download Button */}
-                <button
-                  onClick={downloadexcel}
-                  className={`text-sm font-medium hover:shadow-xl px-4 py-1 rounded-lg transition border ${
-                    theme === "dark"
+
+
+                  {/* ⬇️ Download Button */}
+                  <button
+                    onClick={downloadexcel}
+                    className={`text-sm font-medium hover:shadow-xl px-4 py-1 rounded-lg transition border ${theme === "dark"
                       ? "bg-gray-800 border-gray-600 text-gray-200"
                       : "bg-white border-gray-300 text-gray-700"
-                  }`}
-                >
-                  <i
-                    className={`fa-solid fa-download ${
-                      theme === "dark" ? "text-gray-500" : "text-gray-400"
-                    }`}
-                  ></i>{" "}
-                  Download
-                </button>
+                      }`}
+                  >
+                    <i
+                      className={`fa-solid fa-download ${theme === "dark" ? "text-gray-500" : "text-gray-400"
+                        }`}
+                    ></i>{" "}
+                    Download
+                  </button>
+                </div>
               </div>
-            </div>
 
-            <table
-              className={`w-full text-sm text-left border rounded-md overflow-hidden ${
+
+              <table
+              className={`w-full text-sm text-left border  overflow-hidden ${
                 theme === "dark"
                   ? "text-gray-300 border-gray-700"
                   : "text-gray-600 border-gray-200"
@@ -454,13 +485,13 @@ const Ledger = () => {
                       <td className="px-4 py-4 align-top">
                         <div className="space-y-2">
                           <p
-                            className={`text-sm font-medium ${
+                            className={`text-[15px] font-medium ${
                               theme === "dark"
                                 ? "text-gray-200"
-                                : "text-gray-700"
+                                : "text-gray-900"
                             }`}
                           >
-                            REQUEST ID:{txn.order_id}{" "}
+                            Request ID: {txn.order_id}{" "}
                             <span
                               className={`font-semibold ${
                                 theme === "dark"
@@ -483,7 +514,7 @@ const Ledger = () => {
                             )}
                             <span className="text-gray-400">|</span>
                             <span
-                              className={`flex items-center justify-center w-[80px] h-6 rounded border ${
+                              className={`flex items-center justify-center text-[11px] w-[53px] h-6 rounded border ${
                                 theme === "dark"
                                   ? "bg-gray-800 border-gray-600 text-gray-200"
                                   : "bg-gray-100 border-gray-300 text-gray-700"
@@ -520,7 +551,7 @@ const Ledger = () => {
 
                       <td className="px-4 py-4">
                         <span
-                          className={`text-white rounded-[4px] px-3 py-1 min-w-[80px] text-center inline-block font-bold text-[12px] ${
+                          className={`text-white rounded-[4px]   min-w-[80px] text-center px-[5px] py-[2px] font-semibold text-[11px] ${
                             txn.txn_status === "SUCCESS"
                               ? "bg-green-500"
                               : txn.txn_status === "PENDING"
@@ -534,17 +565,11 @@ const Ledger = () => {
                     </tr>
                   ))
                 ) : (
-                  <div
-                    className={`flex items-center justify-between px-4 py-3 border-t text-sm ${
-                      theme === "dark"
-                        ? "bg-gray-900 text-gray-300 border-gray-700"
-                        : "bg-white text-gray-600 border-gray-200"
-                    }`}
-                  >
-                    <h1 className="text-2xl w-full text-center">
-                      No data found
-                    </h1>
-                  </div>
+                  <tr>
+    <td colSpan={8} className="text-center py-4 text-gray-600">
+      No data found
+    </td>
+  </tr>
                 )}
               </tbody>
             </table>
@@ -638,10 +663,17 @@ const Ledger = () => {
             ) : (
               ""
             )}
+
+
+            </div>
           </div>
-        </div>
+        </section>
       </main>
     </div>
+
+
+
+
   );
 };
 

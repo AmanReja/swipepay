@@ -1,3 +1,5 @@
+
+import { jwtDecode } from "jwt-decode";
 export const GETALL_LEDGER_WALLET = "GETALL_LEDGER_WALLET";
 export const GETALL_PAYOUTLOG_DATA = "GETALL_PAYOUTLOG_DATA";
 export const GETALL_BULKPAY_DATA = "GETALL_BULKPAY_DATA";
@@ -19,6 +21,8 @@ export const VERIFY_OTP = "VERIFY_OTP";
 export const UPDATE_USER_DETAILS = "UPDATE_USER_DETAILS";
 export const COLLECTION_REPORT = "COLLECTION_REPORT";
 export const SUMMARY = "SUMMARY";
+export const GETALL_VIRTUAL_ACCOUNT_TXN = "GETALL_VIRTUAL_ACCOUNT_TXN";
+
 
 
 
@@ -104,7 +108,7 @@ export const google_login = (navigate,accessToken)=>async(dispatch)=>{
   });
 
   const data = await res.json();
-  console.log("Backend response:", data);
+
 
   if (res.status === 200) {
    
@@ -117,7 +121,7 @@ export const google_login = (navigate,accessToken)=>async(dispatch)=>{
 
 }
 export const send_otp = (forgetpassemail,seterror,navigate,setLoad)=>async(dispatch)=>{
-  console.log(52,forgetpassemail);
+
 
   setLoad(true)
   
@@ -131,7 +135,7 @@ export const send_otp = (forgetpassemail,seterror,navigate,setLoad)=>async(dispa
   });
 
   const data = await res.json();
-  console.log("Backend response:", data);
+ 
 
   if (res.status === 200) {
  
@@ -149,7 +153,7 @@ export const send_otp = (forgetpassemail,seterror,navigate,setLoad)=>async(dispa
   dispatch({ type: "SENDOTP", payload: data });
 }
 export const verify_otp = (otp,setLoad,setError,navigate)=>async(dispatch)=>{
-  console.log(80,otp);
+ 
 
   setLoad(true)
   
@@ -163,7 +167,7 @@ export const verify_otp = (otp,setLoad,setError,navigate)=>async(dispatch)=>{
   });
 
   const data = await res.json();
-  console.log("Backend response:", data);
+
 
   if (res.status === 200) {
     
@@ -197,7 +201,7 @@ export const login = (olduser, navigate, setWrong) => async (dispatch) => {
 
     const res = await fetch(`${baseUrl}/v1/user/login`, request);
     const data = await res.json();
-    console.log("Login Response:", data);
+ 
 
     if (!res.ok) {
       setWrong(true);
@@ -227,12 +231,19 @@ export const login = (olduser, navigate, setWrong) => async (dispatch) => {
 export const getall_ledgerwallet_data =
   (searchtr, trstatus,searchdate_start,searchdate_end,downloadexcl=false,page,pagelimit) => async (dispatch) => {
 
-    console.log(224,pagelimit);
+
+
+    
+  
 
  
-    console.log(225,searchtr);
+  
 
     const token = localStorage.getItem("token") || {};
+    const   decoded = jwtDecode(token);
+    
+  
+
     const params = new URLSearchParams();
   if (searchtr) params.append("search", searchtr);
   if (trstatus) params.append("status", trstatus);
@@ -266,7 +277,8 @@ export const getall_ledgerwallet_data =
     const fileURL = window.URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = fileURL;
-    link.setAttribute("download", "payout_logs.xlsx");
+    link.setAttribute("download", `${decoded.corpID
+    }_${searchdate_start} - ${searchdate_end}_pool_ledger_report.xlsx`);
     document.body.appendChild(link);
     link.click();
     link.remove();
@@ -282,6 +294,8 @@ export const getall_payoutlog_data = (searchtr,trstatus,searchdate_start,searchd
 
   try {
     const token = localStorage.getItem("token") || {};
+    const decoded = jwtDecode(token);
+
 
     const params = new URLSearchParams();
     if (searchtr) params.append("search", searchtr);
@@ -316,7 +330,7 @@ export const getall_payoutlog_data = (searchtr,trstatus,searchdate_start,searchd
       const fileURL = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = fileURL;
-      link.setAttribute("download", "payout_logs.xlsx");
+      link.setAttribute("download",` ${decoded.corpID}_${searchdate_start} - ${searchdate_end}_payout_transaction_report.xlsx`);
       document.body.appendChild(link);
       link.click();
       link.remove();
@@ -399,7 +413,7 @@ export const getall_wallet_company_data = () => async (dispatch) => {
 };
 export const collection_report = (date) => async (dispatch) => {
 
-  console.log(370,date);
+ 
 
 
   const params =new URLSearchParams();
@@ -468,7 +482,7 @@ export const summaryreport = (date) => async (dispatch) => {
   const params = new URLSearchParams();
   if (date) params.append("filter_type",date);
 
-  console.log(437,date);
+
   
  const token = localStorage.getItem("token") || {};
  const res = await fetch(
@@ -511,7 +525,7 @@ export const Payout_report = (date) => async (dispatch) => {
    const params = new URLSearchParams();
    if (date) params.append("filter_type",date);
 
-   console.log(437,date);
+ 
    
   const token = localStorage.getItem("token") || {};
   const res = await fetch(
@@ -538,12 +552,14 @@ export const Payout_report = (date) => async (dispatch) => {
 
 export const get_collections = (searchtr,trstatus,searchdate_start,searchdate_end,downloadexcl=false,page,pagelimit) => async (dispatch) => {
 
-  console.log(224,pagelimit);
+ 
 
  
-  console.log(225,searchtr);
+
 
   const token = localStorage.getItem("token") || {};
+  const decoded = jwtDecode(token);
+
   const params = new URLSearchParams();
 if (searchtr) params.append("search", searchtr);
 if (trstatus) params.append("status", trstatus);
@@ -577,7 +593,7 @@ if (downloadexcl==true) {
   const fileURL = window.URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = fileURL;
-  link.setAttribute("download", "payout_logs.xlsx");
+  link.setAttribute("download", `${decoded.corpID}_${searchdate_start}-${searchdate_end}_collection_transactions_report.xlsx`);
   document.body.appendChild(link);
   link.click();
   link.remove();
@@ -704,7 +720,7 @@ export const deleteentitycallbackevent = (corpid,eventname,entstatus) => async (
   }
 
   const data = await res.json();
-  console.log("entd",data);
+  
   dispatch({ type: "DELETEENTITY_CALLBACK", payload: data });
 };
 
@@ -739,7 +755,7 @@ export const updateeteentitycallbackevent = (upentdata,corpid,eventname,status) 
   dispatch({ type: "UPDATEENTITY_CALLBACK", payload: data });
 };
 export const forgotpassword = (uppassword,navigate, setLoad,setError) => async (dispatch) => {
-  console.log(511,uppassword);
+
 
   if (window.confirm("Are you sure you want to update your password")) {
 
@@ -804,7 +820,7 @@ export const get_vertualaccountdetails = () => async (dispatch) => {
  
 };
 export const verify_aadhar = (file,setResult) => async (dispatch) => {
-  console.log( 647,file);
+  
 
   const token = localStorage.getItem("token") || {};
   let res;
@@ -832,7 +848,6 @@ export const verify_aadhar = (file,setResult) => async (dispatch) => {
     }
 
     const data = await res.json();
-    console.log(66, data);
 
     if (res.ok) {
       setResult({aadhaar: "Valid"})
@@ -853,5 +868,56 @@ export const verify_aadhar = (file,setResult) => async (dispatch) => {
 
 
 
+///vartual Acount data////
 
-///ent pass update///
+export const getall_virtual_account_txn =
+  (searchtr, trstatus,searchdate_start,searchdate_end,downloadexcl=false,page,pagelimit) => async (dispatch) => {
+
+
+
+ 
+
+    const token = localStorage.getItem("token") || {};
+    const decoded = jwtDecode(token);
+    const params = new URLSearchParams();
+  if (searchtr) params.append("search", searchtr);
+  if (trstatus) params.append("status", trstatus);
+  if (searchdate_start) params.append("start_date", searchdate_start);
+  if (searchdate_end) params.append("end_date", searchdate_end);
+  if(downloadexcl) params.append("download", "excel");
+  if (page) params.append("page", page);
+  if (pagelimit) params.append("limit", pagelimit);
+
+
+  const res = await fetch(
+    `${baseUrl}/v1/user/customer/master?${params.toString()}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  if (res.status === 401) {
+    localStorage.removeItem("token");
+    window.location.href = "/";
+    return;
+  }
+
+
+  if (downloadexcl==true) {
+    const blob = await res.blob();
+    const fileURL = window.URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = fileURL;
+    link.setAttribute("download", `${decoded.corpID}_${searchdate_start}_${searchdate_end}_Virtual Account.xlsx`);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    return; 
+  }
+    const data = await res.json();
+    dispatch({ type: "GETALL_VIRTUAL_ACCOUNT_TXN", payload: data });
+  };

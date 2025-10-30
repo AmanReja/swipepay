@@ -13,8 +13,21 @@ const Developertools = () => {
   const { theme, setTheme } = useContext(Theme)
 
   const dispatch = useDispatch();
+  const [apiKey, setApiKey] = useState("");
 
 
+  
+    const generatePassword = () => {
+      const chars =
+        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()";
+      let pass = "";
+      for (let i = 0; i < 10; i++) {
+        pass += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+     
+      setApiKey(pass);
+    };
+   
 
 
   const entitycallbackdata = useSelector((state) => state.entitycallback.entitycallback)
@@ -196,16 +209,17 @@ const Developertools = () => {
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <button className="px-4 py-2 bg-violet-500 text-white rounded-lg shadow hover:bg-violet-700 transition">
+          <button onClick={()=>{generatePassword()}} className="px-4 py-2 bg-violet-500 text-white rounded-lg shadow hover:bg-violet-700 transition">
             Regenerate Token
           </button>
           <div className="flex border border-gray-300 rounded-lg overflow-hidden">
-            <input
+            <input 
               className="py-2 px-3 outline-none text-sm"
               placeholder="XXXXXXXXXX"
               type="text"
+              value={apiKey}
             />
-            <div className="flex items-center justify-center bg-gray-100 px-2 cursor-pointer hover:bg-gray-200 transition">
+            <div onClick={()=>{navigator.clipboard.writeText(apiKey),alert("Api key is copied")}} className="flex items-center justify-center bg-gray-100 px-2 cursor-pointer hover:bg-gray-200 transition">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                 <path
                   d="M10 8V7C10 6.057 10 5.586 10.293 5.293C10.586 5 11.057 5 12 5H17C17.943 5 18.414 5 18.707 5.293C19 5.586 19 6.057 19 7V12C19 12.943 19 13.414 18.707 13.707C18.414 14 17.943 14 17 14H16M7 19H12C12.943 19 13.414 19 13.707 18.707C14 18.414 14 17.943 14 17V12C14 11.057 14 10.586 13.707 10.293C13.414 10 12.943 10 12 10H7C6.057 10 5.586 10 5.293 10.293C5 10.586 5 11.057 5 12V17C5 17.943 5 18.414 5.293 18.707C5.586 19 6.057 19 7 19Z"

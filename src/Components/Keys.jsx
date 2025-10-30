@@ -141,3 +141,333 @@ const Keys = ({
 export default Keys;
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// const search = req.query.search ? %${req.query.search}% : null;
+//     const status =
+//       req.query.status && req.query.status.toUpperCase() !== "ALL"
+//         ? req.query.status.toUpperCase()
+//         : null;
+//     const page = parseInt(req.query.page) || 1;
+//     const limit = parseInt(req.query.limit) || 10;
+//     const offset = (page - 1) * limit;
+
+  
+//     let baseSql = "FROM col_customer_master WHERE LOWER(company_id) = LOWER(?)";
+//     const baseParams = [companyId];
+
+    
+//     if (search) {
+//       baseSql +=
+//         " AND (name LIKE ? OR mobile LIKE ? OR account_number LIKE ? OR account_id LIKE ?)";
+//       baseParams.push(search, search, search, search);
+//     }
+
+ 
+//     if (status) {
+//       baseSql += " AND status = ?";
+//       baseParams.push(status);
+//     }
+
+
+//     if (req.query.start_date && req.query.end_date) {
+//       baseSql += " AND create_on BETWEEN ? AND ?";
+//       baseParams.push(
+//         req.query.start_date + " 00:00:00",
+//         req.query.end_date + " 23:59:59"
+//       );
+//     }
+//     return res.status(200).json({
+//       pagination: {
+//         totalRecords,
+//         totalPages,
+//         currentPage: page,
+//         limit,
+//       },
+//       count: rows.length,
+//       data: rows.map((r) => ({
+//         id: r.id,
+//         company_id: r.company_id,
+//         name: r.name,
+//         account_id: r.account_id,
+//         account_number: r.account_number,
+//         ifsc_code: r.ifsc_code,
+//         email: r.email,
+//         mobile: r.mobile,
+//         purpose: r.purpose,
+//         validity: r.validity,
+//         create_on: r.create_on,
+//         update_on: r.update_on,
+//         create_by: r.create_by,
+//         update_by: r.update_by,
+//         status: r.status,
+//         remark: r.remark,
+//       })),
+//     });
+//   } catch (err) {
+//     console.error("customer master error:", err);
+//     return res.status(500).json({ message: "Internal Server Error" });
+//   }
+// });
+// router.get("/customer/master", authMiddleware, async (req, res) => {
+//   try {
+//     const loginId = req.user?.login_id;
+//     if (!loginId) {
+//       return res.status(401).json({ message: "Unauthorized" });
+//     }
+
+    
+//     const [userResult] = await connection.execute(
+//       "SELECT company_id FROM api_dashboard_user WHERE login_id = ?",
+//       [loginId]
+//     );
+
+//     if (userResult.length === 0) {
+//       return res.status(404).json({ message: "User not found" });
+//     }
+
+//     const companyId = userResult[0].company_id;
+
+  
+//     const search = req.query.search ? %${req.query.search}% : null;
+//     const status =
+//       req.query.status && req.query.status.toUpperCase() !== "ALL"
+//         ? req.query.status.toUpperCase()
+//         : null;
+//     const page = parseInt(req.query.page) || 1;
+//     const limit = parseInt(req.query.limit) || 10;
+//     const offset = (page - 1) * limit;
+
+  
+//     let baseSql = "FROM col_customer_master WHERE LOWER(company_id) = LOWER(?)";
+//     const baseParams = [companyId];
+
+    
+//     if (search) {
+//       baseSql +=
+//         " AND (name LIKE ? OR mobile LIKE ? OR account_number LIKE ? OR account_id LIKE ?)";
+//       baseParams.push(search, search, search, search);
+//     }
+
+ 
+//     if (status) {
+//       baseSql += " AND status = ?";
+//       baseParams.push(status);
+//     }
+
+
+//     if (req.query.start_date && req.query.end_date) {
+//       baseSql += " AND create_on BETWEEN ? AND ?";
+//       baseParams.push(
+//         req.query.start_date + " 00:00:00",
+//         req.query.end_date + " 23:59:59"
+//       );
+//     }
+
+
+// if (req.query.download && req.query.download.toLowerCase() === "excel") {
+//   const [customers] = await connection.execute(
+//     SELECT * ${baseSql} ORDER BY id DESC,
+//     baseParams
+//   );
+
+//   const workbook = new ExcelJS.Workbook();
+//   const worksheet = workbook.addWorksheet("Customer Master");
+
+//   // === Title ===
+//   worksheet.mergeCells("B1:K1");
+//   const titleCell = worksheet.getCell("B1");
+//   titleCell.value = "Customer Master Report";
+//   titleCell.font = { bold: true, size: 14 };
+//   titleCell.alignment = { horizontal: "center", vertical: "middle" };
+
+//   // === Corp ID + Date Range ===
+//   const currentDate = new Date().toISOString().slice(0, 10);
+//   const startDate = req.query.start_date || currentDate;
+//   const endDate = req.query.end_date || currentDate;
+//   const corpId = companyId || (customers.length > 0 ? customers[0].company_id : "N/A");
+
+//   worksheet.mergeCells("C2:E2");
+//   worksheet.getCell("C2").value = Date Range: ${startDate} to ${endDate};
+//   worksheet.getCell("C2").font = { bold: true, size: 11 };
+
+//   worksheet.mergeCells("G2:K2");
+//   worksheet.getCell("G2").value = Corporate ID: ${corpId};
+//   worksheet.getCell("G2").font = { bold: true, size: 11 };
+//   worksheet.getCell("G2").alignment = { horizontal: "right", vertical: "middle" };
+
+//   worksheet.addRow([]);
+//   const headerStartRow = 4;
+
+//   // === Headers ===
+//   const headers = [
+//     "Sl. No",
+//     "Create Date",
+//     "Corp ID",
+//     "Name",
+//     "Account Number",
+    
+//     "IFSC Code",
+//     "Account ID",
+//     "Mobile",
+//     "Email",
+//     "Validity",
+//     "Status",
+//     "Remarks",
+//   ];
+
+//   worksheet.columns = [
+//     { key: "blank", width: 3 },
+//     { key: "s_no", width: 8 },
+//     { key: "create_date", width: 20 }, // ✅ Fixed key name
+//     { key: "company_id", width: 15 },
+//     { key: "name", width: 22 },
+//     { key: "account_number", width: 22 },
+//     { key: "bank_name", width: 20 },
+//     { key: "ifsc_code", width: 18 },
+//     { key: "account_id", width: 18 },
+//     { key: "mobile", width: 15 },
+//     { key: "email", width: 25 },
+//     { key: "validity", width: 12 },
+//     { key: "status", width: 15 },
+//     { key: "remark", width: 30 },
+//   ];
+
+//   // === Header Styling ===
+//   headers.forEach((header, i) => {
+//     const cell = worksheet.getCell(${String.fromCharCode(66 + i)}${headerStartRow});
+//     cell.value = header;
+//     cell.font = { bold: true, size: 11 };
+//     cell.alignment = { horizontal: "center", vertical: "middle" };
+//     cell.border = {
+//       top: { style: "thin" },
+//       bottom: { style: "thin" },
+//       left: { style: "thin" },
+//       right: { style: "thin" },
+//     };
+//     cell.fill = {
+//       type: "pattern",
+//       pattern: "solid",
+//       fgColor: { argb: "DCE6F1" },
+//     };
+//   });
+
+//   // === Data Rows ===
+//   customers.forEach((c, index) => {
+//     let createDate = "";
+//     if (c.create_on) {
+//       if (typeof c.create_on === "string") {
+//         createDate = c.create_on;
+//       } else {
+//         const d = new Date(c.create_on);
+//         createDate = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(
+//           d.getDate()
+//         ).padStart(2, "0")} ${String(d.getHours()).padStart(2, "0")}:${String(
+//           d.getMinutes()
+//         ).padStart(2, "0")}:${String(d.getSeconds()).padStart(2, "0")}`;
+//       }
+//     }
+
+//     const row = worksheet.addRow({
+//       blank: "",
+//       s_no: index + 1,
+//       create_date: createDate || "", // ✅ Correct key used
+//       company_id: c.company_id || "",
+//       name: c.name || "",
+//       account_number: c.account_number || "",
+//       bank_name: c.bank_name || "",
+//       ifsc_code: c.ifsc_code || "",
+//       account_id: c.account_id || "",
+//       mobile: c.mobile || "",
+//       email: c.email || "",
+//       validity: c.validity || "",
+//       status: c.status || "",
+//       remark: c.remark || "-",
+//     });
+
+//     row.alignment = { vertical: "middle", horizontal: "center" };
+//     row.border = {
+//       top: { style: "thin" },
+//       bottom: { style: "thin" },
+//       left: { style: "thin" },
+//       right: { style: "thin" },
+//     };
+//   });
+
+//   // === Freeze Header ===
+//   worksheet.views = [{ state: "frozen", ySplit: headerStartRow }];
+
+//   // === File Name ===
+//   const fileName = ${corpId}_${startDate}-${endDate}_Customer_Master_Report.xlsx;
+//   res.setHeader("Content-Disposition", attachment; filename=${fileName});
+//   res.setHeader(
+//     "Content-Type",
+//     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+//   );
+
+//   await workbook.xlsx.write(res);
+//   return res.end();
+// }
+
+
+
+
+//     const [countResult] = await connection.execute(
+//       SELECT COUNT(*) AS total ${baseSql},
+//       baseParams
+//     );
+//     const totalRecords = countResult[0].total;
+//     const totalPages = Math.ceil(totalRecords / limit);
+
+  
+//     const [rows] = await connection.execute(
+//       SELECT * ${baseSql} ORDER BY id DESC LIMIT ${limit} OFFSET ${offset},
+//       baseParams
+//     );
+
+   
+//     return res.status(200).json({
+//       pagination: {
+//         totalRecords,
+//         totalPages,
+//         currentPage: page,
+//         limit,
+//       },
+//       count: rows.length,
+//       data: rows.map((r) => ({
+//         id: r.id,
+//         company_id: r.company_id,
+//         name: r.name,
+//         account_id: r.account_id,
+//         account_number: r.account_number,
+//         ifsc_code: r.ifsc_code,
+//         email: r.email,
+//         mobile: r.mobile,
+//         purpose: r.purpose,
+//         validity: r.validity,
+//         create_on: r.create_on,
+//         update_on: r.update_on,
+//         create_by: r.create_by,
+//         update_by: r.update_by,
+//         status: r.status,
+//         remark: r.remark,
+//       })),
+//     });
+//   } catch (err) {
+//     console.error("customer master error:", err);
+//     return res.status(500).json({ message: "Internal Server Error" });
+//   }
+// });
+

@@ -13,7 +13,7 @@ import {
   UPDATEENTITY_CALLBACK,
   FORGOT_PASSWORD,
   GETCOLLECTIONS,
-  GETVERTUAL_ACCOUNT,VERIFY_AADHAR,LOGIN,GLOGIN,SENDOTP,COLLECTION_REPORT,SUMMARY
+  GETVERTUAL_ACCOUNT,VERIFY_AADHAR,LOGIN,GLOGIN,SENDOTP,COLLECTION_REPORT,SUMMARY,GETALL_VIRTUAL_ACCOUNT_TXN
 } from "./action";
 
 
@@ -352,3 +352,23 @@ const initialaadharverifystate = {
 
 
 }
+
+
+const initialvirtualaccountstate ={
+  virtualaccount:[]
+}
+
+
+export const virtualaccountReducer = (state = initialvirtualaccountstate, action) => {
+  if (action.type === GETALL_VIRTUAL_ACCOUNT_TXN) {
+    return {
+      ...state,
+      virtualaccount: action.payload,
+    };
+  }
+  
+  
+  else {
+    return state;
+  }
+};

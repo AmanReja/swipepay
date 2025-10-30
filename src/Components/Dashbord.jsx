@@ -173,7 +173,7 @@ const Dashbord = () => {
                       },
                       { href: "#", text: "UPI-Static QR" },
                       { href: "#", text: "UPI-Dynamic QR" },
-                      { href: "#", text: "Report" },
+                      { to: "/dashboard/collection", text: "Report" },
                       { href: "#", text: "Invoices" },
                     ],
                     show: opencollection,
