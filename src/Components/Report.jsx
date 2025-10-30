@@ -2,11 +2,7 @@ import React, { useEffect, useState, useRef, useContext } from "react";
 import Chart from "./Chart";
 import Hdfc from "../assets/images/HDFC.png";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  getall_payoutlog_data,
-  get_collections,
-  collection_report,
-} from "../redux/action";
+import { getall_payoutlog_data } from "../redux/action";
 import "../App.css";
 import "flatpickr/dist/themes/airbnb.css";
 import flatpickr from "flatpickr";
@@ -25,6 +21,7 @@ const Report = () => {
   const [perPage, setPerPage] = useState(10);
   const [selected, setSelected] = useState("Today");
   const [open, setOpen] = useState(false);
+  console.log(load);
 
   const options = [
     "Today",
@@ -36,17 +33,9 @@ const Report = () => {
     "Custom Range",
   ];
 
-  const handelselectopen = () => {
-    setOpen((prev) => !prev);
-  };
-
-  const handleSelect = (opt) => {
-    setSelected(opt);
-  };
-
   const [date, setDate] = useState({ startDate: null, endDate: null });
 
-
+  const formatDate = (date) => new Intl.DateTimeFormat("en-CA").format(date);
   useEffect(() => {
     const today = new Date();
     setSelected("Today");
@@ -54,12 +43,6 @@ const Report = () => {
     setFormdatastr(formatDate(today));
     setFormdataend(formatDate(today));
   }, []);
-
-
-
-
-
-  const formatDate = (date) => new Intl.DateTimeFormat("en-CA").format(date);
 
   useEffect(() => {
     if (date.startDate && date.endDate) {
@@ -97,18 +80,14 @@ const Report = () => {
     (state) => state.payoutlog.payoutlog.summary
   );
 
-  const payoutlogdata = useSelector((state) => state.payoutlog.payoutlog.data);
+  const payoutlogdata = useSelector((state) => state.payoutlog.payoutlog?.data);
 
   const totalpage = useSelector(
     (state) => state.payoutlog.payoutlog.pagination?.totalPages
   );
 
-  const totaldata = useSelector(
-    (state) => state.collections.collections.pagination?.totalRecords
-  );
-
   useEffect(() => {
-    if (!formdatastr || !formdataend) return; 
+    if (!formdatastr || !formdataend) return;
     async function fetchdata() {
       setLoad(true);
 
@@ -123,7 +102,6 @@ const Report = () => {
           perPage
         )
       );
-    
 
       setLoad(false);
     }
@@ -182,6 +160,7 @@ const Report = () => {
             {load
               ? Array.from({ length: 3 }).map((_, i) => (
                   <div
+                    key={i}
                     className={`flex-1 min-h-[80px] animate-pulse flex flex-col items-center justify-center text-center rounded-lg p-4 shadow-sm hover:shadow-md transition ${
                       theme === "dark"
                         ? "bg-gray-800 text-white"
@@ -573,7 +552,9 @@ const Report = () => {
                 </thead>
                 <tbody className="text-[12px] font-semibold">
                   {load ? (
-                    Array.from({ length: 3 }).map((_, i) => <Contentloader />)
+                    Array.from({ length: 3 }).map((_, i) => (
+                      <Contentloader key={i} />
+                    ))
                   ) : Array.isArray(payoutlogdata) &&
                     payoutlogdata.length > 0 ? (
                     payoutlogdata.map((txn, i) => (
@@ -587,10 +568,10 @@ const Report = () => {
                       >
                         <td className="px-4 py-2">
                           <span
-                            className={`text-white rounded-[3px] px-[13px] py-[2px] text-center min-w-[80px] font-bold text-[12px] ${
-                              txn.status.toUpperCase() === "SUCCESS"
+                            className={`text-white uppercase rounded-[3px] px-[13px] py-[2px] text-center min-w-[80px] font-bold text-[12px] ${
+                              txn.status?.toUpperCase() === "SUCCESS"
                                 ? "bg-green-400"
-                                : txn.status.toUpperCase() === "PENDING"
+                                : txn.status?.toUpperCase() === "PENDING"
                                 ? "bg-yellow-400"
                                 : "bg-red-400"
                             }`}
@@ -637,10 +618,13 @@ const Report = () => {
                     ))
                   ) : (
                     <tr>
-                    <td colSpan={8} className="text-center py-4 text-gray-600">
-                      No data found
-                    </td>
-                  </tr>
+                      <td
+                        colSpan={8}
+                        className="text-center py-4 text-gray-600"
+                      >
+                        No data found
+                      </td>
+                    </tr>
                   )}
                 </tbody>
               </table>
