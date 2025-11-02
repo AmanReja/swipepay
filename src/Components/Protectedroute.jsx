@@ -8,10 +8,9 @@ const Protectedroute = () => {
     const token = localStorage.getItem("token");
     console.log(token, 22);
 
+    ("192.168.1.43");
 
-    "192.168.1.43"
-
-    const res = await fetch("http://192.168.1.45:3000/v1/user/check-auth", {
+    const res = await fetch("https://acs.busybox.in/v1/user/check-auth", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

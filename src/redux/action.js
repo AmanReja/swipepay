@@ -24,8 +24,9 @@ export const GETALL_VIRTUAL_ACCOUNT_TXN = "GETALL_VIRTUAL_ACCOUNT_TXN";
 
 // https://acs.busybox.in //
 // http://192.168.1.43:3000 //
+// http://192.168.1.45:3000 //
 
-const baseUrl = "http://192.168.1.45:3000";
+const baseUrl = "https://acs.busybox.in";
 
 export const update_user_details = (updatedinfo) => async (dispatch) => {
   const token = localStorage.getItem("token") || {};
