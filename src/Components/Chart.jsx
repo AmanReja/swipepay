@@ -1,15 +1,47 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ReactApexChart from "react-apexcharts";
+import { chartReport } from "../redux/action";
+import { useSelector, useDispatch } from "react-redux";
 
-const Chart = () => {
+const Chart = ({selectedmonths}) => {
+  const dispatch = useDispatch();
+  const chartData = useSelector((state) => state.chartreport.chartreport);
+  console.log(9,chartData);
+
+  useEffect(() => {
+    if (selectedmonths) {
+      dispatch(chartReport(selectedmonths));
+    }
+  }, [dispatch, selectedmonths]);
+  
+  
+
+  // Ensure data is available and fallback to empty array
+  const dataArray = chartData?.data || [];
+
+  // Extract months and different amounts from API response
+  const months = dataArray.map((item) => item.month);
+  const totalAmounts = dataArray.map((item) => item.total_amount);
+  const successAmounts = dataArray.map((item) => item.success_amount);
+  const failedAmounts = dataArray.map((item) => item.failed_amount);
+  const pendingAmounts = dataArray.map((item) => item.pending_amount);
+
   const series = [
     {
-      name: "series1",
-      data: [10, 20, 30, 45, 32, 35, 50],
+      name: "Total Amount",
+      data: totalAmounts,
     },
     {
-      name: "series2",
-      data: [15, 25, 35, 40, 38, 52, 42],
+      name: "Success Amount",
+      data: successAmounts,
+    },
+    {
+      name: "Failed Amount",
+      data: failedAmounts,
+    },
+    {
+      name: "pending Amount",
+      data: pendingAmounts,
     },
   ];
 
@@ -29,20 +61,19 @@ const Chart = () => {
       width: 2,
     },
     xaxis: {
-      type: "datetime",
-      categories: [
-        "2018-09-19T00:00:00.000Z",
-        "2018-09-19T01:30:00.000Z",
-        "2018-09-19T02:30:00.000Z",
-        "2018-09-19T03:30:00.000Z",
-        "2018-09-19T04:30:00.000Z",
-        "2018-09-19T05:30:00.000Z",
-        "2018-09-19T06:30:00.000Z",
-      ],
+      categories: months, // Use months from API
+      title: {
+        text: "Months",
+      },
+    },
+    yaxis: {
+      title: {
+        text: "Amount (₹)",
+      },
     },
     tooltip: {
-      x: {
-        format: "HH:mm",
+      y: {
+        formatter: (val) => `₹${val}`,
       },
     },
     legend: {
@@ -60,7 +91,7 @@ const Chart = () => {
         stops: [0, 90, 100],
       },
     },
-    colors: ["#80ffdb", "#00b4d8"],
+    colors: ["#007bff", "#28a745", "#dc3545","#eb8634"], // blue, green, red
   };
 
   return (

@@ -13,7 +13,7 @@ import {
   UPDATEENTITY_CALLBACK,
   FORGOT_PASSWORD,
   GETCOLLECTIONS,
-  GETVERTUAL_ACCOUNT,VERIFY_AADHAR,LOGIN,GLOGIN,SENDOTP,COLLECTION_REPORT,SUMMARY,GETALL_VIRTUAL_ACCOUNT_TXN
+  GETVERTUAL_ACCOUNT,VERIFY_AADHAR,LOGIN,GLOGIN,SENDOTP,COLLECTION_REPORT,SUMMARY,GETALL_VIRTUAL_ACCOUNT_TXN,CHARTREPORT, COLCHARTREPORT
 } from "./action";
 
 
@@ -372,3 +372,43 @@ export const virtualaccountReducer = (state = initialvirtualaccountstate, action
     return state;
   }
 };
+
+
+const initialchartreport={
+  chartreport:[],
+}
+
+export const chartreportReducer =(state=initialchartreport,action)=>{
+  if (action.type === CHARTREPORT) {
+    return {
+      ...state,
+      chartreport: action.payload,
+    };
+  }
+  
+  
+  else {
+    return state;
+  }
+}
+
+
+
+
+const initialcolchartreport={
+  colchartreport:[],
+}
+
+export const colchartreportReducer =(state=initialcolchartreport,action)=>{
+  if (action.type === COLCHARTREPORT) {
+    return {
+      ...state,
+      colchartreport: action.payload,
+    };
+  }
+  
+  
+  else {
+    return state;
+  }
+}

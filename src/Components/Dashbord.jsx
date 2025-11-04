@@ -48,20 +48,20 @@ const Dashbord = () => {
       show: showc,
       setShow: setShowc,
     },
-    {
-      to: "/dashboard/verification",
-      icon: "fa-circle-check",
-      label: "Verification",
-      show: showv,
-      setShow: setShowv,
-    },
-    {
-      to: "/dashboard/card",
-      icon: "fa-credit-card",
-      label: "Card",
-      show: showca,
-      setShow: setShowca,
-    },
+    // {
+    //   to: "#",
+    //   icon: "fa-circle-check",
+    //   label: "Verification",
+    //   show: showv,
+    //   setShow: setShowv,
+    // },
+    // {
+    //   to: "#",
+    //   icon: "fa-credit-card",
+    //   label: "Card",
+    //   show: showca,
+    //   setShow: setShowca,
+    // },
     {
       to: "/dashboard/settings/developertooles",
       icon: "fa-code",
@@ -84,8 +84,24 @@ const Dashbord = () => {
       show: showset,
       setShow: setShowset,
     },
+
+
   ];
 
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!event.target.closest(".dropdown-wrapper")) {
+        setOpenpayots(false);
+        setOpencollection(false);
+        setOpensubscription(false);
+        setOpenverification(false);
+      }
+    };
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
+  
   return (
     <>
       <div
@@ -105,6 +121,7 @@ const Dashbord = () => {
                 end
                 onMouseOver={() => setShow(true)}
                 onMouseLeave={() => setShow(false)}
+
                 className={({ isActive }) =>
                   `group relative  w-[30px] h-[30px] flex justify-center items-center transition duration-200 rounded-full ${
                     theme === "dark"
@@ -182,11 +199,11 @@ const Dashbord = () => {
                   {
                     label: "Subscription",
                     items: [
-                      { to: "/dashboard/singleenath", text: "Single eNach" },
+                      { to: "#", text: "Single eNach" },
                       { href: "#", text: "Bulk eNach" },
                       { href: "#", text: "Cancel eNach" },
                       {
-                        to: "/dashboard/transactionreport",
+                        to: "#",
                         text: "Transaction Report",
                       },
                       { href: "#", text: "Invoices" },
@@ -207,14 +224,14 @@ const Dashbord = () => {
                     setShow: setOpenverification,
                   },
                 ].map(({ label, items, setShow, show }, idx) => (
-                  <div key={idx} className={`relative group`}>
+                  <div key={idx} className={`relative group dropdown-wrapper`}>
                     <a href="#" className="flex items-center cursor-pointer">
                       {label}
                       <img
                         onClick={() => {
                           setShow((prev) => !prev);
                         }}
-                        className="rotate-90 ml-2 w-3 h-3"
+                        className="rotate-90  ml-2 w-3 h-3"
                         src={Arrow}
                         alt=""
                       />

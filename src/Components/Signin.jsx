@@ -183,7 +183,7 @@ const Signin = () => {
         <div className="w-full sm:w-1/2 h-full   flex items-center justify-center">
           <div
 
-            className="p-10 lg:p-14 flex flex-col sm:h-[550px] h-full  rounded bg-white  overflow-hidden justify-center"
+            className="p-10 lg:p-14 flex flex-col sm:h-[550px] h-full sm:w-1/2 w-full overflow-y-hidden  rounded bg-white  overflow-hidden justify-center"
           >
             <div className="max-w-md mx-auto w-full space-y-4">
 
@@ -251,7 +251,7 @@ const Signin = () => {
                     value={email}
                     type="text"
                     placeholder="Email address"
-                    className="w-full h-12 pl-12 pr-4 rounded-xl outline-none border border-gray-300 focus:border-violet-500 focus:ring-2 focus:ring-violet-200 transition"
+                    className="w-full h-12 pl-12 pr-4 rounded-xl outline-none border border-gray-300  transition"
                   />
                   <svg
                     className="w-5 h-5 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2"
@@ -268,7 +268,7 @@ const Signin = () => {
                   </svg>
                 </div>
 
-                <div className={`relative border border-gray-300 ${wrong ? "border-red-500" : "border-gray-300"}  focus:border-violet-500 focus:ring-2 rounded-xl pr-[8px] focus:ring-violet-200 flex items-center`}>
+                <div className={`relative border  ${wrong ? "border-red-500" : "border-gray-300"}  focus:border-violet-500 rounded-xl pr-[8px]  flex items-center`}>
                   <input
                     onChange={(e) => {
                       setPass(e.target.value);
@@ -277,7 +277,7 @@ const Signin = () => {
                     required
                     type={checkpass ? "text" : "password"}
                     placeholder="Password"
-                    className="w-full h-12 pl-12 pr-4  outline-none  transition"
+                    className="w-full h-12 pl-12 pr-4  outline-none  transition "
                   />
                   <svg
                     className="w-5 h-5  text-gray-400 absolute left-4 top-1/2 -translate-y-1/2"

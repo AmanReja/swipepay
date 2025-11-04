@@ -21,9 +21,13 @@ export const UPDATE_USER_DETAILS = "UPDATE_USER_DETAILS";
 export const COLLECTION_REPORT = "COLLECTION_REPORT";
 export const SUMMARY = "SUMMARY";
 export const GETALL_VIRTUAL_ACCOUNT_TXN = "GETALL_VIRTUAL_ACCOUNT_TXN";
+export const CHARTREPORT = "CHARTREPORT";
+export const COLCHARTREPORT = "COLCHARTREPORT";
+
 
 // https://acs.busybox.in //
 // http://192.168.1.43:3000 //
+// http://192.168.1.45:3000 //
 
 const baseUrl = "http://192.168.1.45:3000";
 
@@ -554,13 +558,12 @@ export const addentitycallbackevent = (entdata) => async (dispatch) => {
 
 ///ent callback delete///////
 
-export const deleteentitycallbackevent =
-  (corpid, eventname, entstatus) => async (dispatch) => {
-    const token = localStorage.getItem("token") || {};
+export const deleteentitycallbackevent = (corpid, eventname) => async (dispatch) => {
+  const token = localStorage.getItem("token");
+
+  try {
     const res = await fetch(
-      `${baseUrl}/v1/user/entity-callback/${encodeURIComponent(
-        corpid
-      )}/${encodeURIComponent(eventname)}`,
+      `${baseUrl}/v1/user/entity-callback/${encodeURIComponent(corpid)}/${encodeURIComponent(eventname)}`,
       {
         method: "PATCH",
         headers: {
@@ -570,37 +573,30 @@ export const deleteentitycallbackevent =
       }
     );
 
+    // Handle unauthorized
     if (res.status === 401) {
       localStorage.removeItem("token");
       window.location.href = "/";
       return;
     }
 
-    if (res.status === 200) {
-      alert("entity hasbeen deleted");
-
-      const res = await fetch(`${baseUrl}/v1/user/entity-callback`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (res.status === 401) {
-        localStorage.removeItem("token");
-        window.location.href = "/";
-        return;
-      }
-
-      const data = await res.json();
-      dispatch({ type: "GETENTITY_CALLBACK", payload: data });
-    }
-
+    // Parse response
     const data = await res.json();
 
-    dispatch({ type: "DELETEENTITY_CALLBACK", payload: data });
-  };
+    if (res.ok) {
+      alert("Entity callback deleted successfully!");
+      dispatch({ type: "DELETEENTITY_CALLBACK", payload: data });
+      // Optionally refresh callback list if needed:
+      dispatch(getentitycallbackevent());
+    } else {
+      console.error("Failed to delete entity callback:", data);
+    }
+
+  } catch (err) {
+    console.error("Error deleting entity callback:", err);
+  }
+};
+
 
 ///ent callback update//////
 export const updateeteentitycallbackevent =
@@ -628,6 +624,7 @@ export const updateeteentitycallbackevent =
 
     if (res.status === 200) {
       alert("entity hasbeen updated");
+      dispatch(getentitycallbackevent())
     }
 
     const data = await res.json();
@@ -779,3 +776,66 @@ export const getall_virtual_account_txn =
     const data = await res.json();
     dispatch({ type: "GETALL_VIRTUAL_ACCOUNT_TXN", payload: data });
   };
+
+
+
+  //// chart report ///
+
+
+
+  export const chartReport = (selectedmonths) => async (dispatch) => {
+
+    console.log(794,selectedmonths);
+    const params = new URLSearchParams();
+    if (selectedmonths) params.append("range", selectedmonths);
+  
+    const token = localStorage.getItem("token") || {};
+    const res = await fetch(
+      `${baseUrl}/v1/user/payouts/stats?${params.toString()}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  
+    if (res.status === 401) {
+      localStorage.removeItem("token");
+      window.location.href = "/";
+      return;
+    }
+  
+    const data = await res.json();
+    dispatch({ type: "CHARTREPORT", payload: data });
+  };
+  
+  export const colchartReport = (barselectedmonths) => async (dispatch) => {
+
+    console.log(823,barselectedmonths);
+    const params = new URLSearchParams();
+    if (barselectedmonths) params.append("range", barselectedmonths);
+  
+    const token = localStorage.getItem("token") || {};
+    const res = await fetch(
+      `${baseUrl}/v1/user/collections/stats?${params.toString()}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  
+    if (res.status === 401) {
+      localStorage.removeItem("token");
+      window.location.href = "/";
+      return;
+    }
+  
+    const data = await res.json();
+    dispatch({ type: "COLCHARTREPORT", payload: data });
+  };
+  

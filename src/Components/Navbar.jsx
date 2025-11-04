@@ -100,8 +100,8 @@ const getoneuser = useSelector((state) => state.getoneuser.getoneuser.user);
 
     <div
       className={`border-b-gray-200 gap-[20px] ${
-        theme === "dark" ? "bg-gray-900" : "bg-gray-100 "
-      } border-b-[1px] w-full items-center justify-center flex h-[80px]`}
+        theme === "dark" ? "bg-gray-800" : "bg-gray-100 "
+      }  w-full items-center justify-center flex h-[80px]`}
     >
       <img
         className="w-[50px] border-lime-400 border-[1px] h-[50px] rounded-full"
@@ -112,19 +112,7 @@ const getoneuser = useSelector((state) => state.getoneuser.getoneuser.user);
         <h1 className="font-bold text-xl">{getoneuser?.name}</h1>
         <p className="text-sm text-gray-500">{getoneuser?.email}</p>
       </div>
-      <button
-       onClick={()=>{toast("Event has been created", {
-        description: "Sunday, December 03, 2023 at 9:00 AM",
-        action: {
-          label: "Undo",} })}
-        
-        
       
-    }
-        className="p-1 bg-blue-200 rounded-[5px] border-blue-600 border-[1px] text-blue-500 text-sm"
-      >
-        Pro
-      </button>
     </div>
 
    
@@ -133,7 +121,7 @@ const getoneuser = useSelector((state) => state.getoneuser.getoneuser.user);
         onClick={() => navigate("/dashboard/profile")}
         className="px-5 py-2 bg-violet-400 hover:bg-blue-500  text-white font-medium rounded-lg shadow-md"
       >
-        ✏️ Edit Profile
+      Edit Profile
       </button>
     </div>
 

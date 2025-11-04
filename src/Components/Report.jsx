@@ -113,7 +113,17 @@ const Report = () => {
       getall_payoutlog_data(searchtr, trstatus, formdatastr, formdataend, true)
     );
   };
-
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!event.target.closest(".dropdown-wrapper")) {
+        setOpen(false);
+        
+      }
+    };
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
+  
   return (
     <div
       className={`w-[100%]  2xl:h-[85%] xl:h-[80%] h-[78%] flex flex-col ${
@@ -308,7 +318,7 @@ const Report = () => {
                   <div className="relative w-[180px]">
                     <button
                       onClick={() => setOpen(!open)}
-                      className={`flex justify-between w-full items-center px-4 py-2 rounded-lg border text-sm transition-all ${
+                      className={`dropdown-wrapper flex justify-between w-full items-center px-4 py-2 rounded-lg border text-sm transition-all ${
                         theme === "dark"
                           ? "bg-gray-800 border-gray-600 text-gray-200"
                           : "bg-white border-gray-300 text-gray-700"

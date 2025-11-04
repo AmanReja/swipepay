@@ -19,9 +19,13 @@ const Summery = () => {
   const [daterange, setDaterange] = useState("")
   const [open, setOpen] = useState(false);
   const [selected,setSelected] = useState("")
+  const [selectedmonths,setSelectedmonths] = useState("1")
+  const [barselectedmonths,setBarselectedmonths] = useState("1")
+
 
 
   console.log(22, daterange);
+  console.log(27, selectedmonths);
 
 
 
@@ -141,18 +145,26 @@ console.log(141,selected);
   return (
 
     <>
-       <Toaster
-        position="top-right"
-        richColors
-        closeButton
-        toastOptions={{
-          style: {
-            borderRadius: "10px",
-            fontSize: "14px",
-            padding: "10px 14px",
-           }
-        }}
-      />
+     <Toaster
+  position="top-right"
+  richColors
+  closeButton
+  toastOptions={{
+    style: {
+      borderRadius: "12px",
+      fontSize: "14px",
+      padding: "12px 16px",
+      background: "linear-gradient(135deg, #654ea3, #4e54c8)",
+      color: "#fff",
+      boxShadow:
+        "0 4px 20px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)",
+      border: "1px solid rgba(255,255,255,0.1)",
+      backdropFilter: "blur(8px)",
+    },
+    className: "modern-toast",
+  }}
+/>
+
       <div
         className={`w-[100%] 2xl:h-[85%] xl:h-[80%] h-[78%] flex flex-col 
   ${theme === "dark" ? "bg-gray-900 text-gray-100" : "bg-white text-gray-900"}`}
@@ -177,7 +189,7 @@ console.log(141,selected);
     onClick={() => handelselectopen()}
     className=" flex justify-between w-full items-center px-4 py-2 bg-white rounded-xl border-[1px] border-gray-300 transition-all"
   >
-    <span>{selected ? selected : "Select date"}</span>
+    <span className={`${theme==="dark"?"text-black":""}`}>{selected ? selected : "Select date"}</span>
     <ChevronDown
       className={`w-5 h-5 transition-transform ${open ? "rotate-180" : ""}`}
     />
@@ -187,7 +199,7 @@ console.log(141,selected);
   {open && (
     <ul
       onClick={() => handelselectopen()}
-      className="absolute left-0 right-0 mt-2 bg-white rounded-xl shadow-lg max-h-60 overflow-y-auto z-10 animate-fade-in"
+      className={`absolute left-0 right-0 mt-2 ${theme==="dark"?"text-black ":""} bg-white rounded-xl shadow-lg max-h-60 overflow-y-auto z-10 animate-fade-in`}
     >
       {opt.map((option, i) => (
         <li
@@ -340,13 +352,34 @@ console.log(141,selected);
 
 
           <section className="w-full flex flex-col sm:flex-row gap-[20px] sm:min-h-[400px] sm:h-[400px] px-[20px]">
-
-            <div className="flex w-full sm:w-[50%] h-[100%] flex-col justify-center items-center">
-              <div
-                className={`p-2 rounded-2xl h-[89%] px-[5px] border w-full flex justify-center items-center 
-          ${theme === "dark" ? "bg-gray-800 border-gray-700 shadow-gray-900" : "bg-white border-gray-300 shadow-sky-100"} shadow-xl`}
+          <div className="rounded-2xl flex w-full sm:w-[50%] h-[100%] flex-col justify-center items-center">
+              <header
+                className={`w-full h-[18%] flex justify-between items-center rounded-t-2xl shadow-sm p-4 border 
+          ${theme === "dark" ? "border-gray-700 bg-gradient-to-r from-gray-700 to-gray-800" : "border-gray-200 bg-gradient-to-r from-sky-50 to-sky-100"}`}
               >
-                <Chart2 />
+                <h1
+                  className={`text-[20px]  font-semibold ${theme === "dark" ? "text-gray-200" : "text-gray-700"
+                    }`}
+                >
+                  Collections
+                </h1>
+                <select value={barselectedmonths}
+                  className={`text-[12px] rounded-lg w-[130px] outline-none px-[12px] border py-[8px] shadow-sm 
+            ${theme === "dark" ? "text-gray-300 border-gray-600 bg-gray-700" : "text-gray-600 border-gray-300 bg-white"}`}
+                onChange={(e)=>{setBarselectedmonths(e.target.value)}}  >
+                  <option selected value="1">1 month</option>
+                  <option value="2">2 month</option>
+                  <option value="6">6 month</option>
+                  <option  value="12">
+                    12 month
+                  </option>
+                </select>
+              </header>
+              <div
+                className={`rounded-bl-2xl rounded-br-2xl h-[80%] px-[5px] border w-full flex justify-center items-center shadow-xl 
+          ${theme === "dark" ? "bg-gray-800 border-gray-700 shadow-gray-900" : "bg-white border-gray-300 shadow-sky-100"}`}
+              >
+                <Chart2 barselectedmonths={barselectedmonths} />
               </div>
             </div>
 
@@ -360,16 +393,16 @@ console.log(141,selected);
                   className={`text-[20px]  font-semibold ${theme === "dark" ? "text-gray-200" : "text-gray-700"
                     }`}
                 >
-                  Earnings
+                  Payouts
                 </h1>
-                <select
+                <select value={selectedmonths}
                   className={`text-[12px] rounded-lg w-[130px] outline-none px-[12px] border py-[8px] shadow-sm 
             ${theme === "dark" ? "text-gray-300 border-gray-600 bg-gray-700" : "text-gray-600 border-gray-300 bg-white"}`}
-                >
-                  <option value="1 month">1 month</option>
-                  <option value="3 month">2 month</option>
-                  <option value="6 month">6 month</option>
-                  <option selected value="12 month">
+                onChange={(e)=>{setSelectedmonths(e.target.value)}}  >
+                  <option selected value="1">1 month</option>
+                  <option value="2">2 month</option>
+                  <option value="6">6 month</option>
+                  <option  value="12">
                     12 month
                   </option>
                 </select>
@@ -378,7 +411,7 @@ console.log(141,selected);
                 className={`rounded-bl-2xl rounded-br-2xl h-[80%] px-[5px] border w-full flex justify-center items-center shadow-xl 
           ${theme === "dark" ? "bg-gray-800 border-gray-700 shadow-gray-900" : "bg-white border-gray-300 shadow-sky-100"}`}
               >
-                <Chart />
+                <Chart selectedmonths={selectedmonths} />
               </div>
             </div>
           </section>

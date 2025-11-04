@@ -31,7 +31,7 @@ const Developertools = () => {
 
 
   const entitycallbackdata = useSelector((state) => state.entitycallback.entitycallback)
-  // console.log(10, entitycallbackdata);
+  console.log(10, entitycallbackdata);
 
 
 
@@ -253,17 +253,17 @@ const Developertools = () => {
     </button>
 
   
-    <h2 className="text-lg font-bold mb-4">Entity</h2>
+    <h2 className={`text-lg  ${theme === "dark" ? "text-black" : "text-gray-900"}  font-bold  mb-4`}>Entity</h2>
 
     <div className="grid grid-cols-1 gap-4">
       <div>
-        <label className="block text-sm font-medium mb-1">
+        <label className={`block  ${theme === "dark" ? "text-black" : "text-gray-900"} text-sm font-medium mb-1`}>
           Call Back Event Name
         </label>
         <select
           value={callbackeventname}
           onChange={(e) => setCallbackeventname(e.target.value)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+          className={` ${theme === "dark" ? "text-black" : "text-gray-900"} w-full px-4 py-2 border border-gray-300 rounded-lg`}
         >
           <option value="Select callback event">Select callback event</option>
           <option value="payout_failed">payout_failed</option>
@@ -272,22 +272,22 @@ const Developertools = () => {
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1">Call Back URL</label>
+        <label className={` ${theme === "dark" ? "text-black" : "text-gray-900"} block text-sm font-medium mb-1`}>Call Back URL</label>
         <input
           value={callbackurl}
           onChange={(e) => setCallbackurl(e.target.value)}
           type="text"
           placeholder="http://example"
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+          className={`w-full px-4 py-2  ${theme === "dark" ? "text-black placeholder:text-black" : "text-gray-900"} border border-gray-300 rounded-lg`}
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1">Status</label>
+        <label className={`${theme === "dark" ? "text-black" : "text-gray-900"} block text-sm font-medium mb-1`}>Status</label>
         <select
           value={status}
           onChange={(e) => setStatus(e.target.value)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+          className={` ${theme === "dark" ? "text-black" : "text-gray-900"} w-full px-4 py-2 border  border-gray-300 rounded-lg`}
         >
           <option value="Select Status">Select Status</option>
           <option value="ACTIVE">ACTIVE</option>
@@ -320,82 +320,83 @@ const Developertools = () => {
         </div>
 
         <button onClick={handelentityopen} className="px-4 py-1 mr-[50px] bg-blue-700 text-white rounded-lg shadow hover:bg-violet-700 transition">
-          create a entity request
+          Create Entity Request
         </button>
 
 
 
       </div>
+{entitycallbackdata&&entitycallbackdata.length>0?  <table className="w-full text-sm text-left text-gray-600 border border-gray-200 rounded-md overflow-hidden">
 
-      <table className="w-full text-sm text-left text-gray-600 border border-gray-200 rounded-md overflow-hidden">
-        <thead className="text-[11px] text-gray-500 uppercase bg-[#f9f9f9] border-b border-gray-300">
-          <tr>
-            <th className="px-4 py-3">Corp id</th>
-            <th className="px-4 py-3">
-              <div className="flex items-center space-x-1">
-                <p>Callback event</p>
-                <div className="flex flex-col justify-center items-center leading-none">
+<thead className="text-[11px] text-gray-500 uppercase bg-[#f9f9f9] border-b border-gray-300">
+  <tr>
+    <th className="px-4 py-3">Corp id</th>
+    <th className="px-4 py-3">
+      <div className="flex items-center space-x-1">
+        <p>Callback event</p>
+        <div className="flex flex-col justify-center items-center leading-none">
 
-                </div>
-              </div>
-            </th>
-            <th className="px-4 py-3">
-              <div className="flex items-center space-x-1">
-                <p>Callback Url</p>
-                <div className="flex flex-col justify-center items-center leading-none">
+        </div>
+      </div>
+    </th>
+    <th className="px-4 py-3">
+      <div className="flex items-center space-x-1">
+        <p>Callback Url</p>
+        <div className="flex flex-col justify-center items-center leading-none">
 
-                </div>
-              </div>
-            </th>
-            <th className="px-4 py-3">Date</th>
+        </div>
+      </div>
+    </th>
+    <th className="px-4 py-3">Date</th>
 
-            <th className="px-4 py-3">Status</th>
-            <th className="px-4 py-3">Action</th>
-          </tr>
-        </thead>
-
-
-
-        <tbody className="text-[13px] font-medium">
-          {entitycallbackdata?.map((entity, i) => (
-            <tr
-              key={i}
-              className="border-b border-gray-100 hover:bg-gray-50 transition"
-            >
-              <td className="px-4 py-4 align-top">
-                {entity.corp_id}
-              </td>
-
-              <td className="px-4 py-4">{entity.callback_event_name}</td>
-
-              <td className="px-4 py-4">
-                {
-                  entity.callback_url
-                }
-              </td>
-
-              <td className="px-4 py-4"> {
-                entity.create_on
-
-              }</td>
-
-              <td className="px-4 py-4">
-                {
-                  entity.status
-
-                }
-              </td>
-              <td className="px-4 py-4 flex gap-[5px]">
-                <button onClick={(e) => { handelentitydelete(entity) }} className="bg-red-500 p-2 text-white rounded-[5px]">DELETE</button>
-                <button onClick={(e) => { update(entity) }} className="bg-yellow-500 p-2 text-white rounded-[5px]">UPDATE</button>
-
-              </td>
+    <th className="px-4 py-3">Status</th>
+    <th className="px-4 py-3">Action</th>
+  </tr>
+</thead>
 
 
-            </tr>
-          ))}
-        </tbody>
-      </table>
+
+<tbody className="text-[13px] font-medium">
+  {entitycallbackdata?.map((entity, i) => (
+    <tr
+      key={i}
+      className="border-b border-gray-100 hover:bg-gray-50 transition"
+    >
+      <td className="px-4 py-4 align-top">
+        {entity.corp_id}
+      </td>
+
+      <td className="px-4 py-4">{entity.callback_event_name}</td>
+
+      <td className="px-4 py-4">
+        {
+          entity.callback_url
+        }
+      </td>
+
+      <td className="px-4 py-4"> {
+        entity.create_on
+
+      }</td>
+
+      <td className="px-4 py-4">
+        {
+          entity.status
+
+        }
+      </td>
+      <td className="px-4 py-4 flex gap-[5px]">
+        <button onClick={(e) => { handelentitydelete(entity) }} className="bg-red-500 p-2 text-white rounded-[5px]">DELETE</button>
+        <button onClick={(e) => { update(entity) }} className="bg-yellow-500 p-2 text-white rounded-[5px]">UPDATE</button>
+
+      </td>
+
+
+    </tr>
+  ))}
+</tbody>
+</table>:""}
+    
 
     </div>
   );

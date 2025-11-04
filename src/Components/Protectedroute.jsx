@@ -9,7 +9,7 @@ const Protectedroute = () => {
     console.log(token, 22);
 
 
-    "192.168.1.43"
+  
 
     const res = await fetch("http://192.168.1.45:3000/v1/user/check-auth", {
       method: "GET",
@@ -19,6 +19,7 @@ const Protectedroute = () => {
       },
     });
 
+    
     if (res.status === 401) {
       setAuthenticated(false);
       localStorage.removeItem("token");

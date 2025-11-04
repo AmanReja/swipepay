@@ -123,6 +123,19 @@ const Ledger = () => {
     );
   };
 
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!event.target.closest(".dropdown-wrapper")) {
+        setOpen(false);
+        
+      }
+    };
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
+  
+
   return (
     <div
       className={`w-[100%]  2xl:h-[85%] xl:h-[80%] h-[78%] flex flex-col ${
@@ -218,7 +231,7 @@ const Ledger = () => {
                   <div className="relative w-[180px]">
                     <button
                       onClick={() => setOpen(!open)}
-                      className={`flex justify-between w-full items-center px-4 py-2 rounded-lg border text-sm transition-all ${
+                      className={` dropdown-wrapper flex justify-between w-full items-center px-4 py-2 rounded-lg border text-sm transition-all ${
                         theme === "dark"
                           ? "bg-gray-800 border-gray-600 text-gray-200"
                           : "bg-white border-gray-300 text-gray-700"
@@ -234,7 +247,7 @@ const Ledger = () => {
 
                     {open && (
                       <ul
-                        className={`fixed w-[200px] left-[400px] right-0 mt-2 rounded-lg shadow-lg border z-20 max-h-60 overflow-y-auto ${
+                        className={` fixed w-[200px] left-[400px] right-0 mt-2 rounded-lg shadow-lg border z-20 max-h-60 overflow-y-auto ${
                           theme === "dark"
                             ? "bg-gray-800 border-gray-600 text-gray-100"
                             : "bg-white border-gray-200 text-gray-800"
@@ -489,7 +502,7 @@ const Ledger = () => {
                               </span>
                             </p>
                             <div className="flex items-center space-x-2 text-xs font-semibold">
-                              {txn.txn_mode === "DR" ? (
+                              {txn.txn_mode?.toUpperCase() === "DR" ? (
                                 <span className="flex items-center justify-center w-6 h-6 bg-red-100 dark:bg-red-900 border border-red-300 dark:border-red-700 text-red-700 dark:text-red-300 rounded">
                                   DR
                                 </span>

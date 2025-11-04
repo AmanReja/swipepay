@@ -136,6 +136,20 @@ const Virtualaccount = () => {
     );
   };
 
+
+  useEffect(()=>{
+
+    const handleClickOutside =(event)=>{
+      if (!event.target.closest(".dropdown-wraper")) {
+        setOpen(false)
+      }
+     
+
+    }
+    document.addEventListener("click", handleClickOutside)
+    return () =>document.removeEventListener("click",handleClickOutside)
+  },[])
+
   return (
     <div
       className={`w-[100%]  2xl:h-[85%] xl:h-[80%] h-[78%] flex flex-col ${
@@ -195,6 +209,7 @@ const Virtualaccount = () => {
                     : "bg-white border-gray-200 text-gray-800"
                 }`}
               >
+                
                 <h2
                   className={`text-lg font-semibold ${
                     theme === "dark" ? "text-gray-100" : "text-gray-800"
@@ -229,7 +244,7 @@ const Virtualaccount = () => {
                   <div className="relative w-[180px]">
                     <button
                       onClick={() => setOpen(!open)}
-                      className={`flex justify-between w-full items-center px-4 py-2 rounded-lg border text-sm transition-all ${
+                      className={`dropdown-wraper flex justify-between w-full items-center px-4 py-2 rounded-lg border text-sm transition-all ${
                         theme === "dark"
                           ? "bg-gray-800 border-gray-600 text-gray-200"
                           : "bg-white border-gray-300 text-gray-700"
