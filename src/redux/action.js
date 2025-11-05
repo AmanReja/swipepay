@@ -29,7 +29,7 @@ export const COLCHARTREPORT = "COLCHARTREPORT";
 // http://192.168.1.43:3000 //
 // http://192.168.1.45:3000 //
 
-const baseUrl = "https://acs.busybox.in";
+const baseUrl = "http://192.168.1.45:3000";
 
 export const update_user_details = (updatedinfo) => async (dispatch) => {
   const token = localStorage.getItem("token") || {};
