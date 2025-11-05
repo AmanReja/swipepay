@@ -90,7 +90,8 @@ const Collection = () => {
     (state) => state.collections.collections.pagination?.totalPages
   );
 
-  console.log(93, totalpage);
+ 
+  
 
   const totaldata = useSelector(
     (state) => state.collections.collections.pagination?.totalRecords

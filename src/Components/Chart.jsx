@@ -3,10 +3,11 @@ import ReactApexChart from "react-apexcharts";
 import { chartReport } from "../redux/action";
 import { useSelector, useDispatch } from "react-redux";
 
-const Chart = ({selectedmonths}) => {
+const Chart = ({selectedmonths,theme}) => {
   const dispatch = useDispatch();
   const chartData = useSelector((state) => state.chartreport.chartreport);
-  console.log(9,chartData);
+  
+  
 
   useEffect(() => {
     if (selectedmonths) {
@@ -45,7 +46,13 @@ const Chart = ({selectedmonths}) => {
     },
   ];
 
+  const textColor = theme === "dark" ? "#f1f1f1" : "#333";
+  const gridColor = theme === "dark" ? "#444" : "#ddd";
+
+
   const options = {
+  
+    
     chart: {
       height: 350,
       type: "area",
@@ -53,6 +60,8 @@ const Chart = ({selectedmonths}) => {
         show: true,
       },
     },
+    foreColor:textColor,
+    
     dataLabels: {
       enabled: false,
     },
@@ -63,15 +72,22 @@ const Chart = ({selectedmonths}) => {
     xaxis: {
       categories: months, // Use months from API
       title: {
-        text: "Months",
+        text: "Months",style:{color:textColor}
       },
+      labels:{style:{colors:Array(months.length).fill(textColor)}},
+      axisBorder: { color: gridColor },
+      axisTicks: { color: gridColor },
     },
     yaxis: {
       title: {
-        text: "Amount (₹)",
+        text: "Amount (₹)", style:{color:textColor}
+      },
+      labels: {
+        style:{colors:textColor}
       },
     },
     tooltip: {
+      theme: theme === "dark" ? "dark" : "light",
       y: {
         formatter: (val) => `₹${val}`,
       },
@@ -79,9 +95,10 @@ const Chart = ({selectedmonths}) => {
     legend: {
       position: "bottom",
       labels: {
-        colors: "#444",
+        colors: textColor,
       },
     },
+    grind:{ borderColor: gridColor},
     fill: {
       type: "gradient",
       gradient: {
@@ -92,10 +109,11 @@ const Chart = ({selectedmonths}) => {
       },
     },
     colors: ["#007bff", "#28a745", "#dc3545","#eb8634"], // blue, green, red
+    
   };
 
   return (
-    <div className="w-full h-full">
+    <div className={`w-full h-full ${theme==="dark"?"text-white":"text-black"}`}>
       <ReactApexChart
         options={options}
         series={series}

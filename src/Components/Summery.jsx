@@ -24,9 +24,7 @@ const Summery = () => {
 
 
 
-  console.log(22, daterange);
-  console.log(27, selectedmonths);
-
+  
 
 
 
@@ -39,7 +37,8 @@ const Summery = () => {
 
 
   const summaryReport = useSelector((state) => state.summarydata.summarydata);
-  console.log(36, summaryReport);
+
+  
 
 
 
@@ -120,10 +119,10 @@ const Summery = () => {
 
 
   const opt = [
-    { value: "today" },
-    { value: "yesterday" },
-    { value: "week" },
-    { value: "month" },
+    { value: "Today" },
+    { value: "Yesterday" },
+    { value: "Week" },
+    { value: "Month" },
    
 
   ];
@@ -138,7 +137,8 @@ const Summery = () => {
   }
 
 
-console.log(141,selected);
+
+  
 
 
 
@@ -379,7 +379,7 @@ console.log(141,selected);
                 className={`rounded-bl-2xl rounded-br-2xl h-[80%] px-[5px] border w-full flex justify-center items-center shadow-xl 
           ${theme === "dark" ? "bg-gray-800 border-gray-700 shadow-gray-900" : "bg-white border-gray-300 shadow-sky-100"}`}
               >
-                <Chart2 barselectedmonths={barselectedmonths} />
+                <Chart2 theme={theme} barselectedmonths={barselectedmonths} />
               </div>
             </div>
 
@@ -411,7 +411,7 @@ console.log(141,selected);
                 className={`rounded-bl-2xl rounded-br-2xl h-[80%] px-[5px] border w-full flex justify-center items-center shadow-xl 
           ${theme === "dark" ? "bg-gray-800 border-gray-700 shadow-gray-900" : "bg-white border-gray-300 shadow-sky-100"}`}
               >
-                <Chart selectedmonths={selectedmonths} />
+                <Chart theme={theme} selectedmonths={selectedmonths} />
               </div>
             </div>
           </section>

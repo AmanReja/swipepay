@@ -80,7 +80,8 @@ const Virtualaccount = () => {
     (state) => state.virtualaccount.virtualaccount?.data
   );
 
-  console.log(74, virtualdata);
+
+  
 
   const totalvirdatarecord = useSelector(
     (state) => state.virtualaccount.virtualaccount.pagination?.totalRecords

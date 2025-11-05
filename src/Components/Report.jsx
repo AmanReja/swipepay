@@ -21,7 +21,7 @@ const Report = () => {
   const [perPage, setPerPage] = useState(10);
   const [selected, setSelected] = useState("Today");
   const [open, setOpen] = useState(false);
-  console.log(load);
+  
 
   const options = [
     "Today",

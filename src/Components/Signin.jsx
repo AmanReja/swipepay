@@ -28,7 +28,8 @@ const Signin = () => {
   const [chengepos, seChangepos] = useState(false);
   const [checkpass, setCheckpass] = useState(false);
   const [wrong, setWrong] = useState(false);
-  console.log(14, pass, email);
+ 
+  
   const [passopen, setPassopen] = useState(false);
   const [otp, setOtp] = useState("");
   const [jwttoken, setJwttoken] = useState("")
@@ -42,10 +43,12 @@ const Signin = () => {
 
 
 
-  console.log(38, forgetpassemail);
+  
+  
 
 
-  console.log(22, import.meta.env.VITE_GOOGLE_CLIENT_ID);
+ 
+  
 
   const handelpassopen = () => {
 

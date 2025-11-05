@@ -37,7 +37,7 @@ const Otpverification = () => {
     const enteredOtp = otp.join("");
     if (enteredOtp.length === 6) {
 
-       console.log(enteredOtp);
+   
        dispatch(verify_otp(enteredOtp,setLoad,setError,navigate))
     
       

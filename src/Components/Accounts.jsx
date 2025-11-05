@@ -29,7 +29,8 @@ const Accounts = () => {
   const [user,setUser]=useState([])
   const dispatch = useDispatch();
   const getoneuserdata = useSelector((state)=>state.getoneuser.getoneuser.user)
-  console.log(27,getoneuserdata);
+  
+  
 
   useEffect(()=>{
     

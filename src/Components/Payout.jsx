@@ -10,7 +10,7 @@ const Payout = () => {
   const {theme,setTheme} =useContext(Theme)
   const dispatch = useDispatch();
   const payoutdata = useSelector((state) => state.payoutlog.payoutlog.data);
-  console.log(payoutdata, 55);
+
   const [searchtr, setSearchtr] = useState("");
   const [trstatus, setTrstatus] = useState("");
   

@@ -6,7 +6,8 @@ const Protectedroute = () => {
 
   async function fetchData() {
     const token = localStorage.getItem("token");
-    console.log(token, 22);
+
+    
 
 
   

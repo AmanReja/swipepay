@@ -785,7 +785,7 @@ export const getall_virtual_account_txn =
 
   export const chartReport = (selectedmonths) => async (dispatch) => {
 
-    console.log(794,selectedmonths);
+    
     const params = new URLSearchParams();
     if (selectedmonths) params.append("range", selectedmonths);
   
@@ -813,7 +813,8 @@ export const getall_virtual_account_txn =
   
   export const colchartReport = (barselectedmonths) => async (dispatch) => {
 
-    console.log(823,barselectedmonths);
+  
+    
     const params = new URLSearchParams();
     if (barselectedmonths) params.append("range", barselectedmonths);
   

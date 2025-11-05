@@ -31,7 +31,7 @@ const Developertools = () => {
 
 
   const entitycallbackdata = useSelector((state) => state.entitycallback.entitycallback)
-  console.log(10, entitycallbackdata);
+  
 
 
 

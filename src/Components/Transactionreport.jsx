@@ -9,7 +9,7 @@ const Transactionreport = () => {
   const getalldata = async () => {
     const res = await fetch(`https://api.busybox.in/payment/payment`);
     const data = await res.json();
-    console.log(12, data);
+    
   };
 
   useEffect(() => {

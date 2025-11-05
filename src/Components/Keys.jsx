@@ -36,7 +36,7 @@ const Keys = ({
   const payoutdata = useSelector((state) => state.payoutlog.payoutlog.data);
   const walletdata = useSelector((state) => state.walletcompany.walletcompany.total);
   const vaaccountdata = useSelector((state) => state.vaaccount.vaaccount);
-  console.log(18,vaaccountdata);
+
   
 
 
