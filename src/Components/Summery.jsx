@@ -19,8 +19,8 @@ const Summery = () => {
   const [daterange, setDaterange] = useState("")
   const [open, setOpen] = useState(false);
   const [selected,setSelected] = useState("")
-  const [selectedmonths,setSelectedmonths] = useState("1")
-  const [barselectedmonths,setBarselectedmonths] = useState("1")
+  // const [selectedmonths,setSelectedmonths] = useState("1")
+  // const [barselectedmonths,setBarselectedmonths] = useState("1")
 
 
 
@@ -119,6 +119,7 @@ const Summery = () => {
 
 
   const opt = [
+
     { value: "Today" },
     { value: "Yesterday" },
     { value: "Week" },
@@ -137,6 +138,8 @@ const Summery = () => {
   }
 
 
+
+  console.log(142,selected);
 
   
 
@@ -363,7 +366,7 @@ const Summery = () => {
                 >
                   Collections
                 </h1>
-                <select value={barselectedmonths}
+                {/* <select value={barselectedmonths}
                   className={`text-[12px] rounded-lg w-[130px] outline-none px-[12px] border py-[8px] shadow-sm 
             ${theme === "dark" ? "text-gray-300 border-gray-600 bg-gray-700" : "text-gray-600 border-gray-300 bg-white"}`}
                 onChange={(e)=>{setBarselectedmonths(e.target.value)}}  >
@@ -373,13 +376,13 @@ const Summery = () => {
                   <option  value="12">
                     12 month
                   </option>
-                </select>
+                </select> */}
               </header>
               <div
                 className={`rounded-bl-2xl rounded-br-2xl h-[80%] px-[5px] border w-full flex justify-center items-center shadow-xl 
           ${theme === "dark" ? "bg-gray-800 border-gray-700 shadow-gray-900" : "bg-white border-gray-300 shadow-sky-100"}`}
               >
-                <Chart2 theme={theme} barselectedmonths={barselectedmonths} />
+                <Chart2 theme={theme} selected={selected} />
               </div>
             </div>
 
@@ -395,7 +398,7 @@ const Summery = () => {
                 >
                   Payouts
                 </h1>
-                <select value={selectedmonths}
+                {/* <select value={selectedmonths}
                   className={`text-[12px] rounded-lg w-[130px] outline-none px-[12px] border py-[8px] shadow-sm 
             ${theme === "dark" ? "text-gray-300 border-gray-600 bg-gray-700" : "text-gray-600 border-gray-300 bg-white"}`}
                 onChange={(e)=>{setSelectedmonths(e.target.value)}}  >
@@ -405,13 +408,13 @@ const Summery = () => {
                   <option  value="12">
                     12 month
                   </option>
-                </select>
+                </select> */}
               </header>
               <div
                 className={`rounded-bl-2xl rounded-br-2xl h-[80%] px-[5px] border w-full flex justify-center items-center shadow-xl 
           ${theme === "dark" ? "bg-gray-800 border-gray-700 shadow-gray-900" : "bg-white border-gray-300 shadow-sky-100"}`}
               >
-                <Chart theme={theme} selectedmonths={selectedmonths} />
+                <Chart theme={theme} selected={selected} />
               </div>
             </div>
           </section>

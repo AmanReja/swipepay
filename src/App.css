@@ -19,4 +19,8 @@
   }
   @keyframes l2 {to{transform: rotate(1turn)}}
 
+  .open::-webkit-scrollbar{
+    display: none;
+  }
+
   

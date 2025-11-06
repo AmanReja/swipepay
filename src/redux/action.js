@@ -397,7 +397,7 @@ export const getone_user = () => async (dispatch) => {
 
 export const summaryreport = (date) => async (dispatch) => {
   const params = new URLSearchParams();
-  if (date) params.append("filter_type", date);
+  if (date) params.append("filter_type", date.toLowerCase());
 
   const token = localStorage.getItem("token") || {};
   const res = await fetch(
@@ -785,9 +785,11 @@ export const getall_virtual_account_txn =
 
   export const chartReport = (selectedmonths) => async (dispatch) => {
 
+    console.log(788,selectedmonths);
+
     
     const params = new URLSearchParams();
-    if (selectedmonths) params.append("range", selectedmonths);
+    if (selectedmonths) params.append("filter_type", selectedmonths.toLowerCase());
   
     const token = localStorage.getItem("token") || {};
     const res = await fetch(
@@ -813,10 +815,12 @@ export const getall_virtual_account_txn =
   
   export const colchartReport = (barselectedmonths) => async (dispatch) => {
 
+    console.log(818,barselectedmonths);
+
   
     
     const params = new URLSearchParams();
-    if (barselectedmonths) params.append("range", barselectedmonths);
+    if (barselectedmonths) params.append("filter_type", barselectedmonths.toLowerCase());
   
     const token = localStorage.getItem("token") || {};
     const res = await fetch(

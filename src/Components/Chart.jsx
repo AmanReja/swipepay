@@ -3,194 +3,128 @@ import ReactApexChart from "react-apexcharts";
 import { chartReport } from "../redux/action";
 import { useSelector, useDispatch } from "react-redux";
 
-const Chart = ({selectedmonths,theme}) => {
+const Chart = ({ selected, theme }) => {
   const dispatch = useDispatch();
   const chartData = useSelector((state) => state.chartreport.chartreport);
-  
-  
 
   useEffect(() => {
-    if (selectedmonths) {
-      dispatch(chartReport(selectedmonths));
+    if (selected) {
+      dispatch(chartReport(selected));
     }
-  }, [dispatch, selectedmonths]);
-  
-  
+  }, [dispatch, selected]);
 
-  // Ensure data is available and fallback to empty array
-  const dataArray = chartData?.data || [];
+  // ✅ Handle undefined or empty data
+  // if (!chartData || Object.keys(chartData).length === 0) {
+  //   return <p className="text-center mt-10 text-gray-500">No data available</p>;
+  // }
 
-  // Extract months and different amounts from API response
-  const months = dataArray.map((item) => item.month);
-  const totalAmounts = dataArray.map((item) => item.total_amount);
-  const successAmounts = dataArray.map((item) => item.success_amount);
-  const failedAmounts = dataArray.map((item) => item.failed_amount);
-  const pendingAmounts = dataArray.map((item) => item.pending_amount);
+  // ✅ Extract & normalize data by type
+  const { type } = chartData;
+  let categories = [];
+  let successAmounts = [];
 
+  switch (type) {
+    case "today":
+      categories = [chartData.data?.day || "Today"];
+      successAmounts = [parseFloat(chartData.data?.success_amount || 0)];
+      break;
+
+    case "yesterday":
+      categories = [chartData.data?.day || "Yesterday"];
+      successAmounts = [parseFloat(chartData.data?.success_amount || 0)];
+      break;
+
+    case "week":
+      categories = chartData.days?.map((d) => d.day) || [];
+      successAmounts = chartData.days?.map((d) => parseFloat(d.success_amount || 0)) || [];
+      break;
+
+    case "12months":
+      categories = chartData.months?.map((m) => m.month) || [];
+      successAmounts = chartData.months?.map((m) => parseFloat(m.success_amount || 0)) || [];
+      break;
+
+    default:
+      categories = [];
+      successAmounts = [];
+  }
+
+  // ✅ Single series — Success Amount
   const series = [
     {
-      name: "Total Amount",
-      data: totalAmounts,
-    },
-    {
-      name: "Success Amount",
+      name: "Success Amount (₹)",
       data: successAmounts,
-    },
-    {
-      name: "Failed Amount",
-      data: failedAmounts,
-    },
-    {
-      name: "pending Amount",
-      data: pendingAmounts,
     },
   ];
 
+  // ✅ Theme-based styling
   const textColor = theme === "dark" ? "#f1f1f1" : "#333";
   const gridColor = theme === "dark" ? "#444" : "#ddd";
 
-
   const options = {
-  
-    
     chart: {
       height: 350,
       type: "area",
-      toolbar: {
-        show: true,
-      },
+      toolbar: { show: true },
+      foreColor: textColor,
     },
-    foreColor:textColor,
-    
-    dataLabels: {
-      enabled: false,
-    },
-    stroke: {
-      curve: "smooth",
-      width: 2,
-    },
+    dataLabels: { enabled: false },
+    stroke: { curve: "smooth", width: 2 },
     xaxis: {
-      categories: months, // Use months from API
+      categories,
       title: {
-        text: "Months",style:{color:textColor}
+        text:
+          type === "12months"
+            ? "Months"
+            : type === "week"
+            ? "Days of Week"
+            : type === "yesterday"
+            ? "Yesterday"
+            : "Today",
+        style: { color: textColor },
       },
-      labels:{style:{colors:Array(months.length).fill(textColor)}},
+      labels: {
+        style: { colors: Array(categories.length || 1).fill(textColor) },
+      },
       axisBorder: { color: gridColor },
       axisTicks: { color: gridColor },
     },
     yaxis: {
-      title: {
-        text: "Amount (₹)", style:{color:textColor}
-      },
+      title: { text: "Amount (₹)", style: { color: textColor } },
       labels: {
-        style:{colors:textColor}
+        style: { colors: [textColor] },
+        formatter: (val) => `₹${val.toLocaleString()}`,
       },
     },
     tooltip: {
       theme: theme === "dark" ? "dark" : "light",
       y: {
-        formatter: (val) => `₹${val}`,
+        formatter: (val) => `₹${val.toLocaleString()}`,
       },
     },
-    legend: {
-      position: "bottom",
-      labels: {
-        colors: textColor,
-      },
-    },
-    grind:{ borderColor: gridColor},
+    legend: { show: false },
+    grid: { borderColor: gridColor },
     fill: {
       type: "gradient",
       gradient: {
         shadeIntensity: 1,
-        opacityFrom: 0.8,
+        opacityFrom: 0.7,
         opacityTo: 0.3,
         stops: [0, 90, 100],
       },
     },
-    colors: ["#007bff", "#28a745", "#dc3545","#eb8634"], // blue, green, red
-    
+    colors: ["#22c55e"],
   };
 
   return (
-    <div className={`w-full h-full ${theme==="dark"?"text-white":"text-black"}`}>
-      <ReactApexChart
-        options={options}
-        series={series}
-        type="area"
-        height={320}
-      />
+    <div
+      className={`w-full h-full ${
+        theme === "dark" ? "text-white" : "text-black"
+      }`}
+    >
+      <ReactApexChart options={options} series={series} type="area" height={320} />
     </div>
   );
 };
 
 export default Chart;
-
-// import React, { useEffect, useState } from "react";
-// import ReactApexChart from "react-apexcharts";
-// import { useDispatch, useSelector } from "react-redux";
-// import { summaryreport } from "../redux/action"; // adjust path as needed
-
-// const Chart = () => {
-//   const dispatch = useDispatch();
-//   const { summaryData } = useSelector((state) => state.summarydata.summarydata);
-
-//   const [series, setSeries] = useState([]);
-//   const [categories, setCategories] = useState([]);
-
-//   // Fetch summary report on mount
-//   useEffect(() => {
-//     dispatch(summaryreport("daily")); // or pass your filter type like "monthly"
-//   }, [dispatch]);
-
-//   // When data updates, format it for the chart
-//   useEffect(() => {
-//     if (summaryData) {
-//       // Example: assume summaryData looks like:
-//       // { dates: ["2025-11-01", "2025-11-02"], income: [20, 30], expense: [15, 25] }
-
-//       setSeries([
-//         { name: "Income", data: summaryData?.income || [] },
-//         { name: "Expense", data: summaryData?.expense || [] },
-//       ]);
-
-//       setCategories(summaryData?.dates || []);
-//     }
-//   }, [summaryData]);
-
-//   const options = {
-//     chart: { type: "area", toolbar: { show: true } },
-//     dataLabels: { enabled: false },
-//     stroke: { curve: "smooth", width: 2 },
-//     xaxis: { type: "datetime", categories },
-//     tooltip: { x: { format: "dd MMM HH:mm" } },
-//     legend: { position: "bottom" },
-//     fill: {
-//       type: "gradient",
-//       gradient: {
-//         shadeIntensity: 1,
-//         opacityFrom: 0.8,
-//         opacityTo: 0.3,
-//         stops: [0, 90, 100],
-//       },
-//     },
-//     colors: ["#80ffdb", "#00b4d8"],
-//   };
-
-//   return (
-//     <div className="w-full h-full">
-//       {series.length > 0 ? (
-//         <ReactApexChart
-//           options={options}
-//           series={series}
-//           type="area"
-//           height={320}
-//         />
-//       ) : (
-//         <p className="text-center text-gray-500">Loading chart...</p>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default Chart;
