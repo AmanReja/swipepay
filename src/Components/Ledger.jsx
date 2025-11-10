@@ -8,7 +8,7 @@ import "flatpickr/dist/themes/airbnb.css";
 import flatpickr from "flatpickr";
 import { Theme } from "../Contexts/Theme";
 import Contentloader from "./Contentloader";
-import { Check, ChevronDown } from "lucide-react";
+import { Check, ChevronDown,ChevronLeft,ChevronRight } from "lucide-react";
 
 const Ledger = () => {
   const { theme, setTheme } = useContext(Theme);
@@ -519,7 +519,7 @@ const Ledger = () => {
                                     : "bg-gray-100 border-gray-300 text-gray-700"
                                 }`}
                               >
-                                {txn.txn_type}
+                                {txn.txn_type?.toUpperCase()}
                               </span>
                             </div>
                           </div>
@@ -606,61 +606,104 @@ const Ledger = () => {
                   </div>
 
                   <div className="flex items-center space-x-2">
-                    {/* Showing range */}
-                    <p>
-                      {(page - 1) * perPage + 1}-
-                      {Math.min(page * perPage, totaldata)} of {totaldata}
-                    </p>
+  {/* Showing range */}
+  <p>
+    {(page - 1) * perPage + 1}-{Math.min(page * perPage, totaldata)} of {totaldata}
+  </p>
 
-                    <button
-                      onClick={() => setPage(page - 1)}
-                      disabled={page === 1}
-                      className={`px-3 py-1  rounded-md ${
-                        page === 1
-                          ? "opacity-50 cursor-not-allowed"
-                          : theme === "dark"
-                          ? "hover:bg-gray-700"
-                          : "hover:bg-gray-200"
-                      }`}
-                    >
-                      <i className="fa-solid fa-arrow-left"></i>
-                    </button>
+  {/* Prev Button */}
+  <button
+  
+    onClick={() => setPage(page - 1)}
+    disabled={page === 1}
+    className={`px-3 py-1 rounded-md ${
+      page === 1
+        ? "opacity-50 cursor-not-allowed"
+        : theme === "dark"
+        ? "hover:bg-gray-700"
+        : "hover:bg-gray-200"
+    }`}
+  >
+  <ChevronLeft/>
+  </button>
 
-                    {Array.from({ length: 3 }, (_, i) => page + i).map(
-                      (num) =>
-                        num <= totalpage && (
-                          <button
-                            key={num}
-                            onClick={() => setPage(num)}
-                            className={`px-3 py-1  rounded-md ${
-                              num === page
-                                ? theme === "dark"
-                                  ? "bg-gray-700 font-semibold"
-                                  : "bg-gray-200 font-semibold"
-                                : theme === "dark"
-                                ? "hover:bg-gray-800"
-                                : "hover:bg-gray-100"
-                            }`}
-                          >
-                            {num}
-                          </button>
-                        )
-                    )}
+  {/* First Page */}
+  <button
+    onClick={() => setPage(1)}
+    className={`px-3 py-1 rounded-md ${
+      page === 1
+        ? theme === "dark"
+          ? "bg-gray-700 font-semibold"
+          : "bg-gray-200 font-semibold"
+        : theme === "dark"
+        ? "hover:bg-gray-800"
+        : "hover:bg-gray-100"
+    }`}
+  >
+    1
+  </button>
 
-                    <button
-                      onClick={() => setPage(page + 1)}
-                      disabled={page === totalpage}
-                      className={`px-3 py-1  rounded-md ${
-                        page === totalpage
-                          ? "opacity-50 cursor-not-allowed"
-                          : theme === "dark"
-                          ? "hover:bg-gray-700"
-                          : "hover:bg-gray-200"
-                      }`}
-                    >
-                      <i className="fa-solid fa-arrow-right"></i>
-                    </button>
-                  </div>
+  {/* Dots before current group */}
+  {page > 3 && <span className="px-2">...</span>}
+
+  {/* Nearby page numbers */}
+  {Array.from({ length: 3 }, (_, i) => page - 1 + i)
+    .filter((num) => num > 1 && num < totalpage)
+    .map((num) => (
+      <button
+        key={num}
+        onClick={() => setPage(num)}
+        className={`px-3 py-1 rounded-md ${
+          num === page
+            ? theme === "dark"
+              ? "bg-gray-700 font-semibold"
+              : "bg-gray-200 font-semibold"
+            : theme === "dark"
+            ? "hover:bg-gray-800"
+            : "hover:bg-gray-100"
+        }`}
+      >
+        {num}
+      </button>
+    ))}
+
+  {/* Dots after current group */}
+  {page < totalpage - 2 && <span className="px-2">...</span>}
+
+  {/* Last Page */}
+  {totalpage > 1 && (
+    <button
+      onClick={() => setPage(totalpage)}
+      className={`px-3 py-1 rounded-md ${
+        page === totalpage
+          ? theme === "dark"
+            ? "bg-gray-700 font-semibold"
+            : "bg-gray-200 font-semibold"
+          : theme === "dark"
+          ? "hover:bg-gray-800"
+          : "hover:bg-gray-100"
+      }`}
+    >
+      {totalpage}
+    </button>
+  )}
+
+  {/* Next Button */}
+  <button
+    onClick={() => setPage(page + 1)}
+    disabled={page === totalpage}
+    className={`px-3 py-1 rounded-md ${
+      page === totalpage
+        ? "opacity-50 cursor-not-allowed"
+        : theme === "dark"
+        ? "hover:bg-gray-700"
+        : "hover:bg-gray-200"
+    }`}
+  >
+   <ChevronRight/>
+  </button>
+</div>
+
                 </div>
               ) : (
                 ""
