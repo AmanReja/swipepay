@@ -123,8 +123,8 @@ const Settings = () => {
                 Developer tools
               </NavLink>
 
-              <a className="flex items-center gap-1 hover:border-b-violet-300 hover:border-b-[3px]">
-                {/* Team Management Icon */}
+              {/* <a className="flex items-center gap-1 hover:border-b-violet-300 hover:border-b-[3px]">
+               
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="w-4 h-4"
@@ -140,10 +140,10 @@ const Settings = () => {
                   />
                 </svg>
                 Team management
-              </a>
+              </a> */}
 
-              <a className="flex items-center gap-1 hover:border-b-violet-300 hover:border-b-[3px]">
-                {/* Billing Icon */}
+              {/* <a className="flex items-center gap-1 hover:border-b-violet-300 hover:border-b-[3px]">
+             
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="w-4 h-4"
@@ -159,7 +159,7 @@ const Settings = () => {
                   />
                 </svg>
                 Billing
-              </a>
+              </a> */}
             </div>
           </header>
 

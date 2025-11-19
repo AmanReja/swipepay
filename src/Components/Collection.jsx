@@ -13,7 +13,7 @@ import flatpickr from "flatpickr";
 import Contentloader from "../Components/Contentloader";
 
 import { Theme } from "../Contexts/Theme";
-import { ChevronDown, Check } from "lucide-react";
+import { ChevronDown, Check,ChevronLeft ,ChevronRight } from "lucide-react";
 
 const Collection = () => {
   const { theme, setTheme } = useContext(Theme);
@@ -649,7 +649,7 @@ const Collection = () => {
                         </td>
 
                         <td className="px-4 py-5 text-center">
-                          {txn.payment_mode}
+                          {txn.payment_mode?.charAt(0).toUpperCase()+txn.payment_mode?.slice(1).toLowerCase()}
                         </td>
                       </tr>
                     ))
@@ -665,6 +665,7 @@ const Collection = () => {
                   )}
                 </tbody>
               </table>
+
               {totalpage > 0 ? (
                 <div
                   className={`flex items-center justify-between px-4 py-3 border-t text-sm ${
@@ -695,67 +696,109 @@ const Collection = () => {
                   </div>
 
                   <div className="flex items-center space-x-2">
-                    <p>
-                      {(page - 1) * perPage + 1}-
-                      {Math.min(page * perPage, totaldata)} of {totaldata}
-                    </p>
+  {/* Showing range */}
+  <p>
+    {(page - 1) * perPage + 1}-{Math.min(page * perPage, totaldata)} of {totaldata}
+  </p>
 
-                    {/* Prev button */}
-                    <button
-                      onClick={() => setPage(page - 1)}
-                      disabled={page === 1}
-                      className={`px-3 py-1  rounded-md ${
-                        page === 1
-                          ? "opacity-50 cursor-not-allowed"
-                          : theme === "dark"
-                          ? "hover:bg-gray-700"
-                          : "hover:bg-gray-200"
-                      }`}
-                    >
-                      <i className="fa-solid fa-arrow-left"></i>
-                    </button>
+  {/* Prev Button */}
+  <button
+  
+    onClick={() => setPage(page - 1)}
+    disabled={page === 1}
+    className={`px-3 py-1 rounded-md ${
+      page === 1
+        ? "opacity-50 cursor-not-allowed"
+        : theme === "dark"
+        ? "hover:bg-gray-700"
+        : "hover:bg-gray-200"
+    }`}
+  >
+  <ChevronLeft/>
+  </button>
 
-                    {/* Page numbers */}
-                    {Array.from({ length: 3 }, (_, i) => page + i).map(
-                      (num) =>
-                        num <= totalpage && (
-                          <button
-                            key={num}
-                            onClick={() => setPage(num)}
-                            className={`px-3 py-1  rounded-md ${
-                              num === page
-                                ? theme === "dark"
-                                  ? "bg-gray-700 font-semibold"
-                                  : "bg-gray-200 font-semibold"
-                                : theme === "dark"
-                                ? "hover:bg-gray-800"
-                                : "hover:bg-gray-100"
-                            }`}
-                          >
-                            {num}
-                          </button>
-                        )
-                    )}
+  {/* First Page */}
+  <button
+    onClick={() => setPage(1)}
+    className={`px-3 py-1 rounded-md ${
+      page === 1
+        ? theme === "dark"
+          ? "bg-gray-700 font-semibold"
+          : "bg-gray-200 font-semibold"
+        : theme === "dark"
+        ? "hover:bg-gray-800"
+        : "hover:bg-gray-100"
+    }`}
+  >
+    1
+  </button>
 
-                    {/* Next button */}
-                    <button
-                      onClick={() => setPage(page + 1)}
-                      disabled={page === totalpage}
-                      className={`px-3 py-1  rounded-md ${
-                        page === totalpage
-                          ? "opacity-50 cursor-not-allowed"
-                          : theme === "dark"
-                          ? "hover:bg-gray-700"
-                          : "hover:bg-gray-200"
-                      }`}
-                    >
-                      <i className="fa-solid fa-arrow-right"></i>
-                    </button>
-                  </div>
+  {/* Dots before current group */}
+  {page > 3 && <span className="px-2">...</span>}
+
+  {/* Nearby page numbers */}
+  {Array.from({ length: 3 }, (_, i) => page - 1 + i)
+    .filter((num) => num > 1 && num < totalpage)
+    .map((num) => (
+      <button
+        key={num}
+        onClick={() => setPage(num)}
+        className={`px-3 py-1 rounded-md ${
+          num === page
+            ? theme === "dark"
+              ? "bg-gray-700 font-semibold"
+              : "bg-gray-200 font-semibold"
+            : theme === "dark"
+            ? "hover:bg-gray-800"
+            : "hover:bg-gray-100"
+        }`}
+      >
+        {num}
+      </button>
+    ))}
+
+  {/* Dots after current group */}
+  {page < totalpage - 2 && <span className="px-2">...</span>}
+
+  {/* Last Page */}
+  {totalpage > 1 && (
+    <button
+      onClick={() => setPage(totalpage)}
+      className={`px-3 py-1 rounded-md ${
+        page === totalpage
+          ? theme === "dark"
+            ? "bg-gray-700 font-semibold"
+            : "bg-gray-200 font-semibold"
+          : theme === "dark"
+          ? "hover:bg-gray-800"
+          : "hover:bg-gray-100"
+      }`}
+    >
+      {totalpage}
+    </button>
+  )}
+
+  {/* Next Button */}
+  <button
+    onClick={() => setPage(page + 1)}
+    disabled={page === totalpage}
+    className={`px-3 py-1 rounded-md ${
+      page === totalpage
+        ? "opacity-50 cursor-not-allowed"
+        : theme === "dark"
+        ? "hover:bg-gray-700"
+        : "hover:bg-gray-200"
+    }`}
+  >
+   <ChevronRight/>
+  </button>
+</div>
+
                 </div>
               ) : (
                 ""
               )}
+           
             </div>
           </div>
         </section>

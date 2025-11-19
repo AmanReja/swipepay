@@ -18,7 +18,7 @@ const Summery = () => {
   const { theme, setTheme } = useContext(Theme)
   const [daterange, setDaterange] = useState("")
   const [open, setOpen] = useState(false);
-  const [selected,setSelected] = useState("")
+  const [selected,setSelected] = useState("Today")
   // const [selectedmonths,setSelectedmonths] = useState("1")
   // const [barselectedmonths,setBarselectedmonths] = useState("1")
 

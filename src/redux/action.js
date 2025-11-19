@@ -10,6 +10,7 @@ export const ADDENTITY_CALLBACK = "ADDENTITY_CALLBACK";
 export const UPDATEENTITY_CALLBACK = "UPDATEENTITY_CALLBACK";
 export const DELETEENTITY_CALLBACK = "DELETEENTITY_CALLBACK";
 export const FORGOT_PASSWORD = "FORGOT_PASSWORD";
+export const UPDATE_PASSWORD = "UPDATE_PASSWORD";
 export const GETCOLLECTIONS = "GETCOLLECTIONS";
 export const GETVERTUAL_ACCOUNT = "GETVERTUAL_ACCOUNT";
 export const VERIFY_AADHAR = "VERIFY_AADHAR";
@@ -29,7 +30,7 @@ export const COLCHARTREPORT = "COLCHARTREPORT";
 // http://192.168.1.43:3000 //
 // http://192.168.1.45:3000 //
 
-const baseUrl = "http://192.168.1.45:3000";
+const baseUrl = "https://acs.busybox.in";
 
 export const update_user_details = (updatedinfo) => async (dispatch) => {
   const token = localStorage.getItem("token") || {};
@@ -630,6 +631,9 @@ export const updateeteentitycallbackevent =
     const data = await res.json();
     dispatch({ type: "UPDATEENTITY_CALLBACK", payload: data });
   };
+
+
+  
 export const forgotpassword =
   (uppassword, navigate, setLoad, setError) => async (dispatch) => {
     if (window.confirm("Are you sure you want to update your password")) {
@@ -658,6 +662,39 @@ export const forgotpassword =
       dispatch({ type: "FORGOT_PASSWORD", payload: data });
     }
   };
+
+
+export const updatePassword =
+  (updatedpass) => async (dispatch) => {
+    if (window.confirm("Are you sure you want to update your password")) {
+     
+      const token = localStorage.getItem("token") || {};
+
+      const res = await fetch(`${baseUrl}/v1/user/forgot-password`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ new_password:updatedpass}),
+      });
+
+      if (res.status === 200) {
+        alert("password hasbeen updated");
+
+      
+      }
+     
+      const data = await res.json();
+      dispatch({ type: "UPDATE_PASSWORD", payload: data });
+    }
+  };
+
+
+
+
+
+
 export const get_vertualaccountdetails = () => async (dispatch) => {
   const token = localStorage.getItem("token") || {};
   const res = await fetch(`${baseUrl}/v1/user/get-va`, {

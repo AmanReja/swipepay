@@ -244,8 +244,8 @@ const Signin = () => {
               </div>
 
 
-              <div className="space-y-4">
-                <div className="relative">
+              <div className="space-y-4 ">
+                <div className="relative ">
                   <input
                     required
                     onChange={(e) => {
@@ -254,7 +254,7 @@ const Signin = () => {
                     value={email}
                     type="text"
                     placeholder="Email address"
-                    className="w-full h-12 pl-12 pr-4 rounded-xl outline-none border border-gray-300  transition"
+                    className="w-full h-10 pl-12 pr-4 rounded-xl outline-none border border-gray-300  transition"
                   />
                   <svg
                     className="w-5 h-5 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2"
@@ -280,7 +280,7 @@ const Signin = () => {
                     required
                     type={checkpass ? "text" : "password"}
                     placeholder="Password"
-                    className="w-full h-12 pl-12 pr-4  outline-none  transition "
+                    className="w-full h-10 pl-12 pr-4  outline-none  transition "
                   />
                   <svg
                     className="w-5 h-5  text-gray-400 absolute left-4 top-1/2 -translate-y-1/2"
@@ -354,7 +354,7 @@ const Signin = () => {
                     </svg>
                   )}
                 </div>
-                {wrong && (<div className="flex bg-red-500 p-2 border-2 rounded-2xl text-white pr-[80px]">
+                {wrong && (<div className="flex  text-[12px] bg-red-500 p-2 border-2 rounded-2xl text-white pr-[80px]">
                   Wrong Password Please use a different password
                 </div>)
 

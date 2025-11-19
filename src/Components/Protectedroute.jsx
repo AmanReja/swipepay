@@ -14,7 +14,7 @@ const Protectedroute = () => {
 
   
 
-    const res = await fetch("http://192.168.1.45:3000/v1/user/check-auth", {
+    const res = await fetch("https://acs.busybox.in/v1/user/check-auth", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

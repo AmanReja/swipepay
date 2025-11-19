@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ShieldCheck, Smartphone, Lock, X } from "lucide-react";
-import { forgotpassword } from "../redux/action";
+import { updatePassword } from "../redux/action";
 import { useDispatch,useSelector } from "react-redux";
 
 
@@ -10,6 +10,8 @@ const Security = () => {
   const [openDevice, setOpenDevice] = useState(false);
   const [passopen, setPassopen] = useState(false);
   const [updatedpass, setUpdatedpass] = useState("");
+  const [confirmpass, setConfirmpass] = useState("");
+
  
   const dispatch = useDispatch();
 
@@ -21,21 +23,28 @@ const Security = () => {
 
   const passupdate = (e)=>{
     e.preventDefault()
-    try {
+    if (confirmpass!==updatedpass) {
+      alert("Password is not matching with confirm password")
+     
+    }else{
+      try {
     
-        const oldpass = {
-            new_password:updatedpass
-        }
-        dispatch(forgotpassword(oldpass))
+     
+        dispatch(updatePassword(updatedpass))
     } catch (error) {
         alert(error)
         
     }finally{
         setUpdatedpass("")
         setPassopen(false)
+        setConfirmpass("")
         
 
     }
+    }
+
+   
+
    
   }
 
@@ -96,7 +105,7 @@ const Security = () => {
       </div>
 
       {/* Trusted Devices */}
-      <div className="border border-gray-200 rounded-2xl bg-white shadow-lg p-6 hover:shadow-xl transition">
+      {/* <div className="border border-gray-200 rounded-2xl bg-white shadow-lg p-6 hover:shadow-xl transition">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg font-bold text-gray-900">Trusted Devices</h2>
           <button
@@ -139,11 +148,11 @@ const Security = () => {
             </tr>
           </tbody>
         </table>
-      </div>
+      </div> */}
 
       {/* Modal - Enable 2FA */}
       {passopen && (
-        <form  className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+        <form onSubmit={(e)=>{passupdate(e)}} className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
           <div className="bg-white rounded-2xl shadow-2xl p-6 w-[90%] md:w-[400px] relative">
             <button
               onClick={handelpassopen}
@@ -159,7 +168,13 @@ const Security = () => {
             <input required onChange={(e)=>{setUpdatedpass(e.target.value)}}
               type="text"
               value={updatedpass}
-              placeholder="Enter updated pass"
+              placeholder="Enter Updated pass"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg mb-4"
+            />
+            <input required onChange={(e)=>{setConfirmpass(e.target.value)}}
+              type="text"
+              value={confirmpass}
+              placeholder="Confirm pass"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg mb-4"
             />
             <button type="submit" className="w-full py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700 transition">
