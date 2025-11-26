@@ -26,11 +26,20 @@ export const CHARTREPORT = "CHARTREPORT";
 export const COLCHARTREPORT = "COLCHARTREPORT";
 
 
+
+export const GET_SETTLEMENTS ="GET_SETTLEMENTS";
+
+
+// import.meta.env.VITE_PRODUCTION_URL;
+// import.meta.env.VITE_LOCAL_URL;
+// console.log(31,import.meta.env.VITE_LOCAL_URL);
+// console.log(31,import.meta.env.VITE_GOOGLE_CLIENT_ID);
+
 // https://acs.busybox.in //
 // http://192.168.1.43:3000 //
 // http://192.168.1.45:3000 //
 
-const baseUrl = "https://acs.busybox.in";
+const baseUrl = import.meta.env.VITE_LOCAL_URL;
 
 export const update_user_details = (updatedinfo) => async (dispatch) => {
   const token = localStorage.getItem("token") || {};
@@ -251,6 +260,7 @@ export const getall_payoutlog_data =
     try {
       const token = localStorage.getItem("token") || {};
       const decoded = jwtDecode(token);
+      console.log("tr status",trstatus,);
 
       const params = new URLSearchParams();
       if (searchtr) params.append("search", searchtr);
@@ -881,3 +891,50 @@ export const getall_virtual_account_txn =
     dispatch({ type: "COLCHARTREPORT", payload: data });
   };
   
+
+  export const get_settlements= ()=>async(dispatch)=>{
+    const token = localStorage.getItem("token") || {};
+    const decoded = jwtDecode(token);
+    const params = new URLSearchParams();
+    if (searchtr) params.append("search", searchtr);
+    if (trstatus) params.append("status", trstatus);
+    if (searchdate_start) params.append("start_date", searchdate_start);
+    if (searchdate_end) params.append("end_date", searchdate_end);
+    if (downloadexcl) params.append("download", "excel");
+    if (page) params.append("page", page);
+    if (pagelimit) params.append("limit", pagelimit);
+
+    const res = await fetch(
+      `${baseUrl}/v1/user/customer/master?${params.toString()}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (res.status === 401) {
+      localStorage.removeItem("token");
+      window.location.href = "/";
+      return;
+    }
+
+    if (downloadexcl == true) {
+      const blob = await res.blob();
+      const fileURL = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = fileURL;
+      link.setAttribute(
+        "download",
+        `${decoded.corpID}_${searchdate_start}_${searchdate_end}_SETTLEMENTS.xlsx`
+      );
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      return;
+    }
+    const data = await res.json();
+    dispatch({ type: "GET_SETTLEMENTS", payload: data });
+  }

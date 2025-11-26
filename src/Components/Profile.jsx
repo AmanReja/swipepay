@@ -10,7 +10,7 @@ const Profile = () => {
   const {theme,setTheme} =useContext(Theme)
   const [email, setEmail] = useState("");
   const [designation, setDesignation] = useState("");
-  const [name, setName] = useState("");
+  // const [name, setName] = useState("");
   const [role, setRole] = useState("");
   const [status, setStatus] = useState("");
 
@@ -25,7 +25,7 @@ const Profile = () => {
     if (getoneuser) {
       setEmail(getoneuser.email || "");
       setDesignation(getoneuser.designation || "");
-      setName(getoneuser.name || "");
+      // setName(getoneuser.name || "");
       setRole(getoneuser.role || "");
       setStatus(getoneuser.status || "");
     }
@@ -33,7 +33,7 @@ const Profile = () => {
 
   const handelupdate = (e) => {
     e.preventDefault();
-    const updatedInfo = { email, designation, role, status, name };
+    const updatedInfo = { email, designation, role, status };
     dispatch(update_user_details(updatedInfo));
   };
 
@@ -95,7 +95,7 @@ const Profile = () => {
               <form onSubmit={handelupdate} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 
-                  <div>
+                  {/* <div>
                     <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">
                       Full Name
                     </label>
@@ -112,7 +112,7 @@ const Profile = () => {
                         placeholder="John Doe"
                       />
                     </div>
-                  </div>
+                  </div> */}
   
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">

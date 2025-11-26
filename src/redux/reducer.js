@@ -13,7 +13,7 @@ import {
   UPDATEENTITY_CALLBACK,
   FORGOT_PASSWORD,
   GETCOLLECTIONS,
-  GETVERTUAL_ACCOUNT,VERIFY_AADHAR,LOGIN,GLOGIN,SENDOTP,COLLECTION_REPORT,SUMMARY,GETALL_VIRTUAL_ACCOUNT_TXN,CHARTREPORT, COLCHARTREPORT
+  GETVERTUAL_ACCOUNT,VERIFY_AADHAR,LOGIN,GLOGIN,SENDOTP,COLLECTION_REPORT,SUMMARY,GETALL_VIRTUAL_ACCOUNT_TXN,CHARTREPORT, COLCHARTREPORT,GET_SETTLEMENTS
 } from "./action";
 
 
@@ -411,4 +411,24 @@ export const colchartreportReducer =(state=initialcolchartreport,action)=>{
   else {
     return state;
   }
+}
+
+
+const initialsettlementstate={
+  settlements:[],
+}
+
+
+export const settlementReducer =(state=initialsettlementstate,action)=>{
+
+  if (action.type===GET_SETTLEMENTS) {
+    return{
+      ...state,
+      settlements:action.payload
+    }
+  } else{
+    return state
+  }
+
+
 }

@@ -268,72 +268,70 @@ const Accounts = () => {
     <>
       <div className={`w-full flex flex-col gap-[50px] mb-[10px] ${theme==="dark"?"bg-gray-800":"bg-white"}  overflow-hidden`}>
         <div className="flex flex-col border-gray-200  h-auto  w-full shadow rounded-xl">
-        <div className="relative overflow-hidden rounded-2xl p-8 md:p-10 flex flex-col md:flex-row items-center justify-between gap-10 bg-gradient-to-br from-indigo-900 via-indigo-800 to-indigo-700 shadow-[0_0_40px_-10px_rgba(79,70,229,0.7)] border border-indigo-600/30">
-      
-      {/* Decorative background elements */}
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute w-96 h-96 bg-indigo-500/30 blur-3xl rounded-full top-[-100px] right-[-100px]" />
-        <div className="absolute w-80 h-80 bg-violet-500/20 blur-3xl rounded-full bottom-[-80px] left-[-100px]" />
-      </div>
+        <div className="relative overflow-hidden rounded-xl p-6 md:p-7 flex flex-col md:flex-row items-center justify-between gap-8 bg-gradient-to-br from-indigo-900 via-indigo-800 to-indigo-700 shadow-[0_0_30px_-10px_rgba(79,70,229,0.6)] border border-indigo-600/30">
 
-      {/* Text Section */}
-      <motion.div
-        initial={{ opacity: 0, x: -40 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.8 }}
-        className="flex flex-col gap-6 max-w-2xl text-center md:text-left"
+{/* Decorative background elements */}
+<div className="absolute inset-0 -z-10">
+  <div className="absolute w-72 h-72 bg-indigo-500/25 blur-2xl rounded-full top-[-80px] right-[-80px]" />
+  <div className="absolute w-64 h-64 bg-violet-500/15 blur-2xl rounded-full bottom-[-60px] left-[-80px]" />
+</div>
+
+{/* Text Section */}
+<motion.div
+  initial={{ opacity: 0, x: -35 }}
+  whileInView={{ opacity: 1, x: 0 }}
+  transition={{ duration: 0.7 }}
+  className="flex flex-col gap-4 max-w-xl text-center md:text-left"
+>
+  {/* Icon */}
+  <div className="flex justify-center md:justify-start">
+    <div className="bg-gradient-to-br from-indigo-500 to-violet-500 p-2.5 rounded-xl shadow-md shadow-indigo-700/40">
+      <svg
+        className="w-6 h-6 text-white"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        strokeWidth={2}
       >
-        {/* Icon */}
-        <div className="flex justify-center md:justify-start">
-          <div className="bg-gradient-to-br from-indigo-500 to-violet-500 p-3 rounded-2xl shadow-lg shadow-indigo-700/40">
-            <svg
-              className="w-8 h-8 text-white"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M5.121 17.804A9.953 9.953 0 0112 15c2.21 0 4.21.72 5.879 1.928M15 10a3 3 0 11-6 0 3 3 0 016 0z"
-              />
-            </svg>
-          </div>
-        </div>
-
-        {/* Heading */}
-        <h1 className="text-4xl md:text-5xl font-bold text-white leading-tight drop-shadow-md">
-          Personal Information
-        </h1>
-
-        {/* Paragraph */}
-        <p
-          style={{ fontFamily: "Delius" }}
-          className="text-base md:text-lg text-gray-300 leading-relaxed md:pr-[15%]"
-        >
-          Manage your details to keep your account secure and personalized.
-        </p>
-
-      
-     
-      </motion.div>
-
-      {/* Image Section */}
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        className="flex justify-center relative top-[50px]"
-      >
-        <img
-          className="w-48 md:w-56 h-auto object-contain drop-shadow-2xl hover:scale-105 transition-transform duration-300"
-          src={robo}
-          alt="Personal Info"
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M5.121 17.804A9.953 9.953 0 0112 15c2.21 0 4.21.72 5.879 1.928M15 10a3 3 0 11-6 0 3 3 0 016 0z"
         />
-      </motion.div>
+      </svg>
     </div>
+  </div>
+
+  {/* Heading - smaller */}
+  <h1 className="text-2xl md:text-3xl font-bold text-white leading-tight drop-shadow-sm">
+    Personal Information
+  </h1>
+
+  {/* Paragraph - smaller */}
+  <p
+    style={{ fontFamily: "Delius" }}
+    className="text-sm md:text-base text-gray-300 leading-relaxed md:pr-[10%]"
+  >
+    Manage your details to keep your account secure and personalized.
+  </p>
+</motion.div>
+
+{/* Image Section - smaller, lowered less */}
+<motion.div
+  initial={{ opacity: 0, y: 25 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.7 }}
+  className="flex justify-center relative top-[20px]"
+>
+  {/* <img
+    className="w-36 md:w-44 h-auto object-contain drop-shadow-xl hover:scale-105 transition-transform duration-300"
+    src={robo}
+    alt="Personal Info"
+  /> */}
+</motion.div>
+</div>
+
 
           <div className="w-full py-[10px] pl-[30px] sm:justify-normal flex-wrap h-auto  mt-[20px] justify-start sm:flex-row flex-col flex gap-[50px] ">
             {content_card.map((item) => (

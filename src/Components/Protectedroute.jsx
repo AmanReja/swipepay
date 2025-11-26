@@ -1,6 +1,10 @@
 import { React, useEffect, useState } from "react";
 import { Outlet, Navigate } from "react-router-dom";
+// import.meta.env.VITE_PRODUCTION_URL;
+// import.meta.env.VITE_LOCAL_URL;
 
+
+const baseurl = import.meta.env.VITE_LOCAL_URL;
 const Protectedroute = () => {
   const [authenticated, setAuthenticated] = useState(true);
 
@@ -9,12 +13,12 @@ const Protectedroute = () => {
 
     
 
-    ("192.168.1.43");
+    // ("192.168.1.43");
 
 
   
 
-    const res = await fetch("https://acs.busybox.in/v1/user/check-auth", {
+    const res = await fetch(`${baseurl}/v1/user/check-auth`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

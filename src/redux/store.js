@@ -11,7 +11,7 @@ import {
   forgotpassReducer,
   collectionsReducer,
   vaReducer,aadharReducer,loginReducer,gloginReducer,otpReducer,colreportReducer,summaryReducer,virtualaccountReducer,chartreportReducer,colchartreportReducer
-} from "./reducer";
+,settlementReducer} from "./reducer";
 const store = configureStore({
   reducer: {
     ledgerwallet: ledgerwalletReducer,
@@ -32,7 +32,8 @@ const store = configureStore({
     summarydata:summaryReducer,
     virtualaccount:virtualaccountReducer,
     chartreport:chartreportReducer,
-    colchartreport:colchartreportReducer
+    colchartreport:colchartreportReducer,
+    settlements:settlementReducer
 
   },
 });

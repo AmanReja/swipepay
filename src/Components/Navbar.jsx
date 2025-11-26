@@ -6,6 +6,9 @@ import { Theme } from "../Contexts/Theme";
 import { getone_user, update_user_details } from "../redux/action";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
+import {Sun, Moon} from "lucide-react"
+
+
 
 const Navbar = () => {
   
@@ -125,6 +128,7 @@ const getoneuser = useSelector((state) => state.getoneuser.getoneuser.user);
       { icon: "fa-solid fa-gear", label: "Settings",rout:"/dashboard/settings/accounts" },
       { icon: "fa-solid fa-bolt-lightning", label: "Dev Tools",rout:"/dashboard/settings/developertooles" },
       { icon: "fa-solid fa-user", label: "Profie",rout:"/dashboard/profile" },
+    
       
     ].map((item, i) => (
       <div onClick={()=>{navigate(item.rout)}}
@@ -140,7 +144,28 @@ const getoneuser = useSelector((state) => state.getoneuser.getoneuser.user);
         <p>{item.label}</p>
       </div>
     ))}
+<div className="w-full p-2  flex items-center justify-between">
+      <span className="font-medium">Mode</span>
 
+      {/* Icon Switch Button */}
+      <button
+        onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+        className="flex items-center gap-2 bg-white rounded-full px-3 py-1 shadow
+                 hover:shadow-md transition-all"
+      >
+        {theme === "light" ? (
+          <div className="flex items-center gap-1">
+            <Sun size={18} className="text-yellow-500" />
+            <span className="text-sm">Light</span>
+          </div>
+        ) : (
+          <div className="flex items-center gap-1">
+            <Moon size={18} className="text-blue-400" />
+            <span className="text-sm text-gray-800">Dark</span>
+          </div>
+        )}
+      </button>
+    </div>
   </div>
 
   {/* LOGOUT */}

@@ -92,6 +92,9 @@ const Report = () => {
   );
 
 
+
+  // console.log(96,payoutlogdata);
+
   useEffect(() => {
     if (!formdatastr || !formdataend) return;
     async function fetchdata() {
@@ -340,7 +343,7 @@ const Report = () => {
 
                     {open && (
                       <ul
-                        className={`fixed open top-[48%] w-[200px] left-[400px]  right-0 mt-2 rounded-lg shadow-lg border z-20 max-h-60 overflow-y-auto ${
+                        className={`fixed open top-[48%] w-[200px] left-[400px]  right-0 mt-2 rounded-lg shadow-lg border z-20 max-h-80 overflow-y-auto ${
                           theme === "dark"
                             ? "bg-gray-800 border-gray-600 text-gray-100"
                             : "bg-white border-gray-200 text-gray-800"
@@ -519,9 +522,9 @@ const Report = () => {
                             ? "bg-gray-800 text-white"
                             : "bg-white text-gray-800"
                         }`}
-                        value="FAILED"
+                        value="FAILURE"
                       >
-                        Failed
+                        Failure
                       </option>
                     </select>
                   </div>
@@ -599,7 +602,8 @@ const Report = () => {
                         <td className="px-4 py-5">
                           <div className="flex flex-col">
                             <p>UTR: {txn.rrn}</p>
-                            <p>[request ID: #{txn.paytmOrderId}]</p>
+                            <p>[Txn ID: #{txn.txn_id
+}]</p>
                           </div>
                         </td>
                         <td className="px-4 py-5">

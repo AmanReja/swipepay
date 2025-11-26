@@ -354,8 +354,8 @@ const Signin = () => {
                     </svg>
                   )}
                 </div>
-                {wrong && (<div className="flex  text-[12px] bg-red-500 p-2 border-2 rounded-2xl text-white pr-[80px]">
-                  Wrong Password Please use a different password
+                {wrong && (<div className="flex text-[10px] bg-red-500 p-2 border-2 rounded-2xl text-white">
+                  Wrong password please use a different password
                 </div>)
 
                 }

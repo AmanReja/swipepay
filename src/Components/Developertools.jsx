@@ -61,7 +61,12 @@ const Developertools = () => {
 
 
   const handelentitydelete = (entity) => {
-    dispatch(deleteentitycallbackevent(entity.corp_id, entity.callback_event_name))
+
+    if (window.confirm("Are You Sure To Delete Entity")) {
+      dispatch(deleteentitycallbackevent(entity.corp_id, entity.callback_event_name))
+    } 
+
+   
   }
 
 
@@ -72,33 +77,37 @@ const Developertools = () => {
 
 
   const addentity = () => {
-    try {
 
-      if (!callbackeventname || !callbackurl || !status) {
-        alert("all fields are required")
-      } else {
+    if (window.confirm("Are You Sure To Post Entity")) {
+      try {
 
-
-        const newEntity = {
-          callback_event_name: callbackeventname,
-          callback_url: callbackurl,
-          status: status,
-
-        }; dispatch(addentitycallbackevent(newEntity))
-
+        if (!callbackeventname || !callbackurl || !status) {
+          alert("all fields are required")
+        } else {
+  
+  
+          const newEntity = {
+            callback_event_name: callbackeventname,
+            callback_url: callbackurl,
+            status: status,
+  
+          }; dispatch(addentitycallbackevent(newEntity))
+  
+        }
+      } catch (error) {
+        alert(error)
+  
+      } finally {
+        setCallbackeventname("")
+        setCallbackurl("")
+        setStatus("")
+  
       }
-    } catch (error) {
-      alert(error)
-
-    } finally {
-      setCallbackeventname("")
-      setCallbackurl("")
-      setStatus("")
-
+  
+  
+  
     }
-
-
-
+   
 
 
 
@@ -123,6 +132,9 @@ const Developertools = () => {
   const handelupdate = () => {
     // console.log(55,entity.corp_id,entity.callback_event_name, entity.status);
 
+
+   if (window.confirm("Are You Sure To Update Entity")) {
+    
     try {
 
 
@@ -151,6 +163,9 @@ const Developertools = () => {
       setEntpra_envstatus("")
     }
 
+
+
+   }
 
 
   }
@@ -266,8 +281,10 @@ const Developertools = () => {
           className={` ${theme === "dark" ? "text-black" : "text-gray-900"} w-full px-4 py-2 border border-gray-300 rounded-lg`}
         >
           <option value="Select callback event">Select callback event</option>
-          <option value="payout_failed">payout_failed</option>
-          <option value="payout_pending">payout_pending</option>
+          <option value="PAYOUT_EVENT">PAYOUT_EVENT</option>
+          <option value="COLLECT_EVENT">COLLECT_EVENT</option>
+          <option value="REFUND_EVENT">REFUND_EVENT</option>
+          <option value="UPI_EVENT">UPI_EVENT</option>
         </select>
       </div>
 

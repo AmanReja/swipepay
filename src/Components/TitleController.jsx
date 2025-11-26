@@ -23,6 +23,7 @@ export default function TitleController() {
       "/dashboard/settings/developertooles": "Developer Tools",
       "/dashboard/profile": "Profile",
       "/dashboard/invoice": "Invoice",
+      "/dashboard/settlement": "Settlement",
     };
 
     const defaultTitle = "busybox";

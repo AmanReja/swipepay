@@ -248,7 +248,7 @@ const Virtualaccount = () => {
 
                     {open && (
                       <ul
-                        className={`fixed open top-[48%] w-[200px] left-[400px]  right-0 mt-2 rounded-lg shadow-lg border z-20 max-h-60 overflow-y-auto ${theme === "dark"
+                        className={`fixed open top-[48%] w-[200px] left-[400px]  right-0 mt-2 rounded-lg shadow-lg border z-20 max-h-80 overflow-y-auto ${theme === "dark"
                             ? "bg-gray-800 border-gray-600 text-gray-100"
                             : "bg-white border-gray-200 text-gray-800"
                           }`}

@@ -40,7 +40,7 @@ console.log(32,result);
     <div className="w-[100%] rounded-2xl 2xl:h-[85%] xl:h-[80%] h-[78%] flex flex-col">
     <main className="w-full h-full flex flex-col overflow-y-scroll">
       <section className="flex flex-col w-full p-4 sm:min-h-[600px] 2xl:h-[780px] sm:h-[600px] gap-[30px]">
-        {/* <main className="w-full p-6 sm:min-h-[600px] 2xl:h-[780px]">
+        <main className="w-full p-6 sm:min-h-[600px] 2xl:h-[780px]">
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -205,7 +205,7 @@ console.log(32,result);
               </div>
             </motion.div>
           )}
-        </main> */}
+        </main>
       </section>
     </main>
   </div>

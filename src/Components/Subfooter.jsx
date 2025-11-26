@@ -9,7 +9,7 @@ const Subfooter = () => {
           style={{ fontFamily: "montserrat" }}
           className="flex min-w-[235px]  text-[14px] w-[235px] h-full items-center gap-[10px] text-gray-500 justify-between"
         >
-          <a href="https://documenter.getpostman.com/view/2871565/2s93sZ7u6G">Docs</a>
+          <a href="https://busybox.readme.io/reference/authentication-1">Docs</a>
           <a href="">FAQ</a>
           <a href="">Support</a>
           <a href="">License</a>

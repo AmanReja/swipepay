@@ -38,7 +38,19 @@ import Otpverification from "./Components/Otpverification";
 import Resetpass from "./Components/Resetpass";
 import { ThemeProvider } from "./Contexts/Theme";
 
+import Settlement from "./Components/Settlement";
+
 import Invoice from "./Components/Invoice";
+// import.meta.env.VITE_PRODUCTION_URL;
+// import.meta.env.VITE_LOCAL_URL;
+
+if(import.meta.env.PROD){
+  console.log = () => {};
+  console.warn = () => {};
+  console.error = () => {};
+  console.info = () => {};
+  console.debug = () => {};
+}
 
 
 
@@ -72,6 +84,7 @@ const router = createBrowserRouter(
           <Route path="report" element={<Report />} />
           <Route path="payout" element={<Payout />} />
           <Route path="collection" element={<Collection />} />
+          <Route path="settlement" element={<Settlement />} />
           <Route path="verification" element={<Verification />} />
           <Route path="card" element={<Card />} />
           <Route path="keys" element={<Keys />} />

@@ -356,7 +356,7 @@ const Collection = () => {
 
                     {open && (
                       <ul
-                        className={`fixed open top-[48%] w-[200px] left-[400px] right-0 mt-2 rounded-lg shadow-lg border z-20 max-h-60 overflow-y-auto ${
+                        className={`fixed open top-[48%] w-[200px] left-[400px] right-0 mt-2 rounded-lg shadow-lg border z-20 max-h-80 overflow-y-auto ${
                           theme === "dark"
                             ? "bg-gray-800 border-gray-600 text-gray-100"
                             : "bg-white border-gray-200 text-gray-800"
@@ -633,7 +633,7 @@ const Collection = () => {
                         </td>
                         <td className="px-4 py-5">
                           <div className="flex flex-col">
-                            <p>SENDER: {txn.escrow_id
+                            <p>Reciver: {txn.escrow_id
 }</p>
                             <p>A/C: {txn.remitter_acc_number}</p>
                             <p>[IFSC Code: {txn.remitter_ifsc_code}]</p>
