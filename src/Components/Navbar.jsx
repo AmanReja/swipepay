@@ -66,19 +66,53 @@ const getoneuser = useSelector((state) => state.getoneuser.getoneuser.user);
   return (
     <div
   className={`w-[100%] ${
-    theme === "dark" ? "" : "bg-gray-100 "
-  } h-[40px] flex justify-between px-[10px] sm:px-[40px] items-center mt-[20px]`}
+    theme === "dark" ? "" : "bg-white "
+  } h-[50px] flex justify-between px-[10px] sm:px-[5S0px] items-center`}
 >
  
-  <div
+
+ <div className="flex justify-center items-center h-full gap-[30px]">
+ <div
     style={{ fontFamily: "Righteous" }}
-    className={`flex tracking-wide transition-all duration-300 animate-gradient-x h-[53px] relative sm:text-5xl text-2xl font-normal ${theme==="dark"?"text-white":"text-[#0A0C2C]"}`}
+    className={`flex text-center justify-center tracking-wide transition-all duration-300 animate-gradient-x h-[42px] relative sm:text-3xl text-2xl font-normal ${theme==="dark"?"text-white":"text-[#0A0C2C]"}`}
   >
     busybox
   </div>
+ 
+  <div className=" rounded-full flex">
+  <div className="w-8 h-8 rounded-full bg-orange-300 text-center text-gray-800 font-bold flex justify-center items-center content-center">YB</div>
+  <div>
+    <h3 className="font-bold text-[12px]">YOUR BUSINESS NAME</h3>
+    <p className="font-normal text-[10px]">+Add Another Company</p>
+  </div>
+  </div>
+  
+ </div>
+ 
 
   <div className="flex items-center gap-[20px]">
-    <Link to={"/dashboard/addmoney"}>
+
+    <div className="w-[400px] flex h-[32px] border-[1px] rounded-[5px] hover:border-2 hover:border-black duration-100 border-gray-300 ">
+      <div className="w-7 flex justify-center items-center h-full  ml-[1px]"><i class="fa-solid text-gray-500 fa-wand-magic-sparkles"></i></div>
+    <input placeholder="Ask Swip AI" className="w-[400px] pl-[2px] h-[32px] outline-none" type="text" />
+    <div className="content-center text-[14px] pr-[5px]">+CTRL</div>
+    </div>
+    <div className="  w-[150px] h-[30px] justify-between  flex items-center">
+
+<div className=" rounded-full w-7 h-7 flex justify-center items-center hover:bg-gray-200 duration-300"><i  class="fa-solid fa-bolt "></i></div>
+<div className=" rounded-full w-7 h-7 flex justify-center items-center hover:bg-gray-200 duration-300"><i class="fa-solid fa-bell"></i></div>
+<div className=" rounded-full w-7 h-7 flex justify-center items-center hover:bg-gray-200 duration-300">  <i class="fa-solid fa-bullhorn"></i></div>
+<div className=" rounded-full w-7 h-7 flex justify-center items-center hover:bg-gray-200 duration-300">   <i class="fa-solid fa-user"></i></div>
+    
+    
+  
+   
+    
+    </div>
+  
+
+    
+    {/* <Link to={"/dashboard/addmoney"}>
       <button className="bg-blue-500 hover:ring-2 hover:ring-blue-500 hover:shadow-lg hover:shadow-blue-500/50 text-[12px] text-white rounded w-[100px] h-[30px] transition duration-300">
         + Add Money
       </button>
@@ -90,7 +124,7 @@ const getoneuser = useSelector((state) => state.getoneuser.getoneuser.user);
       className="w-[30px] h-[30px] rounded-full cursor-pointer border-2 border-lime-400 hover:scale-105 transition"
       src={i5}
       alt=""
-    />
+    /> */}
   </div>
 
 

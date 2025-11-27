@@ -178,7 +178,7 @@ export const login = (olduser, navigate, setWrong) => async (dispatch) => {
     localStorage.setItem("token", data.token);
     localStorage.setItem("user", JSON.stringify(data.user));
     setWrong(false);
-    navigate("/dashboard/summery");
+    navigate("/dashboard/sales");
     localStorage.setItem("showLoginToast", "true");
 
     dispatch({ type: "LOGIN", payload: data });
