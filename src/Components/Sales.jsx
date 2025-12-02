@@ -2,27 +2,19 @@ import React from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import { motion } from "framer-motion";
 
+import webinar from "../assets/images/webinar.svg";
+
 const Sales = ({ theme }) => {
-  // Animation Variants
-  const fadeIn = {
-    hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.4 } },
-  };
-
-  const slideLeft = {
-    hidden: { opacity: 0, x: -50 },
-    show: { opacity: 1, x: 0, transition: { duration: 0.5 } },
-  };
-
-  const slideRight = {
-    hidden: { opacity: 0, x: 50 },
-    show: { opacity: 1, x: 0, transition: { duration: 0.5 } },
+  // Fade animation only
+  const fade = {
+    hidden: { opacity: 0 },
+    show: { opacity: 1, transition: { duration: 0.5 } },
   };
 
   const stagger = {
     show: {
-      transition: { staggerChildren: 0.15 }
-    }
+      transition: { staggerChildren: 0.15 },
+    },
   };
 
   return (
@@ -34,7 +26,7 @@ const Sales = ({ theme }) => {
     >
       {/* Top Banner */}
       <motion.div
-        variants={fadeIn}
+        variants={fade}
         className="bg-blue-300 w-full h-[50px] min-h-[40px] rounded-[5px] 
                    flex justify-center items-center gap-[10px]"
       >
@@ -43,6 +35,7 @@ const Sales = ({ theme }) => {
         </p>
 
         <motion.button
+          variants={fade}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           className="w-[180px] rounded-2xl bg-white shadow-2xs"
@@ -53,16 +46,16 @@ const Sales = ({ theme }) => {
 
       {/* Main Container */}
       <motion.div
-        variants={fadeIn}
+        variants={fade}
         className={`w-full bg-white rounded-lg ${
           theme === "dark" ? "text-gray-100 bg-gray-900" : "text-gray-900"
         }`}
       >
-        <div className="flex flex-col bg-white dark:bg-gray-900 p-4">
+        <div className="flex flex-col bg-white rounded-[10px] dark:bg-gray-900 p-4">
 
           {/* Header */}
           <motion.div
-            variants={slideLeft}
+            variants={fade}
             className="flex items-center justify-between mb-6"
           >
             <h1 className="text-2xl font-semibold">
@@ -72,6 +65,7 @@ const Sales = ({ theme }) => {
 
             <div className="flex items-center gap-3">
               <motion.button
+                variants={fade}
                 whileHover={{ scale: 1.05 }}
                 className={`px-4 py-2 rounded flex items-center gap-2 ${
                   theme === "dark"
@@ -83,6 +77,7 @@ const Sales = ({ theme }) => {
               </motion.button>
 
               <motion.button
+                variants={fade}
                 whileHover={{ scale: 1.05 }}
                 className="px-4 py-2 rounded bg-blue-600 text-white font-medium shadow 
                            hover:bg-blue-700 transition"
@@ -101,18 +96,18 @@ const Sales = ({ theme }) => {
           >
             {/* Illustration */}
             <motion.div
-              variants={slideLeft}
+              variants={fade}
               className="w-full lg:w-1/2 flex justify-center"
             >
               <img
-                src={""}
+                src={webinar}
                 alt="Sales Returns"
                 className="w-[80%] max-w-[400px] object-contain"
               />
             </motion.div>
 
             {/* Right Content */}
-            <motion.div variants={slideRight} className="w-full lg:w-1/2">
+            <motion.div variants={fade} className="w-full lg:w-1/2">
               <h2 className="text-3xl font-semibold leading-tight mb-4">
                 Simplify returns, amplify customer <br /> satisfaction.
               </h2>
@@ -126,7 +121,7 @@ const Sales = ({ theme }) => {
                 ].map((text, index) => (
                   <motion.li
                     key={index}
-                    variants={fadeIn}
+                    variants={fade}
                     className="flex items-center gap-2"
                   >
                     <FaCheckCircle className="text-blue-600" />
@@ -137,6 +132,7 @@ const Sales = ({ theme }) => {
 
               {/* CTA Button */}
               <motion.button
+                variants={fade}
                 whileHover={{ scale: 1.05 }}
                 className="mt-6 w-full lg:w-auto px-6 py-3 bg-blue-600 
                            text-white rounded shadow hover:bg-blue-700 transition"
@@ -146,7 +142,7 @@ const Sales = ({ theme }) => {
 
               {/* Footer */}
               <motion.div
-                variants={fadeIn}
+                variants={fade}
                 className="mt-5 flex items-center gap-6 text-sm"
               >
                 <div className="flex items-center gap-2 cursor-pointer">

@@ -40,3 +40,11 @@ input.hide-date-icon::-webkit-calendar-picker-indicator {
 html,body{
   overflow-y: hidden;
 }
+
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+
+  display: none;
+}
+

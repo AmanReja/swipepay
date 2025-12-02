@@ -18,8 +18,8 @@ const Footer = () => {
 
         
         <div className="w-full">
-          <h2 className="text-xl font-semibold">Busybox Dashboard</h2>
-          <p className="w-full">©2025 NextSpeed Technologies Private Limited. All rights reserved.  Data is secured via 'bank-grade' security</p>
+          <h2 className="text-xl font-semibold">Busybox</h2>
+          <p className="w-full text-[10px]">©2025 NextSpeed Technologies Private Limited. All rights reserved.  Data is secured via 'bank-grade' security</p>
         </div>
 
       

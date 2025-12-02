@@ -20,6 +20,7 @@ import Protectedroute from "./Components/Protectedroute.jsx";
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
 import { ThemeProvider } from "./Contexts/Theme";
+import Einvoices from "./Components/Einvoices";
 
 
 
@@ -27,6 +28,11 @@ import { ThemeProvider } from "./Contexts/Theme";
 import Invoices from "./Components/Invoices";
 import Sales from "./Components/Sales";
 import Purchase from "./Components/Purchase";
+import Bills from "./Components/Bills";
+import Creditnotes from "./Components/Creditnotes";
+import Expenses from "./Components/Expenses";
+import Subscriptions from "./Components/Subscriptions";
+import Debitnotes from "./Components/Debitnotes";
 
 
 // import.meta.env.VITE_PRODUCTION_URL;
@@ -59,8 +65,14 @@ const router = createBrowserRouter(
        
        
           <Route path="invoices" element={<Invoices />} />
+          <Route path="debitnotes" element={<Debitnotes />} />
+          <Route path="einvoices" element={<Einvoices />} />
           <Route path="sales" element={<Sales />} />
           <Route path="purchase" element={<Purchase />} />
+          <Route path="bills" element={<Bills />} />
+          <Route path="creditnotes" element={<Creditnotes />} />
+          <Route path="expenses" element={<Expenses />} />
+          <Route path="subscriptions" element={<Subscriptions />} />
        
      
         

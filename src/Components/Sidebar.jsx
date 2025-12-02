@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 
 import {
   FaShoppingCart,
@@ -51,28 +52,37 @@ const Sidebar = ({ theme }) => {
           <nav className="flex flex-col gap-2">
 
             {/* SALES */}
-            <div>
-              <button
-                onClick={() => toggle("sales")}
-                className="flex w-full justify-between px-2 py-2 hover:bg-gray-200 dark:hover:bg-gray-800 rounded items-center"
-              >
-                <span className="flex items-center gap-2">
-                  <FaShoppingCart /> Sales
-                </span>
-                {openMenu.sales ? <FaChevronDown size={8} /> : <FaChevronRight size={8}  />}
-              </button>
+          {/* SALES */}
+<div>
+  <button
+    onClick={() => toggle("sales")}
+    className="flex w-full justify-between px-2 py-2 hover:bg-gray-200 dark:hover:bg-gray-800 rounded items-center"
+  >
+    <span className="flex items-center gap-2 text-[13px] font-bold">
+      <i className="fa-solid fa-money-bills"></i> Sales
+    </span>
+    {openMenu.sales ? <FaChevronDown size={8} /> : <FaChevronRight size={8} />}
+  </button>
 
-              {openMenu.sales && (
-                <div className="ml-6 flex flex-col gap-1 text-sm">
-                  <Link to={"/dashboard/sales"} className="flex items-center gap-2 hover:underline">
-                    <FaFileInvoice size={13} /> Invoices
-                  </Link>
-                  <Link className="flex items-center gap-2 hover:underline">
-                    <FaTags size={13} /> Credit Notes
-                  </Link>
-                </div>
-              )}
-            </div>
+  <AnimatePresence>
+    {openMenu.sales && (
+      <motion.div
+        initial={{ height: 0, opacity: 0 }}
+        animate={{ height: "auto", opacity: 1 }}
+        exit={{ height: 0, opacity: 0 }}
+        transition={{ duration: 0.25 }}
+        className="overflow-hidden"
+      >
+        <div className="ml-6 flex flex-col gap-1 text-sm py-1">
+          <Link to={"/dashboard/sales"} className="hover:font-bold">Invoices</Link>
+          <Link to={"/dashboard/creditnotes"} className="hover:font-bold">Credit Notes</Link>
+          <Link to={"/dashboard/einvoices"} className="hover:font-bold">E-invoices</Link>
+          <Link to={"/dashboard/Subscriptions"} className="hover:font-bold">Subscriptions</Link>
+        </div>
+      </motion.div>
+    )}
+  </AnimatePresence>
+</div>
 
             {/* PURCHASES */}
             <div>
@@ -80,22 +90,31 @@ const Sidebar = ({ theme }) => {
                 onClick={() => toggle("purchases")}
                 className="flex w-full justify-between px-2 py-2 hover:bg-gray-200 dark:hover:bg-gray-800 rounded items-center"
               >
-                <span  className="flex items-center gap-2">
-                  <FaShoppingBag /> Purchases
+                <span  className="flex items-center gap-2 text-[13px] font-bold">
+                <i class="fa-solid fa-cart-shopping"></i> Purchases
                 </span>
                 {openMenu.purchases ? <FaChevronDown size={8}  /> : <FaChevronRight size={8}  />}
               </button>
+     <AnimatePresence>
 
-              {openMenu.purchases && (
-                <div className="ml-6 flex flex-col gap-1 text-sm">
-                  <Link to={"/dashboard/purchase"} className="flex items-center gap-2 hover:underline">
-                    <FaFileInvoice size={13} /> Bills
+     {openMenu.purchases && (
+                <motion.div    initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.25 }}  className="ml-6 flex flex-col gap-1 text-sm">
+                  <Link to={"/dashboard/purchase"} className="flex items-center gap-2 hover:font-bold ">
+                    Bills
                   </Link>
-                  <Link className="flex items-center gap-2 hover:underline">
-                    <FaClipboardList size={13} /> Purchase Orders
+                  <Link to={"/dashboard/bills"} className="flex items-center gap-2 hover:font-bold ">
+                   Purchase Orders
                   </Link>
-                </div>
+                  <Link to={"/dashboard/debitnotes"} className="flex items-center gap-2 hover:font-bold ">
+                    Debit Notes
+                  </Link>
+                </motion.div>
               )}
+     </AnimatePresence>
+          
             </div>
 
             {/* QUOTATIONS+ */}
@@ -104,40 +123,49 @@ const Sidebar = ({ theme }) => {
                 onClick={() => toggle("quotations")}
                 className="flex w-full justify-between px-2 py-2 hover:bg-gray-200 dark:hover:bg-gray-800 rounded items-center font-medium"
               >
-                <span className="flex items-center gap-2">
-                  ✏️ Quotations+
+                <span className="flex items-center gap-2 text-[13px] font-bold">
+                <i class="fa-solid fa-pen"></i> Quotations+
                 </span>
                 {openMenu.quotations ? <FaChevronDown size={8}  /> : <FaChevronRight size={8}  />}
               </button>
 
-              {openMenu.quotations && (
-                <div className="ml-6 mt-1 flex flex-col gap-1 text-sm">
-                  <Link className="flex items-center gap-2 hover:underline">
-                    <FaRegFileAlt size={13} /> Quotations
+
+       <AnimatePresence>
+
+       {openMenu.quotations && (
+                <motion.div  initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.25 }} className="ml-6 mt-1 flex flex-col gap-1 text-sm">
+                  <Link className="flex items-center gap-2  hover:font-bold ">
+                     Quotations
                   </Link>
 
                   <div className="flex items-center gap-2">
-                    <Link className="flex items-center gap-2 hover:underline">
-                      <FaListAlt size={13} /> Sales Orders
+                    <Link className="flex items-center gap-2 hover:font-bold ">
+                       Sales Orders
                     </Link>
                     <span className="text-[10px] bg-blue-600 text-white px-1 py-0.5 rounded">
                       NEW
                     </span>
                   </div>
 
-                  <Link className="flex items-center gap-2 hover:underline">
-                    <FaRegFileAlt size={13} /> Pro Forma Invoices
+                  <Link className="flex items-center gap-2 hover:font-bold ">
+                     Pro Forma Invoices
                   </Link>
 
-                  <Link className="flex items-center gap-2 hover:underline">
-                    <FaTruck size={13} /> Delivery Challans
+                  <Link className="flex items-center gap-2  hover:font-bold ">
+                     Delivery Challans
                   </Link>
 
-                  <Link className="flex items-center gap-2 font-semibold hover:underline">
-                    <FaBox size={13} /> Packing Lists
+                  <Link className="flex items-center gap-2  hover:font-bold ">
+                    Packing Lists
                   </Link>
-                </div>
+                </motion.div>
               )}
+
+       </AnimatePresence>
+            
             </div>
 
             {/* EXPENSES */}
@@ -146,19 +174,19 @@ const Sidebar = ({ theme }) => {
                 onClick={() => toggle("expenses")}
                 className="flex w-full justify-between px-2 py-2 hover:bg-gray-200 dark:hover:bg-gray-800 rounded items-center"
               >
-                <span className="flex items-center gap-2">
-                  <FaDollarSign /> Expenses+
+                <span className="flex items-center gap-2 text-[13px] font-bold ">
+                <i class="fa-solid fa-tag"></i> Expenses+
                 </span>
                 {openMenu.expenses ? <FaChevronDown size={8}  /> : <FaChevronRight  size={8}  />}
               </button>
 
               {openMenu.expenses && (
                 <div className="ml-6 flex flex-col gap-1 text-sm">
-                  <Link className="flex items-center gap-2 hover:underline">
-                    <FaMoneyBillWave size={13} /> Expenses
+                  <Link to={"/dashboard/expenses"} className="flex items-center gap-2  hover:font-bold ">
+                    Expenses
                   </Link>
-                  <Link className="flex items-center gap-2 hover:underline">
-                    <FaTags size={13} /> Categories
+                  <Link className="flex items-center gap-2 hover:font-bold">
+                     Categories
                   </Link>
                 </div>
               )}
@@ -170,8 +198,8 @@ const Sidebar = ({ theme }) => {
                 onClick={() => toggle("products")}
                 className="flex w-full justify-between px-2 py-2 hover:bg-gray-200 dark:hover:bg-gray-800 rounded items-center"
               >
-                <span className="flex items-center gap-2">
-                  <FaBox /> Products & Services
+                <span className="flex items-center gap-2 text-[13px] font-bold">
+                  Products & Services
                 </span>
                 {openMenu.products ? <FaChevronDown size={8}  /> : <FaChevronRight size={8}  />}
               </button>
@@ -183,8 +211,8 @@ const Sidebar = ({ theme }) => {
                 onClick={() => toggle("inventory")}
                 className="flex w-full justify-between px-2 py-2 hover:bg-gray-200 dark:hover:bg-gray-800 rounded items-center"
               >
-                <span className="flex items-center gap-2">
-                  <FaWarehouse /> Inventory
+                <span className="flex items-center gap-2 text-[13px] font-bold ">
+                 Inventory
                 </span>
                 {openMenu.inventory ? <FaChevronDown size={8}  /> : <FaChevronRight size={8}  />}
               </button>
@@ -196,8 +224,8 @@ const Sidebar = ({ theme }) => {
                 onClick={() => toggle("payments")}
                 className="flex w-full justify-between px-2 py-2 hover:bg-gray-200 dark:hover:bg-gray-800 rounded items-center"
               >
-                <span className="flex items-center gap-2">
-                  <FaMoneyBillWave /> Payments
+                <span className="flex items-center gap-2 text-[13px] font-bold">
+                   Payments
                 </span>
                 {openMenu.payments ? <FaChevronDown size={8}  /> : <FaChevronRight size={8}  />}
               </button>

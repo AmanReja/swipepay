@@ -1,14 +1,9 @@
 import React, { useState, useEffect } from "react";
-import apple from "../assets/icons/apple.svg";
-import google from "../assets/icons/google.svg";
-import play from "../assets/images/play.png";
-import group from "../assets/images/lap.svg";
-import group1 from "../assets/images/lap2.png";
-import busybox from "../assets/icons/busybox.png";
+
 import { ShieldCheck, Smartphone, Lock, X } from "lucide-react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { ToastContainer, toast, Bounce, Slide } from "react-toastify";
-import backgroundgreed from "../assets/images/bg.svg"
+
 import { FaBriefcase, FaDollarSign, FaChartLine } from "react-icons/fa";
 import { GoogleLogin, useGoogleLogin } from '@react-oauth/google';
 import { useDispatch, useSelector } from "react-redux";

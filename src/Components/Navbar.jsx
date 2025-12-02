@@ -1,6 +1,6 @@
 import { React, useState, useContext,useEffect } from "react";
-import busybox from "../assets/icons/busybox.png";
-import i5 from "../assets/images/5.png";
+
+
 import { Link, useNavigate } from "react-router-dom";
 import { Theme } from "../Contexts/Theme";
 import { getone_user, update_user_details } from "../redux/action";
@@ -92,17 +92,36 @@ const getoneuser = useSelector((state) => state.getoneuser.getoneuser.user);
 
   <div className="flex items-center gap-[20px]">
 
-    <div className="w-[400px] flex h-[32px] border-[1px] rounded-[5px] hover:border-2 hover:border-black duration-100 border-gray-300 ">
-      <div className="w-7 flex justify-center items-center h-full  ml-[1px]"><i class="fa-solid text-gray-500 fa-wand-magic-sparkles"></i></div>
-    <input placeholder="Ask Swip AI" className="w-[400px] pl-[2px] h-[32px] outline-none" type="text" />
-    <div className="content-center text-[14px] pr-[5px]">+CTRL</div>
-    </div>
+  <div className="flex items-center w-[400px] h-[36px] border rounded-md bg-white 
+                hover:border-black transition-all duration-150 border-gray-300 shadow-sm">
+
+  {/* Icon */}
+  <div className="w-8 flex justify-center items-center text-gray-500">
+    <i className="fa-solid fa-wand-magic-sparkles"></i>
+  </div>
+
+  {/* Input */}
+  <input
+    placeholder="Ask Swip AI"
+    className="flex-1 h-full text-sm px-1 outline-none bg-transparent"
+    type="text"
+  />
+
+  {/* Shortcut */}
+  <div className="px-2 text-xs text-gray-600 bg-gray-100 rounded mr-2">
+    + CTRL
+  </div>
+</div>
+
+
+
+
     <div className="  w-[150px] h-[30px] justify-between  flex items-center">
 
-<div className=" rounded-full w-7 h-7 flex justify-center items-center hover:bg-gray-200 duration-300"><i  class="fa-solid fa-bolt "></i></div>
+<div className=" rounded-full w-7 h-7 flex justify-center items-center hover:bg-gray-200 duration-300"><i   class="fa-solid fa-bolt "></i></div>
 <div className=" rounded-full w-7 h-7 flex justify-center items-center hover:bg-gray-200 duration-300"><i class="fa-solid fa-bell"></i></div>
 <div className=" rounded-full w-7 h-7 flex justify-center items-center hover:bg-gray-200 duration-300">  <i class="fa-solid fa-bullhorn"></i></div>
-<div className=" rounded-full w-7 h-7 flex justify-center items-center hover:bg-gray-200 duration-300">   <i class="fa-solid fa-user"></i></div>
+<div className=" rounded-full w-7 h-7 flex justify-center items-center hover:bg-gray-200 duration-300">   <i onClick={()=>{setOpen((prev)=>!prev)}} class="fa-solid fa-user"></i></div>
     
     
   
@@ -143,7 +162,7 @@ const getoneuser = useSelector((state) => state.getoneuser.getoneuser.user);
   {/* PROFILE */}
   <div className="flex flex-col items-center text-center border-b border-gray-300/30 pb-3">
     <img
-      src={i5}
+      src={""}
       alt="Avatar"
       className="w-[55px] h-[55px] rounded-full shadow-md border-2 border-transparent bg-lime-200 p-[2px]"
     />

@@ -1,6 +1,7 @@
 import React from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import { motion } from "framer-motion";
+import webinar from "../assets/images/webinar.svg"
 
 const Purchase = ({ theme }) => {
   const fadeIn = {
@@ -105,7 +106,7 @@ const Purchase = ({ theme }) => {
               className="w-full lg:w-1/2 flex justify-center"
             >
               <img
-                src={""}
+                src={webinar}
                 alt="Purchases Illustration"
                 className="w-[80%] max-w-[400px] object-contain"
               />
