@@ -37,7 +37,7 @@ const Creditnotes = ({ theme }) => {
       {/* Top Banner */}
       <motion.div
         variants={fadeIn}
-        className="bg-purple-400 w-full h-[50px] min-h-[40px] rounded-[5px] 
+        className="bg-blue-400 w-full h-[50px] min-h-[40px] rounded-[5px] 
                    flex justify-center items-center gap-[10px]"
       >
         <p className="text-white font-medium">
@@ -65,31 +65,37 @@ const Creditnotes = ({ theme }) => {
           {/* Header */}
           <motion.div
             variants={slideLeft}
-            className="flex items-center justify-between mb-6"
-          >
-            <h1 className="text-2xl font-semibold">
-              Credit Notes{" "}
-              <span className="text-purple-600">▶</span>
+            className="flex items-center  justify-between mb-6"
+          >  
+           <div className="flex items-center gap-[10px]">
+
+           <h1 className="text-2xl font-semibold">
+            Sales Returns / Credit Notes
+              
             </h1>
+            <span className="text-purple-600">▶</span>
+           </div>
+            
 
             <div className="flex items-center gap-3">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                className={`px-4 py-2 rounded flex items-center gap-2 ${
+            <motion.button
+                variants={fadeIn}
+                // whileHover={{ scale: 1.05 }}
+                className={`px-4 py-2 rounded text-[14px] flex items-center content-center hover:bg-gray-200 font-bold text-gray-600  gap-2  ${
                   theme === "dark"
                     ? "border-gray-700 bg-gray-800"
                     : "bg-white border-gray-300"
                 }`}
               >
-                ⚙ Document Settings
+              <i class="fa-solid fa-gear"></i> Document Settings
               </motion.button>
 
               <motion.button
                 whileHover={{ scale: 1.05 }}
-                className="px-4 py-2 rounded bg-purple-600 text-white font-medium shadow 
-                           hover:bg-purple-700 transition"
+                className=" h-[32px] px-[8px] text-[14px] rounded bg-blue-600 text-white font-bold shadow 
+                           hover:bg-blue-700 transition"
               >
-                + Create Credit Note
+                + Create Seals Return/Credit Note
               </motion.button>
             </div>
           </motion.div>
@@ -116,22 +122,22 @@ const Creditnotes = ({ theme }) => {
             {/* Right Content */}
             <motion.div variants={slideRight} className="w-full lg:w-1/2">
               <h2 className="text-3xl font-semibold leading-tight mb-4">
-                Issue credit notes easily and maintain <br /> accurate accounts.
+              Simplify returns, amplify customer satisfaction.
               </h2>
 
               {/* Features */}
               <motion.ul variants={stagger} className="flex flex-col gap-3 text-[15px]">
                 {[
-                  "Create credit notes linked directly to invoices",
-                  "Automatically adjust customer balances & GST returns",
-                  "Track all customer credit and adjustments seamlessly",
+                  "Easily convert your invoices into sales return",
+                  "Automatically adjusted with your Tax reports & Customer ledgers",
+                  "Manage your sales return for better financial reporting",
                 ].map((text, index) => (
                   <motion.li
                     key={index}
                     variants={fadeIn}
                     className="flex items-center gap-2"
                   >
-                    <FaCheckCircle className="text-purple-600" />
+                    <FaCheckCircle className="text-gray-600" />
                     {text}
                   </motion.li>
                 ))}
@@ -140,23 +146,23 @@ const Creditnotes = ({ theme }) => {
               {/* CTA Button */}
               <motion.button
                 whileHover={{ scale: 1.05 }}
-                className="mt-6 w-full lg:w-auto px-6 py-3 bg-purple-600 
-                           text-white rounded shadow hover:bg-purple-700 transition"
+                className="mt-6 w-full  px-6  h-[42px] bg-blue-600 
+                           text-white rounded shadow hover:bg-blue-700 transition"
               >
-                + Create Credit Note
+                + Create Seals Return/Credit Note
               </motion.button>
 
               {/* Footer */}
               <motion.div
                 variants={fadeIn}
-                className="mt-5 flex items-center gap-6 text-sm"
+                className="mt-5 flex flex-col  gap-6 text-sm"
               >
-                <div className="flex items-center gap-2 cursor-pointer">
-                  🎧 <span>Talk to a specialist</span>
+                <div className="flex items-center  gap-2 cursor-pointer">
+                  🎧 <span className="hover:underline">Talk to a specialist</span>
                 </div>
 
                 <div className="flex items-center gap-2 cursor-pointer">
-                  📺 <span>Watch tutorial</span>
+                  📺 <span className="hover:underline">Watch how it works</span>
                 </div>
               </motion.div>
             </motion.div>

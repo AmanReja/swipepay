@@ -37,7 +37,7 @@ const Purchase = ({ theme }) => {
       {/* Top Banner */}
       <motion.div
         variants={fadeIn}
-        className="bg-green-300 w-full h-[50px] min-h-[40px] rounded-[5px] flex justify-center items-center gap-[10px]"
+        className="bg-blue-300 w-full h-[50px] min-h-[40px] rounded-[5px] flex justify-center items-center gap-[10px]"
       >
         <p className="text-white">
           Limited Offer 🎉 Get 20% OFF on Premium Purchase Tools!
@@ -66,28 +66,33 @@ const Purchase = ({ theme }) => {
             variants={slideLeft}
             className="flex items-center justify-between mb-6"
           >
+            <div className="flex items-center gap-[5px]">
             <h1 className="text-2xl font-semibold">
-              Purchase Bills / Orders <span className="text-green-600">▶</span>
+            Purchases 
             </h1>
+            <span className="text-green-600">▶</span>
+            </div>
+           
 
             <div className="flex items-center gap-3">
 
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                className={`px-4 py-2 rounded flex items-center gap-2 ${
+            <motion.button
+                variants={fadeIn}
+                // whileHover={{ scale: 1.05 }}
+                className={`px-4 py-2 rounded text-[14px] flex items-center content-center hover:bg-gray-200 font-bold text-gray-600  gap-2  ${
                   theme === "dark"
                     ? "border-gray-700 bg-gray-800"
                     : "bg-white border-gray-300"
                 }`}
               >
-                ⚙ Document Settings
+              <i class="fa-solid fa-gear"></i> Document Settings
               </motion.button>
 
               <motion.button
                 whileHover={{ scale: 1.05 }}
-                className="px-4 py-2 rounded bg-green-600 text-white font-medium shadow hover:bg-green-700 transition"
+                className="px-4 py-2 rounded bg-blue-600 text-white font-medium shadow hover:bg-blue-700 transition"
               >
-                + Create Purchase Bill / Order
+                + Create Purchase
               </motion.button>
 
             </div>
@@ -115,21 +120,21 @@ const Purchase = ({ theme }) => {
             {/* Right content */}
             <motion.div variants={slideRight} className="w-full lg:w-1/2">
               <h2 className="text-3xl font-semibold leading-tight mb-4">
-                Simplify purchasing and improve <br /> supplier management.
+              Purchase invoices made easy.
               </h2>
 
               <motion.ul variants={stagger} className="flex flex-col gap-3 text-[15px]">
                 {[
-                  "Generate purchase bills quickly & efficiently",
-                  "Auto-sync purchase details with inventory",
-                  "Track payments, due bills, suppliers & more",
+                  "Record purchases to automatically stock-in inventory",
+                  "Get better data insights to your purchases",
+                  
                 ].map((item, i) => (
                   <motion.li
                     key={i}
                     variants={fadeIn}
                     className="flex items-center gap-2"
                   >
-                    <FaCheckCircle className="text-green-600" />
+                    <FaCheckCircle className="text-gray-600" />
                     {item}
                   </motion.li>
                 ))}
@@ -137,7 +142,7 @@ const Purchase = ({ theme }) => {
 
               <motion.button
                 whileHover={{ scale: 1.05 }}
-                className="mt-6 w-full lg:w-auto px-6 py-3 bg-green-600 text-white rounded shadow hover:bg-green-700 transition"
+                className="mt-6 w-full h-[45px] px-6  bg-blue-600 text-white rounded shadow hover:bg-blue-700 transition"
               >
                 + Create Purchase Bill / Order
               </motion.button>
@@ -145,14 +150,14 @@ const Purchase = ({ theme }) => {
               {/* Footer */}
               <motion.div
                 variants={fadeIn}
-                className="mt-5 flex items-center gap-6 text-sm"
+                className="mt-5 flex flex-col  gap-6 text-sm"
               >
-                <div className="flex items-center gap-2 cursor-pointer">
-                  🎧 <span>Talk to support</span>
+                <div className="flex items-center  gap-2 cursor-pointer">
+                  🎧 <span className="hover:underline">Talk to a specialist</span>
                 </div>
 
                 <div className="flex items-center gap-2 cursor-pointer">
-                  📺 <span>Learn how it works</span>
+                  📺 <span className="hover:underline">Watch how it works</span>
                 </div>
               </motion.div>
 

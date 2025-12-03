@@ -79,11 +79,11 @@ const getoneuser = useSelector((state) => state.getoneuser.getoneuser.user);
     busybox
   </div>
  
-  <div className=" rounded-full flex">
+  <div className=" rounded-full gap-[5px] flex">
   <div className="w-8 h-8 rounded-full bg-orange-300 text-center text-gray-800 font-bold flex justify-center items-center content-center">YB</div>
-  <div>
+  <div className="">
     <h3 className="font-bold text-[12px]">YOUR BUSINESS NAME</h3>
-    <p className="font-normal text-[10px]">+Add Another Company</p>
+    <p className="font-bold text-[11px] text-gray-600">+ Add Another Company</p>
   </div>
   </div>
   
@@ -92,11 +92,11 @@ const getoneuser = useSelector((state) => state.getoneuser.getoneuser.user);
 
   <div className="flex items-center gap-[20px]">
 
-  <div className="flex items-center w-[400px] h-[36px] border rounded-md bg-white 
-                hover:border-black transition-all duration-150 border-gray-300 shadow-sm">
+  <div className="flex items-center w-[400px] h-[36px] border-2 rounded-md bg-white 
+                hover:border-black hover:border-2 transition-all duration-150 border-gray-300 shadow-sm">
 
   {/* Icon */}
-  <div className="w-8 flex justify-center items-center text-gray-500">
+  <div className="w-8 h-full flex justify-center items-center text-gray-500">
     <i className="fa-solid fa-wand-magic-sparkles"></i>
   </div>
 

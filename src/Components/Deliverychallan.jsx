@@ -2,29 +2,19 @@ import React from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import { motion } from "framer-motion";
 
-import subscriptionPlan from "../assets/images/webinar.svg";
+import debitnote from "../assets/images/webinar.svg";
 
-const Subscriptions = ({ theme }) => {
-  // Animation Variants
-  const fadeIn = {
-    hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.4 } },
-  };
-
-  const slideLeft = {
-    hidden: { opacity: 0, x: -50 },
-    show: { opacity: 1, x: 0, transition: { duration: 0.5 } },
-  };
-
-  const slideRight = {
-    hidden: { opacity: 0, x: 50 },
-    show: { opacity: 1, x: 0, transition: { duration: 0.5 } },
+const Deliverychallan = ({ theme }) => {
+  // Fade animation only
+  const fade = {
+    hidden: { opacity: 0 },
+    show: { opacity: 1, transition: { duration: 0.5 } },
   };
 
   const stagger = {
     show: {
-      transition: { staggerChildren: 0.15 }
-    }
+      transition: { staggerChildren: 0.15 },
+    },
   };
 
   return (
@@ -36,26 +26,27 @@ const Subscriptions = ({ theme }) => {
     >
       {/* Top Banner */}
       <motion.div
-        variants={fadeIn}
+        variants={fade}
         className="bg-blue-500 w-full h-[50px] min-h-[40px] rounded-[5px] 
                    flex justify-center items-center gap-[10px]"
       >
         <p className="text-white font-medium">
-          Limited Time Offer 🎉 Get 30% OFF on annual plans!
+          Special Offer 🎉 Save ₹300 on Debit Note addons!
         </p>
 
         <motion.button
+          variants={fade}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="w-[180px] rounded-2xl bg-white shadow-2xs text-gray-800 font-semibold"
+          className="w-[180px] rounded-2xl bg-white shadow-2xs text-gray-600 font-semibold"
         >
-          Upgrade Now 🚀
+          Activate Now 🚀
         </motion.button>
       </motion.div>
 
       {/* Main Container */}
       <motion.div
-        variants={fadeIn}
+        variants={fade}
         className={`w-full bg-white rounded-lg ${
           theme === "dark" ? "text-gray-100 bg-gray-900" : "text-gray-900"
         }`}
@@ -64,19 +55,27 @@ const Subscriptions = ({ theme }) => {
 
           {/* Header */}
           <motion.div
-            variants={slideLeft}
+            variants={fade}
             className="flex items-center justify-between mb-6"
-          >
+          > <div className="flex gap-[5px] items-center">
             <div className="flex items-center gap-[5px]">
+
             <h1 className="text-2xl font-semibold">
-            Subscriptions 
-            </h1><span className="text-purple-600">▶</span>
+            Pro Forma Invoices
+            </h1>
+            <div className="rounded-full w-[23px] h-[23px] flex items-center justify-center text-center content-center bg-pink-500 ">
+            <i class="fa-solid text-[11px] text-white fa-play"></i>
             </div>
-          
+           
+
+            </div>
+ 
+          </div>
+            
 
             <div className="flex items-center gap-3">
             <motion.button
-                variants={fadeIn}
+                variants={fade}
                 // whileHover={{ scale: 1.05 }}
                 className={`px-4 py-2 rounded text-[14px] flex items-center content-center hover:bg-gray-200 font-bold text-gray-600  gap-2  ${
                   theme === "dark"
@@ -87,13 +86,13 @@ const Subscriptions = ({ theme }) => {
               <i class="fa-solid fa-gear"></i> Document Settings
               </motion.button>
 
-
               <motion.button
-                
-                className="px-4 py-2 rounded bg-blue-600 text-white font-medium shadow 
+                variants={fade}
+               
+                className="px-4 h-[32px] rounded bg-blue-600 text-white font-medium shadow 
                            hover:bg-blue-700 transition"
               >
-                + Create Subscription <i class="fa-solid fa-lock"></i>
+                + Create Pro Forma Invoice
               </motion.button>
             </div>
           </motion.div>
@@ -107,32 +106,33 @@ const Subscriptions = ({ theme }) => {
           >
             {/* Illustration */}
             <motion.div
-              variants={slideLeft}
+              variants={fade}
               className="w-full lg:w-1/2 flex justify-center"
             >
               <img
-                src={subscriptionPlan}
-                alt="Subscription Plans"
+                src={debitnote}
+                alt="Debit Notes"
                 className="w-[80%] max-w-[400px] object-contain"
               />
             </motion.div>
 
             {/* Right Content */}
-            <motion.div variants={slideRight} className="w-full lg:w-1/2">
+            <motion.div variants={fade} className="w-full lg:w-1/2">
               <h2 className="text-3xl font-semibold leading-tight mb-4">
-                Get more power with premium <br /> subscription plans.
+             
+              Pro Forma Invoices Made Easy.
               </h2>
 
               {/* Features */}
               <motion.ul variants={stagger} className="flex flex-col gap-3 text-[15px]">
                 {[
-                  "Set up recurring invoicing schedule for your customers",
-                  "Create customized billing cycle for your customers",
-                  "Automate sending invoices via E-mail",
+                  "Convert your pro forma invoices to sales invoices",
+                               "Enabling transparent & smooth transactions",
+                  "Simplfy the sales invoicing process by issuing Pro forma invoices",
                 ].map((text, index) => (
                   <motion.li
                     key={index}
-                    variants={fadeIn}
+                    variants={fade}
                     className="flex items-center gap-2"
                   >
                     <FaCheckCircle className="text-gray-600" />
@@ -143,16 +143,17 @@ const Subscriptions = ({ theme }) => {
 
               {/* CTA Button */}
               <motion.button
-              
-                className="mt-6 w-full border-2 hover:border-4 hover:border-blue-800 duration-500 items-center text-center content-center justify-center  flex h-[45px] px-6 bg-blue-600 
-                           text-white rounded shadow hover:bg-blue-600 transition-all"
+                variants={fade}
+                whileHover={{ scale: 1.05 }}
+                className="mt-6 w-full  px-6 h-[45px] bg-blue-600 
+                           text-white rounded shadow hover:bg-blue-700 transition"
               >
-                + Create your first subscription
+                + Create Pro Forma Invoices
               </motion.button>
 
               {/* Footer */}
               <motion.div
-                variants={fadeIn}
+                variants={fade}
                 className="mt-5 flex flex-col  gap-6 text-sm"
               >
                 <div className="flex items-center  gap-2 cursor-pointer">
@@ -171,4 +172,4 @@ const Subscriptions = ({ theme }) => {
   );
 };
 
-export default Subscriptions;
+export default Deliverychallan;

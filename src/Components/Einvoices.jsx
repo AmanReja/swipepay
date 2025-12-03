@@ -69,9 +69,9 @@ const Einvoices = ({ theme }) => {
           </motion.div>
 
           {/* Tabs */}
-          <div className="w-full border-b-[1px] border-gray-300 h-[30px]">
-            <ul className="flex w-[500px] gap-[10px] p-1 items-center h-full 
-            text-gray-400 font-semibold text-[14px]">
+          <div className="w-full border-b-[0.5px] border-gray-100 h-[30px]">
+            <ul className="flex w-[550px] gap-[35px] p-1 items-center h-full 
+            text-gray-400 font-medium text-[14px]">
               <li>All E-Invoices</li>
               <li>Success</li>
               <li>Pending</li>
@@ -82,7 +82,7 @@ const Einvoices = ({ theme }) => {
 
           {/* Search + Filter */}
           <div className="flex w-full mt-[20px] gap-[20px]">
-            <div className="flex items-center w-[400px] h-[36px] border rounded-md bg-white 
+            <div className="flex items-center w-[500px] h-[36px] border rounded-md bg-white 
               hover:border-black transition-all duration-150 border-gray-300 shadow-sm"
             >
               <div className="w-8 flex justify-center items-center text-gray-500">
@@ -106,16 +106,16 @@ const Einvoices = ({ theme }) => {
           </div>
 
           {/* Table Header */}
-          <table className="w-full bg-gray-50 text-[14px] mt-[20px]">
-            <thead>
-              <tr className="py-[10px]">
-                <td>Amount</td>
-                <td>Status</td>
-                <td>Invoice #</td>
-                <td>Ack No.</td>
-                <td>Customer</td>
-                <td>Date/Created Time</td>
-                <td>Actions</td>
+          <table className="w-full  bg-gray-50 text-[14px] mt-[20px] rounded-tl-[10px] rounded-tr-[10px]">
+            <thead className=" h-[50px]">
+              <tr className="py-[10px] ">
+                <td className="p-4">Amount</td>
+                <td className="p-4">Status</td>
+                <td className="p-4">Invoice #</td>
+                <td className="p-4">Ack No.</td>
+                <td className="p-4">Customer</td>
+                <td className="p-4">Date/Created Time</td>
+                <td className="p-4">Actions</td>
               </tr>
             </thead>
           </table>
@@ -123,64 +123,23 @@ const Einvoices = ({ theme }) => {
           {/* Content Section */}
           <motion.div
             variants={stagger}
-            className={`w-full flex flex-col lg:flex-row items-center gap-10 p-6 ${
+            className={`w-full flex flex-col lg:flex-row min-h-[300px] items-center gap-10 p-6 ${
               theme === "dark" ? "bg-gray-800" : "bg-white"
             }`}
           >
             {/* Illustration */}
-            <motion.div variants={fade} className="w-full lg:w-1/2 flex justify-center">
-              <img
-                src={webinar}
-                alt="Sales Returns"
-                className="w-[80%] max-w-[400px] object-contain"
-              />
-            </motion.div>
-
-            {/* Right Content */}
-            <motion.div variants={fade} className="w-full lg:w-1/2">
-              <h2 className="text-3xl font-semibold leading-tight mb-4">
-                Simplify returns, amplify customer <br /> satisfaction.
-              </h2>
-
-              {/* Features */}
-              <motion.ul variants={stagger} className="flex flex-col gap-3 text-[15px]">
-                {[
-                  "Easily convert your invoices into sales return",
-                  "Automatically adjusted with your Tax reports & Customer ledgers",
-                  "Manage your sales return for better financial reporting",
-                ].map((text, index) => (
-                  <motion.li
-                    key={index}
-                    variants={fade}
-                    className="flex items-center gap-2"
-                  >
-                    <FaCheckCircle className="text-blue-600" />
-                    {text}
-                  </motion.li>
-                ))}
-              </motion.ul>
-
-              {/* CTA */}
-              <motion.button
-                variants={fade}
-                whileHover={{ scale: 1.05 }}
-                className="mt-6 w-full lg:w-auto px-6 py-3 bg-blue-600 
-                text-white rounded shadow hover:bg-blue-700 transition"
-              >
-                + Create Sales return / Credit note
-              </motion.button>
-
-              {/* Footer */}
-              <motion.div variants={fade} className="mt-5 flex items-center gap-6 text-sm">
-                <div className="flex items-center gap-2 cursor-pointer">
-                  🎧 <span>Talk to a specialist</span>
-                </div>
-
-                <div className="flex items-center gap-2 cursor-pointer">
-                  📺 <span>Watch how it works</span>
-                </div>
-              </motion.div>
-            </motion.div>
+           
+          </motion.div>
+          <motion.div
+            variants={stagger}
+            className={`w-full text-center flex flex-col min-h-[300px] items-center gap-2 p-6 ${
+              theme === "dark" ? "bg-gray-800" : "bg-white"
+            }`}
+          >
+         <h1 className="w-full">Generate E-Invoice in less than 10 seconds 🚀</h1>
+         <p className="text-green-300">Connect using your NIC credentials and start creating E-Invoices from Sales section in one-click.</p>
+         <button className="w-[180px] bg-blue-600 text-white p-2">Go To Sales</button>
+           
           </motion.div>
         </div>
       </motion.div>

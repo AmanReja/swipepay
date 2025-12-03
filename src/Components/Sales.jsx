@@ -57,32 +57,44 @@ const Sales = ({ theme }) => {
           <motion.div
             variants={fade}
             className="flex items-center justify-between mb-6"
-          >
-            <h1 className="text-2xl font-semibold">
-              Sales Returns / Credit Notes{" "}
-              <span className="text-pink-600">▶</span>
+          >      
+          <div className="flex items-center gap-[5px]">
+          <h1 className="text-2xl font-semibold">
+              Sales
+             
             </h1>
+            <span className="text-pink-600">▶</span>
+          </div>
+            
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center justify-between gap-3">
               <motion.button
                 variants={fade}
-                whileHover={{ scale: 1.05 }}
-                className={`px-4 py-2 rounded flex items-center gap-2 ${
+                // whileHover={{ scale: 1.05 }}
+                className={`px-4 py-2 rounded text-[14px] flex items-center content-center hover:bg-gray-200 font-bold text-gray-600  gap-2  ${
                   theme === "dark"
                     ? "border-gray-700 bg-gray-800"
                     : "bg-white border-gray-300"
                 }`}
               >
-                ⚙ Document Settings
+              <i class="fa-solid fa-gear"></i> Document Settings
               </motion.button>
 
               <motion.button
                 variants={fade}
-                whileHover={{ scale: 1.05 }}
+               
+                className="w-[100px] h-[40px]  bg-fuchsia-800 text-white  text-[14px] shadow rounded-[8px]
+                            transition hover:border-[3px] hover:bg-fuchsia-950 font-bold border-fuchsia-300 "
+              >
+               POS Billing
+              </motion.button>
+              <motion.button
+                variants={fade}
+         
                 className="px-4 py-2 rounded bg-blue-600 text-white font-medium shadow 
                            hover:bg-blue-700 transition"
               >
-                + Create Sales Return / Credit Note
+              + Create Invoice
               </motion.button>
             </div>
           </motion.div>
@@ -107,24 +119,24 @@ const Sales = ({ theme }) => {
             </motion.div>
 
             {/* Right Content */}
-            <motion.div variants={fade} className="w-full lg:w-1/2">
-              <h2 className="text-3xl font-semibold leading-tight mb-4">
-                Simplify returns, amplify customer <br /> satisfaction.
+            <motion.div  variants={fade} className="w-full lg:w-1/2">
+              <h2 style={{fontFamily:"montserrat"}} className="text-3xl font-semibold leading-tight mb-4">
+              Creating invoices lightning fast.
               </h2>
 
               {/* Features */}
-              <motion.ul variants={stagger} className="flex flex-col gap-3 text-[15px]">
+              <motion.ul variants={stagger} className="flex flex-col gap-3 w-full text-[15px]">
                 {[
-                  "Easily convert your invoices into sales return",
-                  "Automatically adjusted with your Tax reports & Customer ledgers",
-                  "Manage your sales return for better financial reporting",
+                  "Create invoices in 10 seconds & share them with customers",
+                  "Discover templates that are perfect for your business",
+                  "Keep track of your day-to-day transactions",
                 ].map((text, index) => (
                   <motion.li
                     key={index}
                     variants={fade}
                     className="flex items-center gap-2"
                   >
-                    <FaCheckCircle className="text-blue-600" />
+                    <FaCheckCircle className="text-gray-600" />
                     {text}
                   </motion.li>
                 ))}
@@ -134,23 +146,23 @@ const Sales = ({ theme }) => {
               <motion.button
                 variants={fade}
                 whileHover={{ scale: 1.05 }}
-                className="mt-6 w-full lg:w-auto px-6 py-3 bg-blue-600 
-                           text-white rounded shadow hover:bg-blue-700 transition"
+                className="mt-6 w-full rounded-[8px] px-6 py-3 bg-blue-600 
+                           text-white shadow hover:bg-blue-700 hover:border-[2px] hover:border-blue-500 transition"
               >
-                + Create Sales return / Credit note
+                + Create your first invoice
               </motion.button>
 
               {/* Footer */}
               <motion.div
                 variants={fade}
-                className="mt-5 flex items-center gap-6 text-sm"
+                className="mt-5 flex flex-col  gap-6 text-sm"
               >
-                <div className="flex items-center gap-2 cursor-pointer">
-                  🎧 <span>Talk to a specialist</span>
+                <div className="flex items-center  gap-2 cursor-pointer">
+                  🎧 <span className="hover:underline">Talk to a specialist</span>
                 </div>
 
                 <div className="flex items-center gap-2 cursor-pointer">
-                  📺 <span>Watch how it works</span>
+                  📺 <span className="hover:underline">Watch how it works</span>
                 </div>
               </motion.div>
             </motion.div>
