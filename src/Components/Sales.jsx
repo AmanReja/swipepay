@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import { motion } from "framer-motion";
+
 
 import webinar from "../assets/images/webinar.svg";
 
@@ -16,34 +17,40 @@ const Sales = ({ theme }) => {
       transition: { staggerChildren: 0.15 },
     },
   };
+  const [isModelOpen, setIsModelOpen] = useState(false);
+  const handleModel = () => {
+    setIsModelOpen((prev) => !prev);
+  };
+  console.log(24,isModelOpen);
+
+ 
 
   return (
     <motion.div
       initial="hidden"
       animate="show"
       variants={stagger}
-      className="flex flex-col gap-[20px] overflow-y-auto max-h-[500px] py-[10px]"
+      className={`flex ${isModelOpen?"p-4":""} duration-300 flex-col gap-[20px] overflow-y-auto max-h-[500px] py-[10px]`}
     >
       {/* Top Banner */}
       <motion.div
         variants={fade}
-        className="bg-blue-300 w-full h-[50px] min-h-[40px] rounded-[5px] 
+        className="bg-blue-200 w-full h-[50px] min-h-[40px] rounded-[5px] 
                    flex justify-center items-center gap-[10px]"
       >
-        <p className="text-white">
+        <p className="text-black font-bold text-[13px]">
           Welcome Offer 🎉 ₹500 OFF on all plans! – Only 6 days left!
         </p>
 
         <motion.button
           variants={fade}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="w-[180px] rounded-2xl bg-white shadow-2xs"
+      
+          className="w-[150px] rounded-2xl bg-white text-black shadow-2xs"
         >
-          Subscribe Now 🚀
+          Update Now 🚀
         </motion.button>
       </motion.div>
-
+   
       {/* Main Container */}
       <motion.div
         variants={fade}
@@ -68,7 +75,9 @@ const Sales = ({ theme }) => {
             
 
             <div className="flex items-center justify-between gap-3">
-              <motion.button
+              <motion.button  onClick={()=>{
+                handleModel()
+              }}
                 variants={fade}
                 // whileHover={{ scale: 1.05 }}
                 className={`px-4 py-2 rounded text-[14px] flex items-center content-center hover:bg-gray-200 font-bold text-gray-600  gap-2  ${
@@ -84,7 +93,7 @@ const Sales = ({ theme }) => {
                 variants={fade}
                
                 className="w-[100px] h-[40px]  bg-fuchsia-800 text-white  text-[14px] shadow rounded-[8px]
-                            transition hover:border-[3px] hover:bg-fuchsia-950 font-bold border-fuchsia-300 "
+                            transition hover:ring-2 hover:ring-fuchsia-600 hover:bg-fuchsia-950 font-bold border-fuchsia-300 "
               >
                POS Billing
               </motion.button>
@@ -98,6 +107,166 @@ const Sales = ({ theme }) => {
               </motion.button>
             </div>
           </motion.div>
+
+
+
+
+          {isModelOpen && (
+  <div
+    onClick={handleModel}
+    className="fixed inset-0 bg-black/70 z-40"
+  ></div>
+)}
+
+
+  <div className={`fixed  ${isModelOpen?"right-0":"right-[-650px]"} duration-300 transition-all top-0 h-full w-[650px] bg-gray-100 z-50  overflow-y-auto shadow-xl`}>
+
+    {/* Header */}
+    <div className="flex justify-between items-center p-4 pb-3  bg-white">
+      <h2 className="text-lg font-semibold">Document Settings</h2>
+      <button onClick={handleModel}>✕</button>
+    </div>
+
+      <div className="flex p-5 flex-col">
+         {/* Buttons */}
+    <div className="flex items-center gap-2 flex-wrap mt-4 text-black">
+      <button placeholder="" className="px-3 py-1.5 rounded-[5px] hover:ring-1 hover:ring-blue-400 border-blue-800 border-[1px]  text-sm">
+      ❤️ Invoice Templates
+      </button>
+
+      <button className="px-3 py-1.5 rounded-[5px] hover:ring-1 hover:ring-blue-400 border-blue-800 border-[1px]    text-sm">
+        ⚙️ Add Custom Fields 🔒
+      </button>
+
+      <button className="px-3 py-1.5 rounded-[5px] hover:ring-1 hover:ring-blue-400 border-blue-800 border-[1px]  text-sm">
+        💬 Email | WhatsApp | SMS
+      </button>
+    </div>
+
+    {/* Prefix Suffix Section */}
+    <div className="mt-5 bg-white p-3 flex items-center rounded-lg">
+      <div className="flex flex-col">
+      <h3 className="font-semibold text-sm mb-1">Document Prefixes & Suffixes</h3>
+      <p className="text-gray-500 text-xs">
+      Add multiple prefixes and suffixes for all your documents to manage your serial numbers and document numbering.
+      </p>
+      </div>
+     
+
+      <button className="mt-3 w-full py-2 bg-[#ffe3ac] rounded-lg font-medium text-sm">
+        ➕ Add Prefixes/Suffixes
+      </button>
+    </div>
+
+    {/* Additional Customizations */}
+    <div className="mt-6">
+      <div className="flex justify-between items-center">
+        <h3 className="font-semibold">Additional Customizations</h3>
+        <span className="text-gray-400 text-sm">
+          ⚙️ Customize Invoice Labels 🔒
+        </span>
+      </div>
+
+      <div className="flex flex-wrap gap-3 p-2 mt-4">
+
+{/* Card */}
+<div className="shadow-sm w-[180px] h-[180px] p-4 rounded-xl bg-white hover:shadow-md transition">
+  <label className="flex items-center justify-between text-sm font-medium">
+    Show Images
+    <div className="relative inline-block w-10 align-middle select-none">
+      <input type="checkbox" className="sr-only peer" />
+      <div className="w-10 h-5 bg-gray-300 rounded-full peer-checked:bg-blue-600 transition"></div>
+      <div className="absolute left-0 top-0 w-5 h-5 bg-white rounded-full shadow 
+                      transition peer-checked:translate-x-5"></div>
+    </div>
+  </label>
+
+  <p className="text-[11px] text-gray-500 mt-2 leading-tight">
+  Company Details will not be shown in PDFs if this is disabled (Recommended for those who are using default company letterhead).
+  </p>
+</div>
+
+{/* Card */}
+<div className="shadow-sm w-[180px] h-[180px] p-4 rounded-xl bg-white hover:shadow-md transition">
+  <label className="flex items-center justify-between text-sm font-medium">
+    Show Net Balance
+    <div className="relative inline-block w-10 align-middle select-none">
+      <input type="checkbox" className="sr-only peer" />
+      <div className="w-10 h-5 bg-gray-300 rounded-full peer-checked:bg-blue-600 transition"></div>
+      <div className="absolute left-0 top-0 w-5 h-5 bg-white rounded-full shadow 
+                      transition peer-checked:translate-x-5"></div>
+    </div>
+  </label>
+
+  <p className="text-[11px] text-gray-500 mt-2 leading-tight">
+  HSN/SAC Summary of the invoice will be shown in PDFs if this is enabled. Only available in Vintage, Evergreen, Compact and Landscape templates.
+  </p>
+</div>
+
+{/* Card */}
+<div className="shadow-sm w-[180px] h-[180px] p-4 rounded-xl bg-white hover:shadow-md transition">
+  <label className="flex items-center justify-between text-sm font-medium">
+    Show Due Date
+    <div className="relative inline-block w-10 align-middle select-none">
+      <input type="checkbox" className="sr-only peer" defaultChecked />
+      <div className="w-10 h-5 bg-gray-300 rounded-full peer-checked:bg-blue-600 transition"></div>
+      <div className="absolute left-0 top-0 w-5 h-5 bg-white rounded-full shadow 
+                      transition peer-checked:translate-x-5"></div>
+    </div>
+  </label>
+
+  <p className="text-[11px] text-gray-500 mt-2 leading-tight">
+  Applicable to all templates, except Landscape(6th) template.
+  </p>
+</div>
+
+{/* Card */}
+<div className="shadow-sm w-[180px] h-[180px] p-4 rounded-xl  bg-white hover:shadow-md transition">
+  <label className="flex items-center justify-between text-sm font-medium">
+    Show Dispatch Address
+    <div className="relative inline-block w-10 align-middle select-none">
+      <input type="checkbox" className="sr-only peer" defaultChecked />
+      <div className="w-10 h-5 bg-gray-300 rounded-full peer-checked:bg-blue-600 transition"></div>
+      <div className="absolute left-0 top-0 w-5 h-5 bg-white rounded-full shadow 
+                      transition peer-checked:translate-x-5"></div>
+    </div>
+  </label>
+
+  <p className="text-[11px] text-gray-500 mt-2 leading-tight">
+    Show dispatch address in invoices.
+  </p>
+</div>
+
+</div>
+
+    </div>
+
+    {/* Footer Buttons */}
+    <div className="flex justify-end gap-2 mt-6">
+      <button className="px-4 py-2 bg-gray-200 rounded-md" onClick={handleModel}>
+        Close
+      </button>
+
+      <button className="px-4 py-2 bg-blue-600 text-white rounded-md">
+        Update Settings
+      </button>
+    </div>
+      </div>
+   
+   
+
+  </div>
+
+
+
+
+
+      
+ 
+
+
+
+
 
           {/* Content Section */}
           <motion.div

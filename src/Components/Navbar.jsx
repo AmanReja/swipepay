@@ -92,8 +92,8 @@ const getoneuser = useSelector((state) => state.getoneuser.getoneuser.user);
 
   <div className="flex items-center gap-[20px]">
 
-  <div className="flex items-center w-[400px] h-[36px] border-2 rounded-md bg-white 
-                hover:border-black hover:border-2 transition-all duration-150 border-gray-300 shadow-sm">
+  <div className="flex items-center w-[400px] h-[36px]  rounded-md bg-white 
+                hover:ring-2 hover:ring-gray-900 transition-all duration-150 border-gray-300 border-[1px]">
 
   {/* Icon */}
   <div className="w-8 h-full flex justify-center items-center text-gray-500">

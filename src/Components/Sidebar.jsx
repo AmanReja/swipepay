@@ -13,7 +13,7 @@ const Sidebar = ({ theme }) => {
   const [openMenu, setOpenMenu] = useState({
     sales: false,
     purchases: false,
-    quotations: true,
+    quotations: false,
     expenses: false,
     products: false,
     inventory: false,
@@ -53,7 +53,7 @@ const Sidebar = ({ theme }) => {
           {/* ---------- SALES ---------- */}
           <MenuSection
             title="Sales"
-            icon="fa-solid fa-money-bills"
+            icon="fa-solid fa-money-bills text-gray-500 font-bold"
             isOpen={openMenu.sales}
             onClick={() => toggle("sales")}
           >
@@ -66,7 +66,7 @@ const Sidebar = ({ theme }) => {
           {/* ---------- PURCHASES ---------- */}
           <MenuSection
             title="Purchases"
-            icon="fa-solid fa-cart-shopping"
+            icon="fa-solid fa-cart-shopping text-gray-500 font-bold"
             isOpen={openMenu.purchases}
             onClick={() => toggle("purchases")}
           >
@@ -78,7 +78,7 @@ const Sidebar = ({ theme }) => {
           {/* ---------- QUOTATIONS ---------- */}
           <MenuSection
             title="Quotations+"
-            icon="fa-solid fa-pen"
+            icon="fa-solid fa-pen text-gray-500 font-bold"
             isOpen={openMenu.quotations}
             onClick={() => toggle("quotations")}
           >
@@ -99,7 +99,7 @@ const Sidebar = ({ theme }) => {
           {/* ---------- EXPENSES ---------- */}
           <MenuSection
             title="Expenses+"
-            icon="fa-solid fa-tag"
+            icon="fa-solid fa-tag text-gray-500 font-bold"
             isOpen={openMenu.expenses}
             onClick={() => toggle("expenses")}
           >

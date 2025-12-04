@@ -38,6 +38,7 @@ import Salesorders from "./Components/Salesorders";
 
 import Proformainvoices from "./Components/Proformainvoices";
 import Deliverychallan from "./Components/Deliverychallan";
+import Login from "./Components/Login";
 
 
 // import.meta.env.VITE_PRODUCTION_URL;
@@ -60,6 +61,7 @@ const router = createBrowserRouter(
    
     <Route element={<App />}>
       <Route path="/" element={<Signin />} />
+      <Route path="/login" element={<Login />} />
       {/* <Route path="/forgotpass" element={<Forgotpass />} />
       <Route path="/otpverification" element={<Otpverification />} />
       <Route path="/resetpassword" element={<Resetpass />} /> */}
