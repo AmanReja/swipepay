@@ -39,6 +39,8 @@ import Salesorders from "./Components/Salesorders";
 import Proformainvoices from "./Components/Proformainvoices";
 import Deliverychallan from "./Components/Deliverychallan";
 import Login from "./Components/Login";
+import Productandservices from "./Components/Productandservices";
+import Warehouses from "./Components/Warehouses";
 
 
 // import.meta.env.VITE_PRODUCTION_URL;
@@ -84,6 +86,8 @@ const router = createBrowserRouter(
           <Route path="creditnotes" element={<Creditnotes />} />
           <Route path="expenses" element={<Expenses />} />
           <Route path="subscriptions" element={<Subscriptions />} />
+          <Route path="productandservices" element={<Productandservices />} />
+          <Route path="warehouses" element={<Warehouses />} />
        
      
         

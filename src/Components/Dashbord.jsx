@@ -6,6 +6,7 @@ import { Outlet } from "react-router-dom";
 
 
 import Footer from "./Footer";
+import Offers from "./Offers";
 
 const Dashbord = () => {
   const { theme } = useContext(Theme);
@@ -29,6 +30,7 @@ const Dashbord = () => {
         <div
           className="ml-60 w-full   h-screen overflow-y-auto p-2"
         >
+         
           <Outlet />
           <Footer></Footer>
         </div>

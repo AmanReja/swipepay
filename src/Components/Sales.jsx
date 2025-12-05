@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 
 
 import webinar from "../assets/images/webinar.svg";
+import Offers from "./Offers";
 
 const Sales = ({ theme }) => {
   // Fade animation only
@@ -33,24 +34,8 @@ const Sales = ({ theme }) => {
       className={`flex ${isModelOpen?"p-4":""} duration-300 flex-col gap-[20px] overflow-y-auto max-h-[500px] py-[10px]`}
     >
       {/* Top Banner */}
-      <motion.div
-        variants={fade}
-        className="bg-blue-200 w-full h-[50px] min-h-[40px] rounded-[5px] 
-                   flex justify-center items-center gap-[10px]"
-      >
-        <p className="text-black font-bold text-[13px]">
-          Welcome Offer 🎉 ₹500 OFF on all plans! – Only 6 days left!
-        </p>
-
-        <motion.button
-          variants={fade}
-      
-          className="w-[150px] rounded-2xl bg-white text-black shadow-2xs"
-        >
-          Update Now 🚀
-        </motion.button>
-      </motion.div>
    
+   <Offers></Offers>
       {/* Main Container */}
       <motion.div
         variants={fade}
@@ -119,26 +104,32 @@ const Sales = ({ theme }) => {
 )}
 
 
-  <div className={`fixed  ${isModelOpen?"right-0":"right-[-650px]"} duration-300 transition-all top-0 h-full w-[650px] bg-gray-100 z-50  overflow-y-auto shadow-xl`}>
+<div
+  className={`fixed ${isModelOpen ? "right-0" : "right-[-650px]"} 
+  duration-300 transition-all top-0 h-full w-[650px] bg-gray-100 
+  z-50 shadow-xl flex flex-col`}
+>
 
-    {/* Header */}
-    <div className="flex justify-between items-center p-4 pb-3  bg-white">
-      <h2 className="text-lg font-semibold">Document Settings</h2>
-      <button onClick={handleModel}>✕</button>
-    </div>
+  {/* ---- FIXED HEADER ---- */}
+  <div className="flex justify-between items-center p-4 pb-3 bg-white shadow-md flex-none">
+    <h2 className="text-lg font-semibold">Document Settings</h2>
+    <button onClick={handleModel}>✕</button>
+  </div>
 
-      <div className="flex p-5 flex-col">
-         {/* Buttons */}
+  {/* ---- SCROLLABLE CONTENT ---- */}
+  <div className="flex-1 overflow-y-auto p-5">
+
+    {/* Buttons */}
     <div className="flex items-center gap-2 flex-wrap mt-4 text-black">
-      <button placeholder="" className="px-3 py-1.5 rounded-[5px] hover:ring-1 hover:ring-blue-400 border-blue-800 border-[1px]  text-sm">
-      ❤️ Invoice Templates
+      <button className="px-3 py-1.5 rounded-[5px] hover:ring-1 hover:ring-blue-400 border-blue-800 border-[1px] text-sm">
+        ❤️ Invoice Templates
       </button>
 
-      <button className="px-3 py-1.5 rounded-[5px] hover:ring-1 hover:ring-blue-400 border-blue-800 border-[1px]    text-sm">
+      <button className="px-3 py-1.5 rounded-[5px] hover:ring-1 hover:ring-blue-400 border-blue-800 border-[1px] text-sm">
         ⚙️ Add Custom Fields 🔒
       </button>
 
-      <button className="px-3 py-1.5 rounded-[5px] hover:ring-1 hover:ring-blue-400 border-blue-800 border-[1px]  text-sm">
+      <button className="px-3 py-1.5 rounded-[5px] hover:ring-1 hover:ring-blue-400 border-blue-800 border-[1px] text-sm">
         💬 Email | WhatsApp | SMS
       </button>
     </div>
@@ -146,12 +137,11 @@ const Sales = ({ theme }) => {
     {/* Prefix Suffix Section */}
     <div className="mt-5 bg-white p-3 flex items-center rounded-lg">
       <div className="flex flex-col">
-      <h3 className="font-semibold text-sm mb-1">Document Prefixes & Suffixes</h3>
-      <p className="text-gray-500 text-xs">
-      Add multiple prefixes and suffixes for all your documents to manage your serial numbers and document numbering.
-      </p>
+        <h3 className="font-semibold text-sm mb-1">Document Prefixes & Suffixes</h3>
+        <p className="text-gray-500 text-xs">
+          Add multiple prefixes and suffixes for all your documents...
+        </p>
       </div>
-     
 
       <button className="mt-3 w-full py-2 bg-[#ffe3ac] rounded-lg font-medium text-sm">
         ➕ Add Prefixes/Suffixes
@@ -162,100 +152,90 @@ const Sales = ({ theme }) => {
     <div className="mt-6">
       <div className="flex justify-between items-center">
         <h3 className="font-semibold">Additional Customizations</h3>
-        <span className="text-gray-400 text-sm">
-          ⚙️ Customize Invoice Labels 🔒
-        </span>
+        <span className="text-gray-400 text-sm">⚙️ Customize Invoice Labels 🔒</span>
       </div>
 
       <div className="flex flex-wrap gap-3 p-2 mt-4">
+        {/* All your cards unchanged */}
+        {/** CARD 1 **/}
+        <div className="shadow-sm w-[180px] h-[180px] p-4 rounded-xl bg-white hover:shadow-md transition">
+          <label className="flex items-center justify-between text-sm font-medium">
+            Show Images
+            <div className="relative inline-block w-10 align-middle select-none">
+              <input type="checkbox" className="sr-only peer" />
+              <div className="w-10 h-5 bg-gray-300 rounded-full peer-checked:bg-blue-600 transition"></div>
+              <div className="absolute left-0 top-0 w-5 h-5 bg-white rounded-full shadow transition peer-checked:translate-x-5"></div>
+            </div>
+          </label>
 
-{/* Card */}
-<div className="shadow-sm w-[180px] h-[180px] p-4 rounded-xl bg-white hover:shadow-md transition">
-  <label className="flex items-center justify-between text-sm font-medium">
-    Show Images
-    <div className="relative inline-block w-10 align-middle select-none">
-      <input type="checkbox" className="sr-only peer" />
-      <div className="w-10 h-5 bg-gray-300 rounded-full peer-checked:bg-blue-600 transition"></div>
-      <div className="absolute left-0 top-0 w-5 h-5 bg-white rounded-full shadow 
-                      transition peer-checked:translate-x-5"></div>
-    </div>
-  </label>
+          <p className="text-[11px] text-gray-500 mt-2 leading-tight">
+            Company Details will not be shown...
+          </p>
+        </div>
 
-  <p className="text-[11px] text-gray-500 mt-2 leading-tight">
-  Company Details will not be shown in PDFs if this is disabled (Recommended for those who are using default company letterhead).
-  </p>
-</div>
+        {/** CARD 2 **/}
+        <div className="shadow-sm w-[180px] h-[180px] p-4 rounded-xl bg-white hover:shadow-md transition">
+          <label className="flex items-center justify-between text-sm font-medium">
+            Show Net Balance
+            <div className="relative inline-block w-10 align-middle select-none">
+              <input type="checkbox" className="sr-only peer" />
+              <div className="w-10 h-5 bg-gray-300 rounded-full peer-checked:bg-blue-600 transition"></div>
+              <div className="absolute left-0 top-0 w-5 h-5 bg-white rounded-full shadow transition peer-checked:translate-x-5"></div>
+            </div>
+          </label>
 
-{/* Card */}
-<div className="shadow-sm w-[180px] h-[180px] p-4 rounded-xl bg-white hover:shadow-md transition">
-  <label className="flex items-center justify-between text-sm font-medium">
-    Show Net Balance
-    <div className="relative inline-block w-10 align-middle select-none">
-      <input type="checkbox" className="sr-only peer" />
-      <div className="w-10 h-5 bg-gray-300 rounded-full peer-checked:bg-blue-600 transition"></div>
-      <div className="absolute left-0 top-0 w-5 h-5 bg-white rounded-full shadow 
-                      transition peer-checked:translate-x-5"></div>
-    </div>
-  </label>
+          <p className="text-[11px] text-gray-500 mt-2 leading-tight">
+            HSN/SAC Summary...
+          </p>
+        </div>
 
-  <p className="text-[11px] text-gray-500 mt-2 leading-tight">
-  HSN/SAC Summary of the invoice will be shown in PDFs if this is enabled. Only available in Vintage, Evergreen, Compact and Landscape templates.
-  </p>
-</div>
+        {/** CARD 3 **/}
+        <div className="shadow-sm w-[180px] h-[180px] p-4 rounded-xl bg-white hover:shadow-md transition">
+          <label className="flex items-center justify-between text-sm font-medium">
+            Show Due Date
+            <div className="relative inline-block w-10 align-middle select-none">
+              <input type="checkbox" className="sr-only peer" defaultChecked />
+              <div className="w-10 h-5 bg-gray-300 rounded-full peer-checked:bg-blue-600 transition"></div>
+              <div className="absolute left-0 top-0 w-5 h-5 bg-white rounded-full shadow transition peer-checked:translate-x-5"></div>
+            </div>
+          </label>
 
-{/* Card */}
-<div className="shadow-sm w-[180px] h-[180px] p-4 rounded-xl bg-white hover:shadow-md transition">
-  <label className="flex items-center justify-between text-sm font-medium">
-    Show Due Date
-    <div className="relative inline-block w-10 align-middle select-none">
-      <input type="checkbox" className="sr-only peer" defaultChecked />
-      <div className="w-10 h-5 bg-gray-300 rounded-full peer-checked:bg-blue-600 transition"></div>
-      <div className="absolute left-0 top-0 w-5 h-5 bg-white rounded-full shadow 
-                      transition peer-checked:translate-x-5"></div>
-    </div>
-  </label>
+          <p className="text-[11px] text-gray-500 mt-2 leading-tight">
+            Applicable to all templates...
+          </p>
+        </div>
 
-  <p className="text-[11px] text-gray-500 mt-2 leading-tight">
-  Applicable to all templates, except Landscape(6th) template.
-  </p>
-</div>
+        {/** CARD 4 **/}
+        <div className="shadow-sm w-[180px] h-[180px] p-4 rounded-xl bg-white hover:shadow-md transition">
+          <label className="flex items-center justify-between text-sm font-medium">
+            Show Dispatch Address
+            <div className="relative inline-block w-10 align-middle select-none">
+              <input type="checkbox" className="sr-only peer" defaultChecked />
+              <div className="w-10 h-5 bg-gray-300 rounded-full peer-checked:bg-blue-600 transition"></div>
+              <div className="absolute left-0 top-0 w-5 h-5 bg-white rounded-full shadow transition peer-checked:translate-x-5"></div>
+            </div>
+          </label>
 
-{/* Card */}
-<div className="shadow-sm w-[180px] h-[180px] p-4 rounded-xl  bg-white hover:shadow-md transition">
-  <label className="flex items-center justify-between text-sm font-medium">
-    Show Dispatch Address
-    <div className="relative inline-block w-10 align-middle select-none">
-      <input type="checkbox" className="sr-only peer" defaultChecked />
-      <div className="w-10 h-5 bg-gray-300 rounded-full peer-checked:bg-blue-600 transition"></div>
-      <div className="absolute left-0 top-0 w-5 h-5 bg-white rounded-full shadow 
-                      transition peer-checked:translate-x-5"></div>
-    </div>
-  </label>
-
-  <p className="text-[11px] text-gray-500 mt-2 leading-tight">
-    Show dispatch address in invoices.
-  </p>
-</div>
-
-</div>
-
-    </div>
-
-    {/* Footer Buttons */}
-    <div className="flex justify-end gap-2 mt-6">
-      <button className="px-4 py-2 bg-gray-200 rounded-md" onClick={handleModel}>
-        Close
-      </button>
-
-      <button className="px-4 py-2 bg-blue-600 text-white rounded-md">
-        Update Settings
-      </button>
-    </div>
+          <p className="text-[11px] text-gray-500 mt-2 leading-tight">
+            Show dispatch address in invoices.
+          </p>
+        </div>
       </div>
-   
-   
-
+    </div>
   </div>
+
+  {/* ---- FIXED FOOTER ---- */}
+  <div className="flex justify-end gap-2 p-4 bg-white  shadow-md flex-none">
+    <button className="px-4 py-2 bg-gray-200 rounded-md" onClick={handleModel}>
+      Close
+    </button>
+
+    <button className="px-4 py-2 bg-blue-600 text-white rounded-md">
+      Update Settings
+    </button>
+  </div>
+</div>
+
 
 
 

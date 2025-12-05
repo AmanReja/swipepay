@@ -3,6 +3,7 @@ import { FaCheckCircle } from "react-icons/fa";
 import { motion } from "framer-motion";
 
 import subscriptionPlan from "../assets/images/webinar.svg";
+import Offers from "./Offers";
 
 const Subscriptions = ({ theme }) => {
   // Animation Variants
@@ -35,23 +36,7 @@ const Subscriptions = ({ theme }) => {
       className="flex flex-col gap-[20px] overflow-y-auto max-h-[500px] py-[10px]"
     >
       {/* Top Banner */}
-      <motion.div
-        variants={fadeIn}
-        className="bg-blue-500 w-full h-[50px] min-h-[40px] rounded-[5px] 
-                   flex justify-center items-center gap-[10px]"
-      >
-        <p className="text-white font-medium">
-          Limited Time Offer 🎉 Get 30% OFF on annual plans!
-        </p>
-
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="w-[180px] rounded-2xl bg-white shadow-2xs text-gray-800 font-semibold"
-        >
-          Upgrade Now 🚀
-        </motion.button>
-      </motion.div>
+    <Offers></Offers>
 
       {/* Main Container */}
       <motion.div

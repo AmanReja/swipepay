@@ -3,6 +3,7 @@ import { FaCheckCircle } from "react-icons/fa";
 import { motion } from "framer-motion";
 
 import webinar from "../assets/images/webinar.svg";
+import Offers from "./Offers";
 
 const Einvoices = ({ theme }) => {
   // Fade-only animation
@@ -25,25 +26,7 @@ const Einvoices = ({ theme }) => {
       className="flex flex-col gap-[20px] overflow-y-auto max-h-[500px] py-[10px]"
     >
       {/* Top Banner */}
-      <motion.div
-        variants={fade}
-        className="bg-blue-300 w-full h-[50px] min-h-[40px] rounded-[5px] 
-        flex justify-center items-center gap-[10px]"
-      >
-        <p className="text-white">
-          Welcome Offer 🎉 ₹500 OFF on all plans! – Only 6 days left!
-        </p>
-
-        <motion.button
-          variants={fade}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="w-[180px] rounded-2xl bg-white shadow-2xs"
-        >
-          Subscribe Now 🚀
-        </motion.button>
-      </motion.div>
-
+  <Offers></Offers>
       {/* Main Container */}
       <motion.div
         variants={fade}

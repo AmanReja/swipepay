@@ -111,14 +111,17 @@ const Sidebar = ({ theme }) => {
           <SimpleMenu
             title="Products & Services"
             isOpen={openMenu.products}
-            onClick={() => toggle("products")}
+            onClick={() => {()=>toggle("products"),navigate("/dashboard/productandservices")}}
           />
 
-          <SimpleMenu
+          <MenuSection
             title="Inventory"
             isOpen={openMenu.inventory}
             onClick={() => toggle("inventory")}
-          />
+          >
+ <SubItem to="/dashboard/warehouses">Warehouses</SubItem>
+
+          </MenuSection>
 
           <SimpleMenu
             title="Payments"
