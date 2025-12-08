@@ -15,10 +15,10 @@ const Offers = () => {
   return (
     <motion.div
     variants={fade}
-    className="bg-blue-200 w-full h-[50px] min-h-[40px] rounded-[5px] outline-none 
+    className="bg-blue-100 w-full h-[50px] min-h-[40px] rounded-[5px] outline-none 
                flex justify-center items-center gap-[10px]"
   >
-    <p className="text-black font-bold text-[13px]">
+    <p className="text-gray-800 font-bold text-[13px]">
       Welcome Offer 🎉 ₹500 OFF on all plans! – Only 6 days left!
     </p>
 

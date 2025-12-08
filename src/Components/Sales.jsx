@@ -30,7 +30,7 @@ const Sales = ({ theme }) => {
     <motion.div
       initial="hidden"
       animate="show"
-      variants={stagger}
+      variants={fade}
       className={`flex ${isModelOpen?"p-4":""} duration-300 flex-col gap-[20px] overflow-y-auto max-h-[500px] py-[10px]`}
     >
       {/* Top Banner */}
@@ -51,11 +51,15 @@ const Sales = ({ theme }) => {
             className="flex items-center justify-between mb-6"
           >      
           <div className="flex items-center gap-[5px]">
-          <h1 className="text-2xl font-semibold">
+          <h1 className="text-[26px] font-bold">
               Sales
              
             </h1>
-            <span className="text-pink-600">▶</span>
+            <div className="flex bg-pink-500 h-[22px] rounded-full w-[22px] justify-center items-center">
+            <i class="fa-solid text-white text-[12px] fa-play"></i>
+            </div>
+         
+           
           </div>
             
 
@@ -77,15 +81,15 @@ const Sales = ({ theme }) => {
               <motion.button
                 variants={fade}
                
-                className="w-[100px] h-[40px]  bg-fuchsia-800 text-white  text-[14px] shadow rounded-[8px]
-                            transition hover:ring-2 hover:ring-fuchsia-600 hover:bg-fuchsia-950 font-bold border-fuchsia-300 "
+                className="w-[100px] h-[36px]  bg-[#a4419f] text-white  text-[14px] shadow rounded-[8px]
+                            transition hover:ring-3 hover:bg-[#673a65] hover:ring-[#be8fbb] font-bold border-fuchsia-300 "
               >
                POS Billing
               </motion.button>
               <motion.button
                 variants={fade}
          
-                className="px-4 py-2 rounded bg-blue-600 text-white font-medium shadow 
+                className="px-[10px] h-[36px] rounded hover:scale-108 bg-blue-600 text-white font-medium shadow 
                            hover:bg-blue-700 transition"
               >
               + Create Invoice
@@ -251,14 +255,14 @@ const Sales = ({ theme }) => {
           {/* Content Section */}
           <motion.div
             variants={stagger}
-            className={`w-full flex flex-col lg:flex-row items-center gap-10 p-6 ${
+            className={`w-full flex flex-col lg:flex-row items-center gap-10 p-6 py-[50px] ${
               theme === "dark" ? "bg-gray-800" : "bg-white"
             }`}
           >
             {/* Illustration */}
             <motion.div
               variants={fade}
-              className="w-full lg:w-1/2 flex justify-center"
+              className="w-full lg:w-[40%] flex justify-center"
             >
               <img
                 src={webinar}
@@ -268,7 +272,7 @@ const Sales = ({ theme }) => {
             </motion.div>
 
             {/* Right Content */}
-            <motion.div  variants={fade} className="w-full lg:w-1/2">
+            <motion.div  variants={fade} className="w-full lg:w-[60%]">
               <h2 style={{fontFamily:"montserrat"}} className="text-3xl font-semibold leading-tight mb-4">
               Creating invoices lightning fast.
               </h2>
@@ -294,9 +298,9 @@ const Sales = ({ theme }) => {
               {/* CTA Button */}
               <motion.button
                 variants={fade}
-                whileHover={{ scale: 1.05 }}
-                className="mt-6 w-full rounded-[8px] px-6 py-3 bg-blue-600 
-                           text-white shadow hover:bg-blue-700 hover:border-[2px] hover:border-blue-500 transition"
+              
+                className="mt-6 h-[40px] flex justify-center items-center w-full rounded-[8px] px-6 py-3 bg-blue-600 
+                           text-white shadow hover:bg-blue-700 hover:ring-3  hover:ring-blue-600 transition"
               >
                 + Create your first invoice
               </motion.button>
@@ -311,7 +315,7 @@ const Sales = ({ theme }) => {
                 </div>
 
                 <div className="flex items-center gap-2 cursor-pointer">
-                  📺 <span className="hover:underline">Watch how it works</span>
+                <i class="fa-brands fa-youtube text-red-500" ></i> <span className="hover:underline">Watch how it works</span>
                 </div>
               </motion.div>
             </motion.div>

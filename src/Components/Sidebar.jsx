@@ -39,11 +39,11 @@ const Sidebar = ({ theme }) => {
 
   return (
     <div
-      className={`fixed left-0 top-[52px] h-[590px] w-60 p-4 border-r
+      className={`fixed left-0 top-[52px] h-[590px] w-60 p-4 
         ${
           theme === "dark"
             ? "bg-gray-900 text-gray-100 border-gray-700"
-            : "bg-gray-50 text-gray-900 border-gray-200"
+            : "bg-[#f9f9f9] text-gray-900 border-gray-200"
         }`}
     >
       {/* Scrollable Content */}

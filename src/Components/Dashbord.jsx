@@ -18,7 +18,7 @@ const Dashbord = () => {
 
       <div
         className={`w-full h-screen flex 
-        ${theme === "dark" ? "bg-gray-900 text-gray-100" : "bg-gray-100 text-gray-900"}
+        ${theme === "dark" ? "bg-gray-900 text-gray-100" : "bg-[#f9f9f9] text-gray-900"}
       `}
       >
         {/* FIXED SIDEBAR */}

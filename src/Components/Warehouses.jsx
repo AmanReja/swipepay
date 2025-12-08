@@ -1,4 +1,4 @@
-import React from "react";
+import {React,useRef,useEffect,useState} from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import { motion } from "framer-motion";
 import webinar from "../assets/images/webinar.svg";
@@ -13,6 +13,21 @@ const Warehouses = ({ theme }) => {
   const stagger = {
     show: { transition: { staggerChildren: 0.15 } },
   };
+  const tabs = ["Item", "Qty", "Purchase Price", "Sale Price", "Last Updated", "Actions"];
+  
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [indicatorStyle, setIndicatorStyle] = useState({});
+  const tabRefs = useRef([]);
+
+  useEffect(() => {
+    const current = tabRefs.current[activeIndex];
+    if (current) {
+      setIndicatorStyle({
+        width: current.offsetWidth,
+        left: current.offsetLeft,
+      });
+    }
+  }, [activeIndex]);
 
   return (
     <motion.div
@@ -46,36 +61,78 @@ const Warehouses = ({ theme }) => {
         </motion.div>
 
         {/* ---------------- Tabs ---------------- */}
-        <div className="border-b pb-2">
-          <ul className="flex gap-10 text-gray-500 font-medium text-sm">
-            <li>Item</li>
-            <li>Qty</li>
-            <li>Purchase Price</li>
-            <li>Sale Price</li>
-            <li>Last Updated</li>
-            <li>Actions</li>
-          </ul>
-        </div>
+        <div className=" pb-2 relative">
+      <ul className="flex gap-10 text-gray-500 font-medium text-sm relative">
+        {tabs.map((tab, i) => (
+          <li
+            key={i}
+            ref={(el) => (tabRefs.current[i] = el)}
+            className={`cursor-pointer pb-2 ${
+              activeIndex === i ? "text-blue-400" : ""
+            }`}
+            onClick={() => setActiveIndex(i)}
+          >
+            {tab}
+          </li>
+        ))}
+
+        {/* Sliding Indicator */}
+        <div
+          className="absolute bottom-0 h-[2px] bg-blue-400 transition-all duration-300"
+          style={indicatorStyle}
+        ></div>
+      </ul>
+    </div>
 
         {/* ---------------- Stats Cards ---------------- */}
         <div className="flex flex-wrap mt-4 gap-4">
-          {[
-            { label: "Low Stock", value: "1 Items (0 Qty)", color: "bg-pink-100" },
-            { label: "Positive Stock", value: "1 Items (0 Qty)", color: "bg-green-200" },
-            { label: "Stock Value Sales Price", value: "₹ 0", color: "bg-sky-200", wide: true },
-            { label: "Stock Value With Purchase", value: "₹ 0", color: "bg-amber-200", wide: true },
-          ].map((item, index) => (
-            <div
-              key={index}
-              className={`${item.color} p-4 rounded-xl shadow-sm ${
-                item.wide ? "w-[250px]" : "w-[200px]"
-              }`}
-            >
-              <p className="text-sm font-semibold">{item.label}</p>
-              <p className="text-lg font-bold">{item.value}</p>
-            </div>
-          ))}
-        </div>
+  {[
+    {
+      label: "Low Stock",
+      value: "1 Items (0 Qty)",
+      color: "from-pink-400/10 to-pink-500/20",
+    },
+    {
+      label: "Positive Stock",
+      value: "1 Items (0 Qty)",
+      color: "from-green-400/10 to-green-500/20",
+    },
+    {
+      label: "Stock Value Sales Price",
+      value: "₹ 0",
+      color: "from-sky-400/10 to-sky-500/20",
+      wide: true,
+    },
+    {
+      label: "Stock Value With Purchase",
+      value: "₹ 0",
+      color: "from-amber-400/10 to-amber-500/20",
+      wide: true,
+    },
+  ].map((item, index) => (
+    <div
+      key={index}
+      className={`
+        bg-gradient-to-br ${item.color}
+        p-5 rounded-2xl shadow-md border border-white/60 backdrop-blur-lg
+        transition-all duration-300 hover:shadow-xl hover:scale-[1.03]
+        ${item.wide ? "w-[260px]" : "w-[210px]"}
+      `}
+    >
+      <p className="text-[13px] font-semibold text-gray-600 tracking-wide">
+        {item.label}
+      </p>
+
+      <p className="text-[22px] font-extrabold text-gray-800 mt-1">
+        {item.value}
+      </p>
+
+      {/* Subtle detail line */}
+      
+    </div>
+  ))}
+</div>
+
 
         {/* ---------------- Search ---------------- */}
         <div className="flex mt-6 gap-4">
@@ -94,39 +151,41 @@ const Warehouses = ({ theme }) => {
         </div>
 
         {/* ---------------- Table ---------------- */}
-        <div className="overflow-hidden mt-8 rounded-2xl shadow">
-          <table className="w-full text-sm border-collapse">
-            <thead className="bg-gray-50 h-[50px] text-gray-600 font-semibold">
-              <tr>
-                <td className="p-2 rounded-tl-2xl">Item</td>
-                <td className="p-2">Qty</td>
-                <td className="p-2">Purchase Price</td>
-                <td className="p-2">Sale Price</td>
-                <td className="p-2">Last Updated</td>
-                <td className="p-2 rounded-tr-2xl">Actions</td>
-              </tr>
-            </thead>
+        <div className="overflow-hidden mt-8 rounded-2xl shadow-lg border border-gray-200">
+  <table className="w-full text-sm border-collapse">
+    <thead className="bg-gray-100 h-[50px] text-gray-700 font-semibold">
+      <tr>
+        <td className="p-3 rounded-tl-2xl">Item</td>
+        <td className="p-3">Qty</td>
+        <td className="p-3">Purchase Price</td>
+        <td className="p-3">Sale Price</td>
+        <td className="p-3">Last Updated</td>
+        <td className="p-3 rounded-tr-2xl">Actions</td>
+      </tr>
+    </thead>
 
-            <tbody className="bg-yellow-50">
-              <tr>
-                <td className="p-4 rounded-bl-2xl">Sample Product</td>
-                <td className="p-4">0</td>
-                <td className="p-4">₹0.00</td>
-                <td className="p-4">₹100.00</td>
-                <td className="p-4">27 Nov 25, 10:36</td>
+    <tbody>
+      <tr className="bg-white hover:bg-gray-50 transition">
+        <td className="p-4 rounded-bl-2xl text-gray-800">Sample Product</td>
+        <td className="p-4 text-gray-700">0</td>
+        <td className="p-4 text-gray-700">₹0.00</td>
+        <td className="p-4 text-gray-700">₹100.00</td>
+        <td className="p-4 text-gray-600">27 Nov 25, 10:36</td>
 
-                <td className="p-4 rounded-br-2xl flex flex-col gap-2">
-                  <button className="bg-green-100 text-green-700 h-[30px] rounded-md font-medium text-xs">
-                    Stock In
-                  </button>
-                  <button className="bg-red-100 text-red-700 h-[30px] rounded-md font-medium text-xs">
-                    Stock Out
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <td className="p-4 rounded-br-2xl flex flex-col gap-2">
+          <button className="bg-emerald-100 text-emerald-700 h-[32px] rounded-lg font-medium text-xs hover:bg-emerald-200 transition">
+            Stock In
+          </button>
+
+          <button className="bg-rose-100 text-rose-700 h-[32px] rounded-lg font-medium text-xs hover:bg-rose-200 transition">
+            Stock Out
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
 
         {/* ---------------- Feature Section ---------------- */}
         <motion.div

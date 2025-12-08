@@ -2,7 +2,7 @@ import React from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import { motion } from "framer-motion";
 
-import subscriptionPlan from "../assets/images/webinar.svg";
+import subscriptionPlan from "../assets/images/subscription.svg";
 import Offers from "./Offers";
 
 const Subscriptions = ({ theme }) => {

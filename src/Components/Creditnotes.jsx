@@ -2,7 +2,7 @@ import React from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import { motion } from "framer-motion";
 
-import creditNoteImg from "../assets/images/webinar.svg"// Replace with your actual image
+import credit from "../assets/images/credit.svg"// Replace with your actual image
 import Offers from "./Offers";
 
 const Creditnotes = ({ theme }) => {
@@ -52,14 +52,18 @@ const Creditnotes = ({ theme }) => {
             variants={slideLeft}
             className="flex items-center  justify-between mb-6"
           >  
-           <div className="flex items-center gap-[10px]">
-
-           <h1 className="text-2xl font-semibold">
-            Sales Returns / Credit Notes
-              
+         <div className="flex items-center gap-[5px]">
+          <h1 className="text-[26px] font-bold ">
+          Sales Returns / Credit Notes
+             
             </h1>
-            <span className="text-purple-600">▶</span>
-           </div>
+            <div className="flex bg-pink-500 h-[22px] rounded-full w-[22px] justify-center items-center">
+            <i class="fa-solid text-white text-[12px] fa-play"></i>
+            </div>
+         
+           
+          </div>
+            
             
 
             <div className="flex items-center gap-3">
@@ -88,24 +92,24 @@ const Creditnotes = ({ theme }) => {
           {/* Content Section */}
           <motion.div
             variants={stagger}
-            className={`w-full flex flex-col lg:flex-row items-center gap-10 p-6 ${
+            className={`w-full flex flex-col lg:flex-row items-center gap-10 p-6  py-[50px] ${
               theme === "dark" ? "bg-gray-800" : "bg-white"
             }`}
           >
             {/* Illustration */}
             <motion.div
               variants={slideLeft}
-              className="w-full lg:w-1/2 flex justify-center"
+              className="w-full lg:w-[40%] flex justify-center"
             >
               <img
-                src={creditNoteImg}
+                src={credit}
                 alt="Credit Note"
                 className="w-[80%] max-w-[400px] object-contain"
               />
             </motion.div>
 
             {/* Right Content */}
-            <motion.div variants={slideRight} className="w-full lg:w-1/2">
+            <motion.div variants={slideRight} className="w-full lg:w-[60%]">
               <h2 className="text-3xl font-semibold leading-tight mb-4">
               Simplify returns, amplify customer satisfaction.
               </h2>
@@ -130,11 +134,11 @@ const Creditnotes = ({ theme }) => {
 
               {/* CTA Button */}
               <motion.button
-                whileHover={{ scale: 1.05 }}
-                className="mt-6 w-full  px-6  h-[42px] bg-blue-600 
-                           text-white rounded shadow hover:bg-blue-700 transition"
-              >
-                + Create Seals Return/Credit Note
+                variants={fadeIn}
+              
+                className="mt-6 h-[40px] flex justify-center items-center w-full rounded-[8px] px-6 py-3 bg-blue-600 
+                           text-white shadow hover:bg-blue-700 hover:ring-3  hover:ring-blue-600 transition"
+              >+ Create Seals Return/Credit Note
               </motion.button>
 
               {/* Footer */}
@@ -147,7 +151,7 @@ const Creditnotes = ({ theme }) => {
                 </div>
 
                 <div className="flex items-center gap-2 cursor-pointer">
-                  📺 <span className="hover:underline">Watch how it works</span>
+                <i class="fa-brands fa-youtube text-red-500" ></i>  <span className="hover:underline">Watch how it works</span>
                 </div>
               </motion.div>
             </motion.div>
