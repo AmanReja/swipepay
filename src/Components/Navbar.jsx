@@ -3,7 +3,7 @@ import { React, useState, useContext,useEffect } from "react";
 
 import { Link, useNavigate } from "react-router-dom";
 import { Theme } from "../Contexts/Theme";
-import { getone_user, update_user_details } from "../redux/action";
+// import { getone_user, update_user_details } from "../redux/action";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 import {Sun, Moon} from "lucide-react"
@@ -38,11 +38,6 @@ const Navbar = () => {
 
   
   
-
-
-
-useEffect(()=>{dispatch(getone_user())},[dispatch]);
-const getoneuser = useSelector((state) => state.getoneuser.getoneuser.user);
 
 
 
@@ -160,7 +155,7 @@ const getoneuser = useSelector((state) => state.getoneuser.getoneuser.user);
 >
 
   {/* PROFILE */}
-  <div className="flex flex-col items-center text-center border-b border-gray-300/30 pb-3">
+  {/* <div className="flex flex-col items-center text-center border-b border-gray-300/30 pb-3">
     <img
       src={""}
       alt="Avatar"
@@ -172,7 +167,7 @@ const getoneuser = useSelector((state) => state.getoneuser.getoneuser.user);
     </h1>
 
     <p className="text-[11px] text-gray-500">{getoneuser?.email}</p>
-  </div>
+  </div> */}
 
   {/* OPTIONS */}
   <div className="mt-3 flex flex-col gap-1.5">
