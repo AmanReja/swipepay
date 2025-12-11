@@ -6,7 +6,10 @@ import { Theme } from "../Contexts/Theme";
 // import { getone_user, update_user_details } from "../redux/action";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
-import {Sun, Moon} from "lucide-react"
+import {Sun, Moon} from "lucide-react";
+import { motion } from "framer-motion";
+import { FaShareAlt, FaEdit, FaPlus } from "react-icons/fa";
+import { get_company } from "../redux/action";
 
 
 
@@ -17,6 +20,14 @@ const Navbar = () => {
   const { theme, setTheme } = useContext(Theme)
 
   const [open, setOpen] = useState(false);
+  const [isaddcom,setIsaddcom]=useState(false)
+
+
+   const companydata = useSelector((state)=>state.addcompany.addcompany)
+   const companyrec = useSelector((state)=>state.addcompany.addcompany?.data)
+   console.log(27,companyrec);
+
+
 
   const handelOpen = () => {
     setOpen((prev) => !prev)
@@ -40,7 +51,12 @@ const Navbar = () => {
   
 
 
-
+  useEffect(() => {
+    dispatch(get_company())
+  
+   
+  }, [dispatch])
+  
 
 
   useEffect(() => {
@@ -56,7 +72,14 @@ const Navbar = () => {
     }
   }, [theme]);
 
-
+  const getInitials = (name = "") => {
+    return name
+      .split(" ")
+      .map(word => word[0])
+      .join("")
+      .substring(0, 2)
+      .toUpperCase();
+  };
 
   return (
     <div
@@ -78,11 +101,86 @@ const Navbar = () => {
   <div className="w-8 h-8 rounded-full bg-orange-300 text-center text-gray-800 font-bold flex justify-center items-center content-center">YB</div>
   <div className="">
     <h3 className="font-bold text-[12px]">YOUR BUSINESS NAME</h3>
-    <p className="font-bold text-[11px] text-gray-600">+ Add Another Company</p>
+    <p onClick={()=>{
+  setIsaddcom((prev)=>!prev)
+}}  className="font-bold text-[11px] cursor-pointer text-gray-600">+ Add Another Company</p>
   </div>
   </div>
   
  </div>
+ {isaddcom && (
+  <div className="fixed w-[342px] h-auto top-[53px] rounded-[5px] shadow-md overflow-x-hidden left-[150px] z-50">
+    <motion.div
+      initial={{ scale: 0.9, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      exit={{ scale: 0.9, opacity: 0 }}
+      className="bg-white rounded-[5px] shadow-lg w-full "
+    >
+     <div className="flex flex-col w-full bg-green-50 h-[63px]">
+     <div className="flex items-center gap-2 ml-[10px] mt-[5px]">
+        <div className="w-9 h-9 rounded-full bg-orange-200 flex items-center justify-center font-semibold text-gray-800 text-sm">
+          YB
+        </div>
+        <div>
+          <h2 className="text-sm font-semibold leading-tight">
+            YOUR BUSINESS NAME
+          </h2>
+          <p className="text-[10px] text-gray-500">YOUR BUSINESS NAME</p>
+        </div>
+      </div>
+
+      {/* Options */}
+      <div className="flex items-center gap-4  text-xs text-gray-600 ml-[15px] mt-[5px]">
+        <button className="flex items-center gap-1 hover:text-black transition">
+          <FaEdit className="text-[11px]" /> Edit
+        </button>
+        <button className="flex items-center gap-1 hover:text-black transition">
+          <FaShareAlt className="text-[11px]" /> Share
+        </button>
+      </div>
+     </div>
+     
+   
+     {
+  companyrec?.map((data, index) => (
+    <div key={index} className="flex flex-col w-full bg-white  h-[63px]">
+     <div className="flex items-center gap-2 ml-[10px] mt-[5px]">
+        <div className="w-9 h-9 rounded-full bg-orange-200 flex items-center justify-center font-semibold text-gray-800 text-sm">
+          YB
+        </div>
+        <div>
+          <h2 className="text-sm font-semibold leading-tight">
+          {data.company_name}
+          </h2>
+          <p className="text-[10px] text-gray-500">{data.organization_name}</p>
+        </div>
+      </div>
+
+      {/* Options */}
+      <div className="flex items-center gap-4  text-xs text-gray-600 ml-[15px] mt-[5px]">
+        <button className="flex items-center gap-1 hover:text-black transition">
+          <FaEdit className="text-[11px]" /> Edit
+        </button>
+        <button className="flex items-center gap-1 hover:text-black transition">
+          <FaShareAlt className="text-[11px]" /> Share
+        </button>
+      </div>
+     </div>
+))}
+      {/* Add new company */}
+      <button onClick={()=>{
+          navigate("/dashboard/addnewcompany"),setIsaddcom(false)
+        }} className=" w-full h-[40px] hover:text-blue-600 bg-white hover:bg-gray-200 py-2  flex items-center justify-center gap-2 text-xs font-medium transition">
+        <FaPlus  className="text-[18px]" /> Add new Company
+      </button>
+
+
+
+  
+    </motion.div>
+  </div>
+)}
+
  
 
   <div className="flex items-center gap-[20px]">

@@ -1,11 +1,17 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { addcompanyReducer } from "./reducer";
 
-import {
- } from "./reducer";
 const store = configureStore({
   reducer: {
+
+    addcompany:addcompanyReducer,
     
    
   },
 });
 export default store;
+
+
+
+
+

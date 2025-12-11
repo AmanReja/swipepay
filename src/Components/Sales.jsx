@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState,useEffect  } from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import { motion } from "framer-motion";
 
 
 import webinar from "../assets/images/webinar.svg";
 import Offers from "./Offers";
+import { toast ,Toaster } from "sonner";
 
 const Sales = ({ theme }) => {
   // Fade animation only
@@ -25,8 +26,49 @@ const Sales = ({ theme }) => {
   console.log(24,isModelOpen);
 
  
+  useEffect(() => {
+    const shouldShow = localStorage.getItem("showLoginToast");
+  
+    if (shouldShow === "true") {
+      toast.success("🚀login success!", {
+       
+        duration: 2500,
+      });
+  
+     
+        localStorage.removeItem("showLoginToast");
+      
+    }
+  }, []);
+
+
 
   return (
+
+<>
+
+<Toaster
+  position="top-right"
+  richColors
+  closeButton
+  toastOptions={{
+    style: {
+      borderRadius: "12px",
+      fontSize: "14px",
+      padding: "12px 16px",
+      background: "linear-gradient(135deg, #654ea3, #4e54c8)",
+      color: "#fff",
+      boxShadow:
+        "0 4px 20px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)",
+      border: "1px solid rgba(255,255,255,0.1)",
+      backdropFilter: "blur(8px)",
+    },
+    className: "modern-toast",
+  }}
+/>
+
+
+
    <motion.div
   initial="hidden"
   animate="show"
@@ -316,7 +358,7 @@ const Sales = ({ theme }) => {
       </motion.div>
     </div>
   </motion.div>
-</motion.div>
+</motion.div></>
 
   );
 };

@@ -1,9 +1,16 @@
 import { jwtDecode } from "jwt-decode";
+import { toast } from "sonner";
+
 
 export const LOGIN = "LOGIN";
 export const GLOGIN = "GLOGIN";
 export const SENDOTP = "SENDOTP";
 export const VERIFY_OTP = "VERIFY_OTP";
+
+
+
+export const ADD_COMPANY = "ADD_COMPANY";
+export const GET_COMPANY = "GET_COMPANY";
 
 
 
@@ -40,8 +47,15 @@ export const send_otp =
 
     if (res.status === 200) {
       // navigate("/dashboard/sales");
-      alert("otp sended")
+      
+      // alert("otp sended")
       setIsotpsended(true)
+      localStorage.setItem("otpsended", "true");
+      toast.success("🚀otp send!", {
+       
+        duration: 2500,
+      });
+      
 
       setLoad(false);
     } else {
@@ -72,9 +86,13 @@ export const verify_otp =
     const data = await res.json();
     console.log(72,data);
 
+
     if (res.status === 200) {
-      alert("otp verified");
+    
+      localStorage.setItem("showLoginToast", "true");
       setLoad(false);
+      localStorage.setItem("token", data.token);
+     
 
       navigate("/dashboard/sales");
     } else {
@@ -84,35 +102,61 @@ export const verify_otp =
     // dispatch({ type: "VERIFY_OTP", payload: data });
   };
 
-export const login = (olduser, navigate, setWrong) => async (dispatch) => {
-  try {
-    const request = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(olduser),
-      credentials: "include",
-    };
 
-    const res = await fetch(`${baseUrl}/v1/user/login`, request);
-    const data = await res.json();
+export const addcompany = (formdata) => async (dispatch) => {
+  console.log(106,formdata);
+  const token = localStorage.getItem("token") || {};
+  const res = await fetch(`${baseUrl}/v1/user/company`, {
+    method: "POST",
+    headers: {
+     
+      Authorization: `Bearer ${token}`,
+    },
+    body:formdata
+  });
 
-    if (!res.ok) {
-      setWrong(true);
-      alert(data?.message || "Invalid email or password!");
-      return; // Stop further execution
-    }
-
-    // ✅ On Success
-    localStorage.setItem("token", data.token);
-    localStorage.setItem("user", JSON.stringify(data.user));
-    setWrong(false);
-    navigate("/dashboard/sales");
-    localStorage.setItem("showLoginToast", "true");
-
-    dispatch({ type: "LOGIN", payload: data });
-  } catch (error) {
-    console.error("Login Error:", error);
-    setWrong(true);
-    alert("Something went wrong! Please try again later.");
+  if (res.status === 401) {
+    localStorage.removeItem("token");
+    window.location.href = "/";
+    return;
   }
+
+  if (res.status===201) {
+    alert("addcompany successfull")
+    
+  }
+   
+
+  const data = await res.json();
+  dispatch({ type: "ADD_COMPANY", payload: data });
+};
+
+
+export const get_company = () => async (dispatch) => {
+ 
+  const token = localStorage.getItem("token") || {};
+  const res = await fetch(`${baseUrl}/v1/user/company`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+     
+      Authorization: `Bearer ${token}`,
+    },
+  
+  });
+
+  if (res.status === 401) {
+    localStorage.removeItem("token");
+    window.location.href = "/";
+    return;
+  }
+
+  if (res.status===200) {
+    // alert("addcompany successfull")
+    
+  }
+   
+
+  const data = await res.json();
+  dispatch({ type: "GET_COMPANY", payload: data });
 };

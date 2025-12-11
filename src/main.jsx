@@ -40,7 +40,9 @@ import Proformainvoices from "./Components/Proformainvoices";
 import Deliverychallan from "./Components/Deliverychallan";
 import Login from "./Components/Login";
 import Productandservices from "./Components/Productandservices";
+import Addnewcompany from "./Components/Addnewcompany";
 import Warehouses from "./Components/Warehouses";
+
 
 
 // import.meta.env.VITE_PRODUCTION_URL;
@@ -67,7 +69,7 @@ const router = createBrowserRouter(
       {/* <Route path="/forgotpass" element={<Forgotpass />} />
       <Route path="/otpverification" element={<Otpverification />} />
       <Route path="/resetpassword" element={<Resetpass />} /> */}
-      <Route element={<Protectedroute />}>
+      {/* <Route element={<Protectedroute />}> */}
         <Route path="/dashboard" element={<Dashbord />}>
           
         
@@ -88,6 +90,7 @@ const router = createBrowserRouter(
           <Route path="subscriptions" element={<Subscriptions />} />
           <Route path="productandservices" element={<Productandservices />} />
           <Route path="warehouses" element={<Warehouses />} />
+          <Route path="addnewcompany" element={<Addnewcompany />} />
        
      
         
@@ -99,7 +102,7 @@ const router = createBrowserRouter(
    
        
         </Route>
-      </Route>
+      {/* </Route> */}
     </Route>
     
     
