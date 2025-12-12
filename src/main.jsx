@@ -42,6 +42,7 @@ import Login from "./Components/Login";
 import Productandservices from "./Components/Productandservices";
 import Addnewcompany from "./Components/Addnewcompany";
 import Warehouses from "./Components/Warehouses";
+import Customer from "./Components/Customer";
 
 
 
@@ -91,6 +92,7 @@ const router = createBrowserRouter(
           <Route path="productandservices" element={<Productandservices />} />
           <Route path="warehouses" element={<Warehouses />} />
           <Route path="addnewcompany" element={<Addnewcompany />} />
+          <Route path="customer" element={<Customer />} />
        
      
         

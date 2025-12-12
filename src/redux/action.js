@@ -123,7 +123,7 @@ export const addcompany = (formdata) => async (dispatch) => {
 
   if (res.status===201) {
     alert("addcompany successfull")
-    
+    dispatch(get_company())
   }
    
 

@@ -21,17 +21,84 @@ const Navbar = () => {
 
   const [open, setOpen] = useState(false);
   const [isaddcom,setIsaddcom]=useState(false)
+  const [companyList, setCompanyList] = useState([]);
+  const [selectedaccount,setSelectedaccount]=useState({
+    companyName:"",
+    orgName:"",
+    country:"",
+    phone:"",
+    email:"",
+    gst:"",
+    address1:"",
+    address2:"",
+    city:"",
+    state:"",
+    pincode:"",
+    logourl:"",
+   
+
+  })
+  
+
+
+  const handelSelect = (data) => {
+
+    // 1) Update selected account
+    setSelectedaccount({
+      companyName: data.company_name,
+      orgName: data.organization_name,
+      country: data.country,
+      phone: data.company_phone,
+      email: data.company_email,
+      gst: data.gstin,
+      address1: data.address_line1,
+      address2: data.address_line2,
+      city: data.city,
+      state: data.state,
+      pincode: data.pincode,
+      logourl: data.logo_url,
+    });
+  
+    // 2) Reorder only local list
+    setCompanyList((prev) => {
+      const filtered = prev.filter(item => item.company_id !== data.company_id);
+      return [data, ...filtered];
+    });
+  };
+  
+    // console.log(62,selectedaccount);
 
 
    const companydata = useSelector((state)=>state.addcompany.addcompany)
-   const companyrec = useSelector((state)=>state.addcompany.addcompany?.data)
-   console.log(27,companyrec);
+   const companyrecRedux = useSelector(
+    (state) => state.addcompany.addcompany?.data
+  );
+  
+  
+  
+   console.log(27,companyrecRedux);
 
 
 
   const handelOpen = () => {
     setOpen((prev) => !prev)
   }
+
+
+
+
+useEffect(() => {
+  if (companyrecRedux) {
+    setCompanyList(companyrecRedux)
+  }
+
+
+}, [companyrecRedux])
+
+
+
+
+
 
 
 
@@ -101,15 +168,19 @@ const Navbar = () => {
   <div className="w-8 h-8 rounded-full bg-orange-300 text-center text-gray-800 font-bold flex justify-center items-center content-center">YB</div>
   <div className="">
     <h3 className="font-bold text-[12px]">YOUR BUSINESS NAME</h3>
-    <p onClick={()=>{
+    {companyList?.length>0?<div  onClick={()=>{
   setIsaddcom((prev)=>!prev)
-}}  className="font-bold text-[11px] cursor-pointer text-gray-600">+ Add Another Company</p>
+}}  className="flex gap-[5px] items-center"><i class="fa-solid text-[8px] text-gray-600 fa-shuffle"></i><p className="font-bold text-[9px] cursor-pointer text-gray-600">Change Company</p></div>:    <p onClick={()=>{
+  setIsaddcom((prev)=>!prev)
+}}  className="font-bold text-[9px] cursor-pointer text-gray-600">+ Add Another Company</p>} 
+
   </div>
   </div>
   
  </div>
- {isaddcom && (
-  <div className="fixed w-[342px] h-auto top-[53px] rounded-[5px] shadow-md overflow-x-hidden left-[150px] z-50">
+ 
+
+ {isaddcom&&  <div className="fixed w-[342px] h-auto  top-[53px] rounded-[5px] shadow-md overflow-x-hidden left-[150px] z-50">
     <motion.div
       initial={{ scale: 0.9, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
@@ -140,33 +211,50 @@ const Navbar = () => {
       </div>
      </div>
      
-   
-     {
-  companyrec?.map((data, index) => (
-    <div key={index} className="flex flex-col w-full bg-white  h-[63px]">
-     <div className="flex items-center gap-2 ml-[10px] mt-[5px]">
-        <div className="w-9 h-9 rounded-full bg-orange-200 flex items-center justify-center font-semibold text-gray-800 text-sm">
-          YB
+
+     
+     <div className="w-full max-h-[300px] overflow-y-auto">
+  {companyList?.map((data, index) => (
+    <div onClick={()=>{handelSelect(data)}} key={index} className="flex cursor-pointer flex-col w-full bg-white h-[63px] py-2">
+
+      {/* Logo + Name */}
+      <div className="flex items-center gap-2 ml-[10px]">
+        <div className="w-9 h-9 rounded-full overflow-hidden flex items-center justify-center">
+          <img
+            className="w-full h-full object-cover"
+            src={data.logo_url}
+            alt={data.company_name}
+          />
         </div>
+
         <div>
           <h2 className="text-sm font-semibold leading-tight">
-          {data.company_name}
+            {data.company_name}
           </h2>
-          <p className="text-[10px] text-gray-500">{data.organization_name}</p>
+          <p className="text-[10px] text-gray-500">
+            {data.organization_name}
+          </p>
         </div>
       </div>
 
       {/* Options */}
-      <div className="flex items-center gap-4  text-xs text-gray-600 ml-[15px] mt-[5px]">
+      <div className="flex items-center gap-4 text-xs text-gray-600 ml-[15px] mt-[4px]">
         <button className="flex items-center gap-1 hover:text-black transition">
           <FaEdit className="text-[11px]" /> Edit
         </button>
+
         <button className="flex items-center gap-1 hover:text-black transition">
           <FaShareAlt className="text-[11px]" /> Share
         </button>
       </div>
-     </div>
-))}
+
+    </div>
+  ))}
+</div>
+
+      
+   
+ 
       {/* Add new company */}
       <button onClick={()=>{
           navigate("/dashboard/addnewcompany"),setIsaddcom(false)
@@ -178,8 +266,9 @@ const Navbar = () => {
 
   
     </motion.div>
-  </div>
-)}
+  </div>}
+
+
 
  
 

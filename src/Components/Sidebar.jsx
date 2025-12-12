@@ -39,7 +39,7 @@ const Sidebar = ({ theme }) => {
 
   return (
     <div
-      className={`fixed left-0 top-[52px] h-[590px] w-60 p-4 
+      className={`fixed left-0 top-[52px]  2xl:h-screen w-60 p-4 
         ${
           theme === "dark"
             ? "bg-gray-900 text-gray-100 border-gray-700"
@@ -47,7 +47,7 @@ const Sidebar = ({ theme }) => {
         }`}
     >
       {/* Scrollable Content */}
-      <div className="overflow-y-auto max-h-[400px] pr-1">
+      <div className="overflow-y-auto sm:max-h-[400px] 2xl:max-h-[800px] pr-1">
         <nav className="flex flex-col gap-3">
 
           {/* ---------- SALES ---------- */}
