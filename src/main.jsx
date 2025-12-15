@@ -43,6 +43,7 @@ import Productandservices from "./Components/Productandservices";
 import Addnewcompany from "./Components/Addnewcompany";
 import Warehouses from "./Components/Warehouses";
 import Customer from "./Components/Customer";
+import { CompanyProvider } from "./Contexts/Company";
 
 
 
@@ -114,6 +115,7 @@ const router = createBrowserRouter(
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
+    <CompanyProvider>
 <ThemeProvider>
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
 
@@ -124,6 +126,7 @@ createRoot(document.getElementById("root")).render(
 
     </GoogleOAuthProvider>
     </ThemeProvider>
+    </CompanyProvider>
    
   </StrictMode>
 );

@@ -13,6 +13,10 @@ export const ADD_COMPANY = "ADD_COMPANY";
 export const GET_COMPANY = "GET_COMPANY";
 
 
+export const ADD_CUSTOMER = "ADD_CUSTOMER";
+export const GET_CUSTOMER = "GET_CUSTOMER";
+
+
 
 
 
@@ -87,6 +91,16 @@ export const verify_otp =
     console.log(72,data);
 
 
+        if (res.status===400) {
+          // localStorage.setItem("otpsended", "true");
+          toast.error("wrong otp!", {
+           
+            duration: 2500,
+          });
+          
+        }
+
+
     if (res.status === 200) {
     
       localStorage.setItem("showLoginToast", "true");
@@ -130,6 +144,33 @@ export const addcompany = (formdata) => async (dispatch) => {
   const data = await res.json();
   dispatch({ type: "ADD_COMPANY", payload: data });
 };
+export const addcustomer = (formdata,corp_id) => async (dispatch) => {
+  console.log(106,formdata,corp_id);
+  const token = localStorage.getItem("token") || {};
+  const res = await fetch(`${baseUrl}/v1/user/customerData/${corp_id}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body:JSON.stringify(formdata)
+  });
+
+  if (res.status === 401) {
+    localStorage.removeItem("token");
+    window.location.href = "/";
+    return;
+  }
+
+  if (res.status===201) {
+    alert("addcustomer successfull")
+    dispatch(get_customer(corp_id))
+  }
+   
+
+  const data = await res.json();
+  dispatch({ type: "ADD_COMPANY", payload: data });
+};
 
 
 export const get_company = () => async (dispatch) => {
@@ -151,12 +192,43 @@ export const get_company = () => async (dispatch) => {
     return;
   }
 
-  if (res.status===200) {
-    // alert("addcompany successfull")
+  // if (res.status===200) {
+  //   // alert("addcompany successfull")
     
-  }
+  // }
    
 
   const data = await res.json();
   dispatch({ type: "GET_COMPANY", payload: data });
+};
+export const get_customer = (company_name) => async (dispatch) => {
+  console.log(205,company_name);
+ 
+  const token = localStorage.getItem("token") || {};
+  const res = await fetch(`${baseUrl}/v1/user/customerData/${company_name}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+     
+      Authorization: `Bearer ${token}`,
+    },
+  
+  });
+
+  if (res.status === 401) {
+    localStorage.removeItem("token");
+    window.location.href = "/";
+    return;
+  }
+
+  // if (res.status===200) {
+  //   // alert("addcompany successfull")
+    
+  // }
+   
+
+  const data = await res.json();
+
+  console.log(232,data);
+  dispatch({ type: "GET_CUSTOMER", payload: data });
 };

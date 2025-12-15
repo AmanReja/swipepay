@@ -7,13 +7,15 @@ import { Theme } from "../Contexts/Theme";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 import {Sun, Moon} from "lucide-react";
-import { motion } from "framer-motion";
+import { motion,AnimatePresence  } from "framer-motion";
 import { FaShareAlt, FaEdit, FaPlus } from "react-icons/fa";
 import { get_company } from "../redux/action";
+import { Company } from "../Contexts/Company";
 
 
 
 const Navbar = () => {
+  const { setCompany ,company} = useContext(Company);
   
   const navigate = useNavigate()
   const dispatch =useDispatch()
@@ -22,30 +24,29 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [isaddcom,setIsaddcom]=useState(false)
   const [companyList, setCompanyList] = useState([]);
-  const [selectedaccount,setSelectedaccount]=useState({
-    companyName:"",
-    orgName:"",
-    country:"",
-    phone:"",
-    email:"",
-    gst:"",
-    address1:"",
-    address2:"",
-    city:"",
-    state:"",
-    pincode:"",
-    logourl:"",
-   
-
-  })
+  const [selectedaccount,setSelectedaccount]=useState(null)
   
 
 
   const handelSelect = (data) => {
 
     // 1) Update selected account
-    setSelectedaccount({
-      companyName: data.company_name,
+    // setSelectedaccount({
+    //   companyName: data.company_name,
+    //   orgName: data.organization_name,
+    //   country: data.country,
+    //   phone: data.company_phone,
+    //   email: data.company_email,
+    //   gst: data.gstin,
+    //   address1: data.address_line1,
+    //   address2: data.address_line2,
+    //   city: data.city,
+    //   state: data.state,
+    //   pincode: data.pincode,
+    //   logourl: data.logo_url,
+    // });
+  
+    setCompany({ companyName: data.company_name,
       orgName: data.organization_name,
       country: data.country,
       phone: data.company_phone,
@@ -56,16 +57,19 @@ const Navbar = () => {
       city: data.city,
       state: data.state,
       pincode: data.pincode,
-      logourl: data.logo_url,
-    });
-  
-    // 2) Reorder only local list
-    setCompanyList((prev) => {
-      const filtered = prev.filter(item => item.company_id !== data.company_id);
-      return [data, ...filtered];
-    });
+      logourl: data.logo_url})
+    
+   setIsaddcom(false);
   };
   
+
+  const dropdownCompanies = companyList.filter(
+    (item) => item.company_name !== company?.companyName
+  );
+
+
+
+
     // console.log(62,selectedaccount);
 
 
@@ -76,7 +80,7 @@ const Navbar = () => {
   
   
   
-   console.log(27,companyrecRedux);
+  //  console.log(27,companyrecRedux);
 
 
 
@@ -97,6 +101,25 @@ useEffect(() => {
 
 
 
+
+useEffect(() => {
+  const saved = localStorage.getItem("selectedCompany");
+  if (saved) {
+    setSelectedaccount(JSON.parse(saved));
+  }
+}, []);
+
+useEffect(() => {
+  if (company) {
+    localStorage.setItem(
+      "selectedCompany",
+      JSON.stringify(company)
+    );
+  }
+}, [company]);
+
+const selectedCompany = JSON.parse(localStorage.getItem("selectedCompany"));
+console.log("json",selectedCompany);
 
 
 
@@ -161,10 +184,39 @@ useEffect(() => {
     style={{ fontFamily: "Righteous" }}
     className={`flex text-center justify-center tracking-wide transition-all duration-300 animate-gradient-x h-[42px] relative sm:text-3xl text-2xl font-normal ${theme==="dark"?"text-white":"text-[#0A0C2C]"}`}
   >
-    busybox
+    busype
   </div>
- 
-  <div className=" rounded-full gap-[5px] flex">
+  {selectedaccount?
+  
+  <AnimatePresence mode="wait">
+  <motion.div
+    key={company?.companyName || "default"}
+    initial={{ opacity: 0, y: -8, scale: 0.95 }}
+    animate={{ opacity: 1, y: 0, scale: 1 }}
+    exit={{ opacity: 0, y: 8, scale: 0.95 }}
+    transition={{ duration: 0.25, ease: "easeOut" }}
+    className="rounded-full gap-[5px] flex"
+  >
+    <div className="w-8 h-8 rounded-full  text-gray-800 font-bold flex justify-center items-center">
+      <img className="rounded-full w-full h-full object-cover" src={company?.logourl||""} alt="" />
+    </div>
+
+    <div>
+      <h3 className="font-bold text-[12px]">
+        {company?.companyName || "YOUR BUSINESS NAME"}
+      </h3>
+
+      <p
+        onClick={() => setIsaddcom((prev) => !prev)}
+        className="font-bold text-[9px] cursor-pointer text-gray-600 flex items-center gap-[4px]"
+      >
+        <i className="fa-solid fa-shuffle text-[8px]" />
+        {companyList?.length ? "Change Company" : "+ Add Another Company"}
+      </p>
+    </div>
+  </motion.div>
+</AnimatePresence>
+:<div className=" rounded-full gap-[5px]  flex">
   <div className="w-8 h-8 rounded-full bg-orange-300 text-center text-gray-800 font-bold flex justify-center items-center content-center">YB</div>
   <div className="">
     <h3 className="font-bold text-[12px]">YOUR BUSINESS NAME</h3>
@@ -175,7 +227,9 @@ useEffect(() => {
 }}  className="font-bold text-[9px] cursor-pointer text-gray-600">+ Add Another Company</p>} 
 
   </div>
-  </div>
+  </div>}
+ 
+  
   
  </div>
  
@@ -214,7 +268,7 @@ useEffect(() => {
 
      
      <div className="w-full max-h-[300px] overflow-y-auto">
-  {companyList?.map((data, index) => (
+  {dropdownCompanies?.map((data, index) => (
     <div onClick={()=>{handelSelect(data)}} key={index} className="flex cursor-pointer flex-col w-full bg-white h-[63px] py-2">
 
       {/* Logo + Name */}

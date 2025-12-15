@@ -1,10 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { addcompanyReducer } from "./reducer";
+import { addcompanyReducer,customerReducer } from "./reducer";
 
 const store = configureStore({
   reducer: {
 
     addcompany:addcompanyReducer,
+    customers:customerReducer
     
    
   },

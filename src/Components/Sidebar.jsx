@@ -106,6 +106,15 @@ const Sidebar = ({ theme }) => {
             <SubItem to="/dashboard/expenses">Expenses</SubItem>
             <SubItem>Categories</SubItem>
           </MenuSection>
+          <MenuSection
+            title="Customer"
+            icon="fa-solid fa-tag text-gray-500 font-bold"
+         
+            onClick={() =>{navigate("/dashboard/customer")}}
+          >
+            <SubItem to="/dashboard/expenses">Expenses</SubItem>
+            <SubItem>Categories</SubItem>
+          </MenuSection>
 
           {/* ---------- PRODUCTS / INVENTORY / PAYMENTS ---------- */}
           <SimpleMenu

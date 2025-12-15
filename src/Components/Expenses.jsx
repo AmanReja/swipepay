@@ -1,6 +1,7 @@
 import React from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import { motion } from "framer-motion";
+import Offers from "./Offers";
 
 import expensesImg from "../assets/images/webinar.svg" // <-- replace with your actual image
 
@@ -35,24 +36,8 @@ const Expenses = ({ theme }) => {
       className="flex flex-col gap-[20px] overflow-y-auto max-h-[500px] py-[10px]"
     >
       {/* Top Banner */}
-      <motion.div
-        variants={fadeIn}
-        className="bg-orange-400 w-full h-[50px] rounded-[5px] 
-                   flex justify-center items-center gap-[10px]"
-      >
-        <p className="text-white font-medium">
-          New Feature 🎉 – Track & Categorize your expenses effortlessly!
-        </p>
-
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="w-[180px] rounded-2xl bg-white shadow-2xs"
-        >
-          Explore Now 🚀
-        </motion.button>
-      </motion.div>
-
+  
+<Offers></Offers>
       {/* Main Container */}
       <motion.div
         variants={fadeIn}
