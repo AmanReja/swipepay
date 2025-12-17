@@ -44,6 +44,8 @@ import Addnewcompany from "./Components/Addnewcompany";
 import Warehouses from "./Components/Warehouses";
 import Customer from "./Components/Customer";
 import { CompanyProvider } from "./Contexts/Company";
+import Payments from "./Components/Payments";
+import Packinglists from "./Components/Packinglists";
 
 
 
@@ -94,6 +96,8 @@ const router = createBrowserRouter(
           <Route path="warehouses" element={<Warehouses />} />
           <Route path="addnewcompany" element={<Addnewcompany />} />
           <Route path="customer" element={<Customer />} />
+          <Route path="payments" element={<Payments />} />
+          <Route path="packinglists" element={<Packinglists />} />
        
      
         

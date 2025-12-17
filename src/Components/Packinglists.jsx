@@ -10,7 +10,7 @@ import { useDispatch,useSelector } from "react-redux";
 import { Company } from "../Contexts/Company";
 
 
-const Customer = ({ theme }) => {
+const Packinglists = ({ theme }) => {
 
 
 
@@ -105,14 +105,7 @@ const [selectedTcs, setSelectedTcs] = useState("");
   ];
   
   
-  const getInitials = (name = "") => {
-    return name
-      .split(" ")
-      .map(word => word[0])
-      .join("")
-      .substring(0, 2)
-      .toUpperCase();
-  };
+
 
   useEffect(() => {
     if (company?.companyName) {
@@ -311,106 +304,75 @@ const [selectedTcs, setSelectedTcs] = useState("");
         exit={{ opacity: 0, y: 8, scale: 0.95 }}
         transition={{ duration: 0.25, ease: "easeOut" }}
       >
-      
-      
-      {/* TABLE WRAPPER */}
-     
-        <table className="min-w-[900px] w-full text-sm">
-          
+        <table className="min-w-full text-sm">
           {/* HEADER */}
-          <thead className="bg-gray-50 ">
-            <tr className="text-gray-500">
-              <th className="px-4 py-3 text-left font-medium">
-                <div className="flex items-center gap-1">
-                Name
-                  <i className="fa-solid fa-sort text-[10px]" />
-                </div>
-              </th>
-
-              <th className="px-4 py-3 text-left font-medium">
-                <div className="flex items-center gap-1">
-                  Qty
-                  <i className="fa-solid fa-sort text-[10px]" />
-                </div>
-              </th>
-
-              <th className="px-4 py-3 text-left font-medium">
-                <div className="flex items-center gap-1">
-                  Selling Price (Disc %)
-                  <i className="fa-solid fa-sort text-[10px]" />
-                </div>
-              </th>
-
-              <th className="px-4 py-3 text-left font-medium">
-                Purchase Price
-              </th>
-
-              <th className="px-4 py-3"></th>
+          <thead className="sticky top-0 z-10 bg-gray-50 border-b">
+            <tr className="text-left text-gray-500 font-medium">
+              <th className="px-5 py-3">#</th>
+              <th className="px-5 py-3">Customer</th>
+              <th className="px-5 py-3">Phone</th>
+              <th className="px-5 py-3">Email</th>
+              <th className="px-5 py-3">Company</th>
+              <th className="px-5 py-3 text-right">Actions</th>
             </tr>
           </thead>
 
           {/* BODY */}
-          <tbody>
-            {customerdata?.map((customer,i)=>(<tr className=" last:border-none hover:bg-gray-50 transition">
-              
-              {/* ITEM */}
-              <td className="px-4 py-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full bg-rose-200 flex items-center justify-center font-semibold text-xs">
-                    {getInitials(customer.customer_name)}
-                  </div>
+          <tbody className="divide-y">
+            {customerdata?.length > 0 ? (
+              customerdata.map((cust, index) => (
+                <tr key={cust.id} className="group hover:bg-gray-50 transition">
+                  {/* Index */}
+                  <td className="px-5 py-4 text-gray-400">{index + 1}</td>
 
-                  <div>
-                    <p className="font-medium text-gray-900">
-                      Sample Product
-                    </p>
-                    <p className="text-xs text-gray-500">
-                      Product <span className="text-indigo-600">00000000</span>
-                    </p>
-                  </div>
-                </div>
-              </td>
+                  {/* Name + Avatar */}
+                  <td className="px-5 py-4">
+                    <div className="flex items-center gap-3">
+                      <div className="h-9 w-9 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-semibold">
+                        {cust.customer_name?.[0] || "-"}
+                      </div>
+                      <div>
+                        <p className="font-medium text-gray-900">{cust.customer_name}</p>
+                        <p className="text-xs text-gray-500">ID: {cust.id}</p>
+                      </div>
+                    </div>
+                  </td>
 
-              {/* QTY */}
-              <td className="px-4 py-4 bg-red-50 font-semibold">
-                0
-              </td>
+                  {/* Phone */}
+                  <td className="px-5 py-4 text-gray-700">{cust.phone || "-"}</td>
 
-              {/* SELLING PRICE */}
-              <td className="px-4 py-4 font-semibold">
-                ₹ 100.00
-              </td>
+                  {/* Email */}
+                  <td className="px-5 py-4 text-gray-700">{cust.email || "-"}</td>
 
-              {/* PURCHASE PRICE */}
-              <td className="px-4 py-4">
-                ₹ 0.00
-              </td>
+                  {/* Company */}
+                  <td className="px-5 py-4">
+                    <span className="inline-flex items-center rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700">
+                      {cust.corp_id || "-"}
+                    </span>
+                  </td>
 
-              {/* ACTIONS */}
-              <td className="px-4 py-4">
-                <div className="flex items-center gap-2">
-                  <button className="p-2 rounded-md bg-gray-100 hover:bg-gray-200">
-                    <i className="fa-solid fa-bars text-xs" />
-                  </button>
-
-                  <button className="px-3 py-1 rounded-md bg-yellow-100 text-yellow-700 text-xs font-medium">
-                    ✎ Edit
-                  </button>
-
-                  <button className="p-2 rounded-md bg-gray-100 hover:bg-gray-200">
-                    <i className="fa-solid fa-ellipsis-vertical text-xs" />
-                  </button>
-                </div>
-              </td>
-
-            </tr>))}
-            
+                  {/* Actions */}
+                  <td className="px-5 py-4 text-right">
+                    <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition">
+                      <button className="px-3 py-1.5 text-xs rounded-md bg-blue-600 text-white hover:bg-blue-700">
+                        View
+                      </button>
+                      <button className="px-3 py-1.5 text-xs rounded-md border hover:bg-gray-100">
+                        Edit
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="6" className="px-6 py-10 text-center text-gray-500">
+                  No customers found
+                </td>
+              </tr>
+            )}
           </tbody>
-
         </table>
-     
-   
-
       </motion.div>
     </AnimatePresence>
   </div>
@@ -877,4 +839,4 @@ const [selectedTcs, setSelectedTcs] = useState("");
   );
 };
 
-export default Customer;
+export default Packinglists;

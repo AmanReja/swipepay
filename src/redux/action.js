@@ -142,6 +142,7 @@ export const addcompany = (formdata) => async (dispatch) => {
    
 
   const data = await res.json();
+  console.log(data);
   dispatch({ type: "ADD_COMPANY", payload: data });
 };
 export const addcustomer = (formdata,corp_id) => async (dispatch) => {

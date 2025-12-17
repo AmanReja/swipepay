@@ -150,56 +150,105 @@ useEffect(() => {
           </div>
 
           {/* Table Header */}
-          <div className="overflow-hidden rounded-[5px] mt-[20px]" >
-          <table className="w-full  bg-gray-50 text-[14px] ">
-          <thead className="bg-gray-100 h-[30px] text-gray-700 font-semibold">
-  <tr>
-    <td className="p-2">Amount</td>
-    <td className="p-2">Status</td>
-    <td className="p-2">Invoice#</td>
-    <td className="p-2">Ack No.</td>
-    <td className="p-2">Customer</td>
-    <td className="p-2">Date/Created Time</td>
-    <td className="p-2">Actions</td>
-  </tr>
-</thead>
+      
+    <div className="w-full mt-[15px] bg-white rounded-lg shadow-sm  border-gray-100 border-[1px]">
+      
+      {/* TABLE WRAPPER */}
+      <div className="overflow-x-auto">
+        <table className="min-w-[900px] w-full text-sm">
+          
+          {/* HEADER */}
+          <thead className="bg-gray-50 ">
+            <tr className="text-gray-500">
+              <th className="px-4 py-3 text-left font-medium">
+                <div className="flex items-center gap-1">
+                  Item
+                  <i className="fa-solid fa-sort text-[10px]" />
+                </div>
+              </th>
 
-<tbody className="bg-white">
-  {invoiceRows.map((row, i) => (
-    <tr key={i} className=" hover:bg-gray-50 transition">
-      <td className="p-2">{row.amount}</td>
-      <td className="p-2">
-  <span
-    className={`
-      px-3 py-[4px] text-[12px] rounded-full font-medium
-      ${
-        row.status === "SUCCESS"
-          ? "bg-emerald-100 text-emerald-700 border border-emerald-200"
-        : row.status === "PENDING"
-          ? "bg-amber-100 text-amber-700 border border-amber-200"
-        : row.status === "FAILED"
-          ? "bg-rose-100 text-rose-700 border border-rose-200"
-        : row.status === "CANCELLED"
-          ? "bg-gray-200 text-gray-700 border border-gray-300"
-          : "bg-gray-100 text-gray-600 border border-gray-200"
-      }
-    `}
-  >
-    {row.status}
-  </span>
-</td>
+              <th className="px-4 py-3 text-left font-medium">
+                <div className="flex items-center gap-1">
+                  Qty
+                  <i className="fa-solid fa-sort text-[10px]" />
+                </div>
+              </th>
 
-      <td className="p-2">{row.invoice}</td>
-      <td className="p-2">{row.ack}</td>
-      <td className="p-2">{row.customer}</td>
-      <td className="p-2">{row.date}</td>
-      <td className="p-2">{row.actions}</td>
-    </tr>
-  ))}
-</tbody>
+              <th className="px-4 py-3 text-left font-medium">
+                <div className="flex items-center gap-1">
+                  Selling Price (Disc %)
+                  <i className="fa-solid fa-sort text-[10px]" />
+                </div>
+              </th>
 
-          </table>
-          </div>
+              <th className="px-4 py-3 text-left font-medium">
+                Purchase Price
+              </th>
+
+              <th className="px-4 py-3"></th>
+            </tr>
+          </thead>
+
+          {/* BODY */}
+          <tbody>
+            <tr className="border-b last:border-none hover:bg-gray-50 transition">
+              
+              {/* ITEM */}
+              <td className="px-4 py-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-full bg-rose-200 flex items-center justify-center font-semibold text-xs">
+                    SP
+                  </div>
+
+                  <div>
+                    <p className="font-medium text-gray-900">
+                      Sample Product
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      Product <span className="text-indigo-600">00000000</span>
+                    </p>
+                  </div>
+                </div>
+              </td>
+
+              {/* QTY */}
+              <td className="px-4 py-4 bg-red-50 font-semibold">
+                0
+              </td>
+
+              {/* SELLING PRICE */}
+              <td className="px-4 py-4 font-semibold">
+                ₹ 100.00
+              </td>
+
+              {/* PURCHASE PRICE */}
+              <td className="px-4 py-4">
+                ₹ 0.00
+              </td>
+
+              {/* ACTIONS */}
+              <td className="px-4 py-4">
+                <div className="flex items-center gap-2">
+                  <button className="p-2 rounded-md bg-gray-100 hover:bg-gray-200">
+                    <i className="fa-solid fa-bars text-xs" />
+                  </button>
+
+                  <button className="px-3 py-1 rounded-md bg-yellow-100 text-yellow-700 text-xs font-medium">
+                    ✎ Edit
+                  </button>
+
+                  <button className="p-2 rounded-md bg-gray-100 hover:bg-gray-200">
+                    <i className="fa-solid fa-ellipsis-vertical text-xs" />
+                  </button>
+                </div>
+              </td>
+
+            </tr>
+          </tbody>
+
+        </table>
+      </div>
+    </div>
          
 
           {/* Content Section */}

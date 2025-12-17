@@ -1,13 +1,14 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { Theme } from "../Contexts/Theme";
 
 import {
   FaChevronDown,
   FaChevronRight,
 } from "react-icons/fa";
 
-const Sidebar = ({ theme }) => {
+const Sidebar = () => {
   const navigate = useNavigate();
 
   const [openMenu, setOpenMenu] = useState({
@@ -19,6 +20,9 @@ const Sidebar = ({ theme }) => {
     inventory: false,
     payments: false,
   });
+
+ const {theme} =useContext(Theme);
+
 
   // ⭐ AUTO-CLOSE TOGGLE LOGIC ⭐
   const toggle = (menu) => {
@@ -39,7 +43,7 @@ const Sidebar = ({ theme }) => {
 
   return (
     <div
-      className={`fixed left-0 top-[52px]  2xl:h-screen w-60 p-4 
+      className={`fixed left-0 top-[52px] h-screen  2xl:h-screen w-52 p-4 
         ${
           theme === "dark"
             ? "bg-gray-900 text-gray-100 border-gray-700"
@@ -48,14 +52,15 @@ const Sidebar = ({ theme }) => {
     >
       {/* Scrollable Content */}
       <div className="overflow-y-auto sm:max-h-[400px] 2xl:max-h-[800px] pr-1">
-        <nav className="flex flex-col gap-3">
+        <nav style={{fontFamily:"montserrat"}} className="flex  flex-col gap-3">
 
           {/* ---------- SALES ---------- */}
-          <MenuSection
+          <MenuSection 
             title="Sales"
             icon="fa-solid fa-money-bills text-gray-500 font-bold"
             isOpen={openMenu.sales}
             onClick={() => toggle("sales")}
+            theme={theme}
           >
             <SubItem to="/dashboard/sales">Invoices</SubItem>
             <SubItem to="/dashboard/creditnotes">Credit Notes</SubItem>
@@ -64,7 +69,7 @@ const Sidebar = ({ theme }) => {
           </MenuSection>
 
           {/* ---------- PURCHASES ---------- */}
-          <MenuSection
+          <MenuSection theme={theme}
             title="Purchases"
             icon="fa-solid fa-cart-shopping text-gray-500 font-bold"
             isOpen={openMenu.purchases}
@@ -76,7 +81,7 @@ const Sidebar = ({ theme }) => {
           </MenuSection>
 
           {/* ---------- QUOTATIONS ---------- */}
-          <MenuSection
+          <MenuSection theme={theme}
             title="Quotations+"
             icon="fa-solid fa-pen text-gray-500 font-bold"
             isOpen={openMenu.quotations}
@@ -93,11 +98,11 @@ const Sidebar = ({ theme }) => {
 
             <SubItem to={"/dashboard/proformainvoices"}>Pro Forma Invoices</SubItem>
             <SubItem to={"/dashboard/deliverychallan"}>Delivery Challans</SubItem>
-            <SubItem>Packing Lists</SubItem>
+            <SubItem to={"/dashboard/packinglists"}>Packing Lists</SubItem>
           </MenuSection>
 
           {/* ---------- EXPENSES ---------- */}
-          <MenuSection
+          <MenuSection theme={theme}
             title="Expenses+"
             icon="fa-solid fa-tag text-gray-500 font-bold"
             isOpen={openMenu.expenses}
@@ -106,9 +111,9 @@ const Sidebar = ({ theme }) => {
             <SubItem to="/dashboard/expenses">Expenses</SubItem>
             <SubItem>Categories</SubItem>
           </MenuSection>
-          <MenuSection
+          <MenuSection theme={theme}
             title="Customer"
-            icon="fa-solid fa-tag text-gray-500 font-bold"
+            icon="fa-regular fa-user text-gray-500 font-bold"
          
             onClick={() =>{navigate("/dashboard/customer")}}
           >
@@ -117,26 +122,35 @@ const Sidebar = ({ theme }) => {
           </MenuSection>
 
           {/* ---------- PRODUCTS / INVENTORY / PAYMENTS ---------- */}
-          <SimpleMenu
+          <MenuSection
             title="Products & Services"
             isOpen={openMenu.products}
+            icon="fa-solid fa-qrcode"
             onClick={() => {()=>toggle("products"),navigate("/dashboard/productandservices")}}
           />
 
-          <MenuSection
+          <MenuSection theme={theme}
             title="Inventory"
             isOpen={openMenu.inventory}
+            icon="fa-solid fa-boxes-stacked"
             onClick={() => toggle("inventory")}
           >
  <SubItem to="/dashboard/warehouses">Warehouses</SubItem>
 
           </MenuSection>
 
-          <SimpleMenu
-            title="Payments"
+          <MenuSection 
+            title="payments"
+            icon="fa-solid fa-indian-rupee-sign text-gray-500 font-bold"
             isOpen={openMenu.payments}
             onClick={() => toggle("payments")}
-          />
+            theme={theme}
+          >
+            <SubItem to="/dashboard/sales">Invoices</SubItem>
+            <SubItem to="/dashboard/creditnotes">Credit Notes</SubItem>
+            <SubItem to="/dashboard/einvoices">E-invoices</SubItem>
+            <SubItem to="/dashboard/Subscriptions">Subscriptions</SubItem>
+          </MenuSection>
 
         </nav>
       </div>
@@ -158,15 +172,41 @@ export default Sidebar;
    REUSABLE UI COMPONENTS BELOW
 ----------------------------------- */
 
-const MenuSection = ({ title, icon, isOpen, onClick, children }) => (
+const MenuSection = ({ title, icon, isOpen, onClick, children, theme }) => (
   <div>
     <button
       onClick={onClick}
-      className="flex w-full justify-between px-2 py-2 rounded-lg items-center
-      hover:bg-gray-200 dark:hover:bg-gray-800 transition font-semibold text-[13px]"
+      className={`group flex w-full justify-between px-2 py-2 rounded-lg items-center
+      transition font-semibold text-[13px]
+      ${theme === "dark" ? "hover:bg-gray-800" : "hover:bg-gray-200"}`}
     >
-      <span className="flex items-center gap-2"><i className={icon}></i> {title}</span>
-      {isOpen ? <FaChevronDown size={8} /> : <FaChevronRight size={8} />}
+      {/* LEFT SIDE */}
+      <span
+        className={`flex items-center gap-2 text-[12px] 
+        text-gray-500 group-hover:text-black
+        ${theme === "dark" && "group-hover:text-white"}`}
+      >
+        <i
+          className={`${icon} 
+          text-gray-500 
+          group-hover:text-black  text-[10px]
+          ${theme === "dark" && "group-hover:text-white"}`}
+        ></i>
+        {title}
+      </span>
+
+      {/* RIGHT ICON */}
+      {isOpen ? (
+        <FaChevronDown
+          size={9}
+          className="text-gray-400 group-hover:text-black"
+        />
+      ) : (
+        <FaChevronRight
+          size={9}
+          className="text-gray-400 group-hover:text-black"
+        />
+      )}
     </button>
 
     <AnimatePresence>
@@ -186,21 +226,24 @@ const MenuSection = ({ title, icon, isOpen, onClick, children }) => (
 );
 
 const SubItem = ({ to, children }) => (
-  <Link
+  <NavLink
     to={to}
-    className="hover:font-bold hover:text-gray-800 dark:hover:text-blue-300 transition"
+    className={({ isActive }) =>
+      `transition hover:font-bold hover:text-gray-800
+       ${isActive ? "text-gray-600 font-extrabold" : "text-gray-600 font-normal"}`
+    }
   >
     {children}
-  </Link>
+  </NavLink>
 );
 
 const SimpleMenu = ({ title, isOpen, onClick }) => (
   <button
     onClick={onClick}
     className="flex w-full justify-between px-2 py-2 rounded-lg items-center 
-    hover:bg-gray-200 dark:hover:bg-gray-800 transition font-semibold text-[13px]"
+    hover:bg-gray-200  transition font-semibold text-[13px]"
   >
     <span>{title}</span>
-    {isOpen ? <FaChevronDown size={8} /> : <FaChevronRight size={8} />}
+    {isOpen ? <FaChevronDown color="#BDBDBD" size={9} /> : <FaChevronRight color="#BDBDBD" size={9} />}
   </button>
 );

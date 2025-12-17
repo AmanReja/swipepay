@@ -2,6 +2,7 @@ import React from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import { motion } from "framer-motion";
 import webinar from "../assets/images/webinar.svg"
+import Offers from "./Offers";
 
 const Purchase = ({ theme }) => {
   const fadeIn = {
@@ -35,22 +36,7 @@ const Purchase = ({ theme }) => {
       className="flex flex-col gap-[20px] overflow-y-auto max-h-[500px] py-[10px]"
     >
       {/* Top Banner */}
-      <motion.div
-        variants={fadeIn}
-        className="bg-blue-300 w-full h-[50px] min-h-[40px] rounded-[5px] flex justify-center items-center gap-[10px]"
-      >
-        <p className="text-white">
-          Limited Offer 🎉 Get 20% OFF on Premium Purchase Tools!
-        </p>
-
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="w-[160px] rounded-2xl bg-white shadow-2xs"
-        >
-          Upgrade Now 🚀
-        </motion.button>
-      </motion.div>
+  <Offers></Offers>
 
       {/* Main card container */}
       <motion.div
