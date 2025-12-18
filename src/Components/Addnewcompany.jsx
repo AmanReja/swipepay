@@ -142,7 +142,7 @@ const Addnewcompany = ({ theme }) => {
                   <p>Select Country :</p>
                   <p>Is Branch? :</p>
                   <p className="text-red-500 font-medium">*Organization Name :</p>
-                  <p className="text-red-500 font-medium">*Company Name :</p>
+                  <p className="text-red-500 font-medium">*Company Name s:</p>
                   <p>Company Phone (OPTIONAL) :</p>
                   <p>Company Email (OPTIONAL) :</p>
                   <p>GSTIN (OPTIONAL) :</p>

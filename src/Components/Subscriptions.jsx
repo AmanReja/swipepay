@@ -2,37 +2,28 @@ import React from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import { motion } from "framer-motion";
 
-import subscriptionPlan from "../assets/images/subscription.svg";
+import subscriptionPlan from "../assets/images/subscriptions.webp";
 import Offers from "./Offers";
 
 const Subscriptions = ({ theme }) => {
   // Animation Variants
-  const fadeIn = {
-    hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.4 } },
-  };
-
-  const slideLeft = {
-    hidden: { opacity: 0, x: -50 },
-    show: { opacity: 1, x: 0, transition: { duration: 0.5 } },
-  };
-
-  const slideRight = {
-    hidden: { opacity: 0, x: 50 },
-    show: { opacity: 1, x: 0, transition: { duration: 0.5 } },
+  const fade = {
+    hidden: { opacity: 0 },
+    show: { opacity: 1, transition: { duration: 0.5 } },
   };
 
   const stagger = {
     show: {
-      transition: { staggerChildren: 0.15 }
-    }
+      transition: { staggerChildren: 0.15 },
+    },
   };
+
 
   return (
     <motion.div
       initial="hidden"
       animate="show"
-      variants={stagger}
+      variants={fade}
       className="flex flex-col gap-[20px] overflow-y-auto max-h-[500px] py-[10px]"
     >
       {/* Top Banner */}
@@ -40,7 +31,7 @@ const Subscriptions = ({ theme }) => {
 
       {/* Main Container */}
       <motion.div
-        variants={fadeIn}
+        variants={fade}
         className={`w-full bg-white rounded-lg ${
           theme === "dark" ? "text-gray-100 bg-gray-900" : "text-gray-900"
         }`}
@@ -49,7 +40,7 @@ const Subscriptions = ({ theme }) => {
 
           {/* Header */}
           <motion.div
-            variants={slideLeft}
+            variants={fade}
             className="flex items-center justify-between mb-6"
           >
             <div className="flex items-center gap-[5px]">
@@ -61,7 +52,7 @@ const Subscriptions = ({ theme }) => {
 
             <div className="flex items-center gap-3">
             <motion.button
-                variants={fadeIn}
+                variants={fade}
                 // whileHover={{ scale: 1.05 }}
                 className={`px-4 py-2 rounded text-[14px] flex items-center content-center hover:bg-gray-200 font-bold text-gray-600  gap-2  ${
                   theme === "dark"
@@ -85,14 +76,14 @@ const Subscriptions = ({ theme }) => {
 
           {/* Content Section */}
           <motion.div
-            variants={stagger}
+            variants={fade}
             className={`w-full flex flex-col lg:flex-row items-center gap-10 p-6 ${
               theme === "dark" ? "bg-gray-800" : "bg-white"
             }`}
           >
             {/* Illustration */}
             <motion.div
-              variants={slideLeft}
+              variants={fade}
               className="w-full lg:w-1/2 flex justify-center"
             >
               <img
@@ -103,7 +94,7 @@ const Subscriptions = ({ theme }) => {
             </motion.div>
 
             {/* Right Content */}
-            <motion.div variants={slideRight} className="w-full lg:w-1/2">
+            <motion.div variants={fade} className="w-full lg:w-1/2">
               <h2 className="text-3xl font-semibold leading-tight mb-4">
                 Get more power with premium <br /> subscription plans.
               </h2>
@@ -117,7 +108,7 @@ const Subscriptions = ({ theme }) => {
                 ].map((text, index) => (
                   <motion.li
                     key={index}
-                    variants={fadeIn}
+                    variants={fade}
                     className="flex items-center gap-2"
                   >
                     <FaCheckCircle className="text-gray-600" />
@@ -137,7 +128,7 @@ const Subscriptions = ({ theme }) => {
 
               {/* Footer */}
               <motion.div
-                variants={fadeIn}
+                variants={fade}
                 className="mt-5 flex flex-col  gap-6 text-sm"
               >
                 <div className="flex items-center  gap-2 cursor-pointer">

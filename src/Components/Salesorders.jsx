@@ -2,7 +2,7 @@ import React from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import { motion } from "framer-motion";
 
-import debitnote from "../assets/images/webinar.svg";
+import debitnote from "../assets/images/sales.webp";
 import Offers from "./Offers";
 
 const Salesorders = ({ theme }) => {

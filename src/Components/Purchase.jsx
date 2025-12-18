@@ -1,30 +1,18 @@
 import React from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import { motion } from "framer-motion";
-import webinar from "../assets/images/webinar.svg"
+import webinar from "../assets/images/sales.webp"
 import Offers from "./Offers";
 
 const Purchase = ({ theme }) => {
-  const fadeIn = {
-    hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.4 } },
-  };
-
-  const slideLeft = {
-    hidden: { opacity: 0, x: -50 },
-    show: { opacity: 1, x: 0, transition: { duration: 0.5 } },
-  };
-
-  const slideRight = {
-    hidden: { opacity: 0, x: 50 },
-    show: { opacity: 1, x: 0, transition: { duration: 0.5 } },
+  const fade = {
+    hidden: { opacity: 0 },
+    show: { opacity: 1, transition: { duration: 0.5 } },
   };
 
   const stagger = {
     show: {
-      transition: {
-        staggerChildren: 0.15,
-      },
+      transition: { staggerChildren: 0.15 },
     },
   };
 
@@ -40,7 +28,7 @@ const Purchase = ({ theme }) => {
 
       {/* Main card container */}
       <motion.div
-        variants={fadeIn}
+        variants={fade}
         className={`w-full bg-white rounded-lg ${
           theme === "dark" ? "text-gray-100 bg-gray-900" : "text-gray-900"
         }`}
@@ -49,7 +37,7 @@ const Purchase = ({ theme }) => {
           
           {/* Header */}
           <motion.div
-            variants={slideLeft}
+            variants={fade}
             className="flex items-center justify-between mb-6"
           >
             <div className="flex items-center gap-[5px]">
@@ -63,7 +51,7 @@ const Purchase = ({ theme }) => {
             <div className="flex items-center gap-3">
 
             <motion.button
-                variants={fadeIn}
+                variants={fade}
                 // whileHover={{ scale: 1.05 }}
                 className={`px-4 py-2 rounded text-[14px] flex items-center content-center hover:bg-gray-200 font-bold text-gray-600  gap-2  ${
                   theme === "dark"
@@ -93,7 +81,7 @@ const Purchase = ({ theme }) => {
           >
             {/* Illustration */}
             <motion.div
-              variants={slideLeft}
+              variants={fade}
               className="w-full lg:w-1/2 flex justify-center"
             >
               <img
@@ -104,7 +92,7 @@ const Purchase = ({ theme }) => {
             </motion.div>
 
             {/* Right content */}
-            <motion.div variants={slideRight} className="w-full lg:w-1/2">
+            <motion.div variants={fade} className="w-full lg:w-1/2">
               <h2 className="text-3xl font-semibold leading-tight mb-4">
               Purchase invoices made easy.
               </h2>
@@ -117,7 +105,7 @@ const Purchase = ({ theme }) => {
                 ].map((item, i) => (
                   <motion.li
                     key={i}
-                    variants={fadeIn}
+                    variants={fade}
                     className="flex items-center gap-2"
                   >
                     <FaCheckCircle className="text-gray-600" />
@@ -135,7 +123,7 @@ const Purchase = ({ theme }) => {
 
               {/* Footer */}
               <motion.div
-                variants={fadeIn}
+                variants={fade}
                 className="mt-5 flex flex-col  gap-6 text-sm"
               >
                 <div className="flex items-center  gap-2 cursor-pointer">

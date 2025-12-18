@@ -3,7 +3,7 @@ import { FaCheckCircle } from "react-icons/fa";
 import { motion } from "framer-motion";
 
 
-import webinar from "../assets/images/webinar.svg";
+import webinar from "../assets/images/sales.webp";
 import Offers from "./Offers";
 import { toast ,Toaster } from "sonner";
 

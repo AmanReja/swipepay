@@ -24,6 +24,18 @@ const Sidebar = () => {
  const {theme} =useContext(Theme);
 
 
+ 
+ const logOut = async () => {
+
+
+
+
+
+  localStorage.removeItem("token")
+  navigate("/")
+}
+
+
   // ⭐ AUTO-CLOSE TOGGLE LOGIC ⭐
   const toggle = (menu) => {
     setOpenMenu((prev) => {
@@ -43,7 +55,7 @@ const Sidebar = () => {
 
   return (
     <div
-      className={`fixed left-0 top-[52px] h-screen  2xl:h-screen w-52 p-4 
+      className={`fixed  left-0 top-[52px] h-screen  2xl:h-screen w-53 p-4 
         ${
           theme === "dark"
             ? "bg-gray-900 text-gray-100 border-gray-700"
@@ -51,8 +63,8 @@ const Sidebar = () => {
         }`}
     >
       {/* Scrollable Content */}
-      <div className="overflow-y-auto sm:max-h-[400px] 2xl:max-h-[800px] pr-1">
-        <nav style={{fontFamily:"montserrat"}} className="flex  flex-col gap-3">
+      <div className="overflow-y-auto bar sm:max-h-[400px] 2xl:max-h-[800px] pr-1">
+        <nav  className="flex  flex-col gap-3">
 
           {/* ---------- SALES ---------- */}
           <MenuSection 
@@ -162,6 +174,9 @@ const Sidebar = () => {
           Subscribe Now 🚀
         </button>
       </div>
+      <button onClick={logOut} className="p-2 ">
+      <i class="fa-solid fa-right-from-bracket"></i>
+      </button>
     </div>
   );
 };
@@ -176,19 +191,19 @@ const MenuSection = ({ title, icon, isOpen, onClick, children, theme }) => (
   <div>
     <button
       onClick={onClick}
-      className={`group flex w-full justify-between px-2 py-2 rounded-lg items-center
-      transition font-semibold text-[13px]
+      className={`group flex w-full justify-between px-2 py-1 rounded-lg items-center
+      transition font-medium  text-[13px]
       ${theme === "dark" ? "hover:bg-gray-800" : "hover:bg-gray-200"}`}
     >
       {/* LEFT SIDE */}
       <span
         className={`flex items-center gap-2 text-[12px] 
-        text-gray-500 group-hover:text-black
+        text-gray-800 group-hover:text-black
         ${theme === "dark" && "group-hover:text-white"}`}
       >
         <i
           className={`${icon} 
-          text-gray-500 
+          text-gray-600 
           group-hover:text-black  text-[10px]
           ${theme === "dark" && "group-hover:text-white"}`}
         ></i>

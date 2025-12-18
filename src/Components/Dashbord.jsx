@@ -42,7 +42,7 @@ const Dashbord = () => {
             animate={{ scaleX: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.6, ease: "easeInOut" }}
-            className="fixed top-[52px] left-0 h-[3px] w-full bg-blue-500 origin-left z-50"
+            className="fixed top-[52px] left-0 h-[2px] w-full bg-blue-800 origin-left z-50"
           />
         )}
       </AnimatePresence>
@@ -59,7 +59,7 @@ const Dashbord = () => {
 
         {/* MAIN CONTENT AREA */}
         <div
-          className="ml-50 w-full   h-screen overflow-y-auto p-2"
+          className="ml-52 w-full   h-screen overflow-y-auto p-2"
         >
          
           <Outlet />

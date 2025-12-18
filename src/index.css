@@ -43,10 +43,45 @@ html,body{
 
 
 /* Custom Scrollbar */
-::-webkit-scrollbar {
+.bar::-webkit-scrollbar {
 
   display: none;
 }
+
+
+/* Scrollbar width */
+
+.bar:hover::-webkit-scrollbar{
+  display:block;
+}
+
+
+.bar::-webkit-scrollbar {
+  width: 5px;        /* vertical scrollbar thickness */
+  height: 10px;       /* horizontal scrollbar thickness */
+}
+
+
+
+/* Track (background) */
+.bar::-webkit-scrollbar-track {
+  background: #dadada;
+  border-radius: 10px;
+}
+
+/* Thumb (scroll handle) */
+.bar::-webkit-scrollbar-thumb {
+  background: #bab8b8;
+  border-radius: 10px;
+}
+
+/* Thumb on hover */
+.bar::-webkit-scrollbar-thumb:hover {
+  background: #c5c4c4;
+}
+
+
+
 
 
 input[type="number"]::-webkit-inner-spin-button,
