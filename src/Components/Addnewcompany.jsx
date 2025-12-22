@@ -116,7 +116,7 @@ const Addnewcompany = ({ theme }) => {
         variants={fade}
         className={`flex ${
           isModelOpen ? "p-4" : ""
-        } duration-300 flex-col gap-[20px] overflow-y-auto max-h-[500px] py-[10px]`}
+        } duration-300 flex-col gap-[20px] overflow-y-auto h-auto py-[10px]`}
       >
         <Offers />
 

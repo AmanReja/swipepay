@@ -73,7 +73,7 @@ const Sales = ({ theme }) => {
   initial="hidden"
   animate="show"
   variants={fade}
-  className={`flex ${isModelOpen ? "p-4" : ""} duration-300 flex-col gap-[20px] overflow-y-auto max-h-[500px] py-[10px]`}
+  className={`flex  ${isModelOpen ? "p-4" : ""} duration-300 flex-col gap-[20px]  h-auto py-[10px]`}
 >
   {/* Top Banner */}
   <Offers />
@@ -358,6 +358,9 @@ const Sales = ({ theme }) => {
       </motion.div>
     </div>
   </motion.div>
+
+  
+
 </motion.div></>
 
   );

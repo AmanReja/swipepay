@@ -129,8 +129,15 @@ const Sidebar = () => {
          
             onClick={() =>{navigate("/dashboard/customer")}}
           >
-            <SubItem to="/dashboard/expenses">Expenses</SubItem>
-            <SubItem>Categories</SubItem>
+            
+          </MenuSection>
+          <MenuSection theme={theme}
+            title="Vendors"
+            icon="fa-regular fa-user text-gray-500 font-bold"
+         
+            onClick={() =>{navigate("/dashboard/vendor")}}
+          >
+            
           </MenuSection>
 
           {/* ---------- PRODUCTS / INVENTORY / PAYMENTS ---------- */}

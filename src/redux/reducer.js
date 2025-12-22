@@ -1,4 +1,4 @@
-import { ADD_COMPANY ,GET_COMPANY,ADD_CUSTOMER,GET_CUSTOMER} from "./action";
+import { ADD_COMPANY ,GET_COMPANY,ADD_CUSTOMER,GET_CUSTOMER,ADD_MERCHANT} from "./action";
 
 
 const initialaddcomState ={
@@ -46,6 +46,34 @@ export const customerReducer =(state=initialaddcustomerState,action)=>{
      }
        
     } else{
+        return state
+    }
+
+}
+
+
+const initialaddmerchantState ={
+    merchant:[],
+}
+
+export const merchantReducer =(state=initialaddmerchantState,action)=>{
+
+    if (action.type===ADD_MERCHANT) {
+
+    return{
+        ...state,
+        merchant:[action.payload,...state.merchant]
+    }
+        
+    // } else if(action.type===GET_CUSTOMER){
+    //  return{
+    //     ...state,
+    //     customers:action.payload
+    //  }
+       
+    // } 
+}
+    else{
         return state
     }
 

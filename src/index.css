@@ -37,9 +37,9 @@ input.hide-date-icon::-webkit-calendar-picker-indicator {
   animation: gradient-x 4s linear infinite; 
 }
 
-html,body{
+/* html,body{
   overflow-y: hidden;
-}
+} */
 
 
 /* Custom Scrollbar */

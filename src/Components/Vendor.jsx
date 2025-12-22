@@ -5,24 +5,34 @@ import Offers from "./Offers";
 import webinar from "../assets/images/webinar.svg";
 import { toast, Toaster } from "sonner";
 import {ChevronDown,Plus} from "lucide-react";
-import {get_customer,addcustomer} from "../redux/action";
+import {get_customer,addcustomer,addmerchant} from "../redux/action";
 import { useDispatch,useSelector } from "react-redux";
 import { Company } from "../Contexts/Company";
 
 
-const Customer = ({ theme }) => {
+const Vendor = ({ theme }) => {
 
 
 
  
   const dispatch = useDispatch();
   const customerdata = useSelector((state)=>state.customers.customers?.customers);
-  console.log(16,customerdata);
+  console.log(20,customerdata);
 
-  
+  const [cxpopup, setCxpopup] = useState(false);
+  const [selectedcx, setSelectedcx] = useState(null);
+  const [cxdropdown, setCxdropdown] = useState(false);
+  const [iscxvendor,setIscxvendor] = useState(false);
+
+ const handelcxpopup =()=>{
+  setCxpopup((prev)=>!prev)
+ }
+
+
   const { company } = useContext(Company);
   const [istdsactive,setIstdsactive]=useState(false)
   const [showTdsDropdown, setShowTdsDropdown] = useState(false);
+ 
 const [selectedTds, setSelectedTds] = useState("");
 
 
@@ -199,12 +209,12 @@ const [selectedTcs, setSelectedTcs] = useState("");
     const payload = {
   
     
-      customer_name: form.customer_name,
+      vendor_name: form.customer_name,
       phone: form.phone,
       email: form.email,
-      gst: form.gst,
+      gstin: form.gst,
     
-      companyName: form.company,
+      company_name: form.company,
      
     
       opening_balance: form.opening_balance,
@@ -221,12 +231,14 @@ const [selectedTcs, setSelectedTcs] = useState("");
       tcs: istcsactive,                 // "0" | "1"
       tcs_data: selectedTcs
     };
+   
 
+      
 
  
 
 
-    dispatch(addcustomer(payload,company.companyName))
+    dispatch(addmerchant(payload,company.companyName,selectedcx.id))
     
   }
 
@@ -254,169 +266,17 @@ const [selectedTcs, setSelectedTcs] = useState("");
             {/* Header */}
             <motion.div variants={fade} className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-[5px]">
-                <h1 className="text-[26px] font-bold">Customers</h1>
-                <div className="flex bg-blue-500 h-[22px] rounded-full w-[22px] justify-center items-center">
-                  <i className="fa-solid text-white text-[12px] fa-user"></i>
-                </div>
+                <h1 className="text-[26px] font-bold">Vendors</h1>
+                <div className="flex bg-pink-500 h-[22px] rounded-full w-[22px] justify-center items-center">
+            <i className="fa-solid text-white text-[12px] fa-play"></i>
+          </div>
               </div>
 
               
             </motion.div>
-            <div className=" pb-2 relative">
-      <ul className="flex gap-10 text-gray-500 font-medium text-sm relative">
-        {tabs.map((tab, i) => (
-          <li
-            key={i}
-            ref={(el) => (tabRefs.current[i] = el)}
-            className={`cursor-pointer pb-2 ${
-              activeIndex === i ? "text-blue-400" : ""
-            }`}
-            onClick={() => setActiveIndex(i)}
-          >
-            {tab}
-          </li>
-        ))}
-
-        {/* Sliding Indicator */}
-        <div
-          className="absolute bottom-0 h-[2px] bg-blue-400 transition-all duration-300"
-          style={indicatorStyle}
-        ></div>
-      </ul>
-    </div>
-    <div className="flex mt-6 items-center h-[50px] gap-4">
-          <div className="flex items-center border rounded-md hover:ring-2 hover:ring-black duration-100 bg-white shadow-sm w-[500px] h-[30px] px-2">
-            <i className="fa-solid fa-magnifying-glass text-gray-500"></i>
-            <input
-              type="text"
-              placeholder="Search products, category, description, barcode..."
-              className="ml-2 w-full text-sm outline-none bg-transparent"
-            />
-          </div>
-
-          <div className="px-4 h-[30px] flex items-center bg-gray-200 rounded-md text-sm font-medium">
-            Actions <ChevronDown/>
-          </div>
-          <div  onClick={handleModel} className="px-4 h-[30px] cursor-pointer flex items-center text-white bg-blue-600 rounded-md text-sm font-medium">
-          <Plus size={20} /> New Customer
-          </div>
-        </div>
-        <div className="mt-6 overflow-x-auto">
-        <div className="mt-6 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
-  <div className="overflow-x-auto">
-  <AnimatePresence mode="wait">
-      <motion.div
-        initial={{ opacity: 0, y: -8, scale: 0.95 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        exit={{ opacity: 0, y: 8, scale: 0.95 }}
-        transition={{ duration: 0.25, ease: "easeOut" }}
-      >
-      
-      
-      {/* TABLE WRAPPER */}
      
-        <table className="min-w-[900px] w-full text-sm">
-          
-          {/* HEADER */}
-          <thead className="bg-gray-50 ">
-            <tr className="text-gray-500">
-              <th className="px-4 py-3 text-left font-medium">
-                <div className="flex items-center gap-1">
-                Name
-                  <i className="fa-solid fa-sort text-[10px]" />
-                </div>
-              </th>
+  
 
-              <th className="px-4 py-3 text-left font-medium">
-                <div className="flex items-center gap-1">
-                  Qty
-                  <i className="fa-solid fa-sort text-[10px]" />
-                </div>
-              </th>
-
-              <th className="px-4 py-3 text-left font-medium">
-                <div className="flex items-center gap-1">
-                  Selling Price (Disc %)
-                  <i className="fa-solid fa-sort text-[10px]" />
-                </div>
-              </th>
-
-              <th className="px-4 py-3 text-left font-medium">
-                Purchase Price
-              </th>
-
-              <th className="px-4 py-3"></th>
-            </tr>
-          </thead>
-
-          {/* BODY */}
-          <tbody>
-            {customerdata?.map((customer,i)=>(<tr className=" last:border-none hover:bg-gray-50 transition">
-              
-              {/* ITEM */}
-              <td className="px-4 py-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full bg-rose-200 flex items-center justify-center font-semibold text-xs">
-                    {getInitials(customer.customer_name)}
-                  </div>
-
-                  <div>
-                    <p className="font-medium text-gray-900">
-                      {customer.customer_name}
-                    </p>
-                    <p className="text-xs text-gray-500">
-                      Product <span className="text-indigo-600">00000000</span>
-                    </p>
-                  </div>
-                </div>
-              </td>
-
-              {/* QTY */}
-              <td className="px-4 py-4 bg-red-50 font-semibold">
-                0
-              </td>
-
-              {/* SELLING PRICE */}
-              <td className="px-4 py-4 font-semibold">
-                ₹ 100.00
-              </td>
-
-              {/* PURCHASE PRICE */}
-              <td className="px-4 py-4">
-                ₹ 0.00
-              </td>
-
-              {/* ACTIONS */}
-              <td className="px-4 py-4">
-                <div className="flex items-center gap-2">
-                  <button className="p-2 rounded-md bg-gray-100 hover:bg-gray-200">
-                    <i className="fa-solid fa-bars text-xs" />
-                  </button>
-
-                  <button className="px-3 py-1 rounded-md bg-yellow-100 text-yellow-700 text-xs font-medium">
-                    ✎ Edit
-                  </button>
-
-                  <button className="p-2 rounded-md bg-gray-100 hover:bg-gray-200">
-                    <i className="fa-solid fa-ellipsis-vertical text-xs" />
-                  </button>
-                </div>
-              </td>
-
-            </tr>))}
-            
-          </tbody>
-
-        </table>
-     
-   
-
-      </motion.div>
-    </AnimatePresence>
-  </div>
-</div>
-
-</div>
 
         
             {/* Background Overlay */}
@@ -578,7 +438,7 @@ const [selectedTcs, setSelectedTcs] = useState("");
   </div>
 
   {/* TAX & RCM */}
-  <div className="bg-white border rounded-xl p-6 space-y-4 shadow-sm">
+  <div className="bg-white border border-gray-200 rounded-xl p-6 space-y-4 shadow-sm">
   <label
   htmlFor="tcs"
   className="flex items-center justify-between gap-4 p-3 border rounded-lg cursor-pointer hover:bg-gray-50"
@@ -797,6 +657,88 @@ const [selectedTcs, setSelectedTcs] = useState("");
 
 
   </div>
+  <div className="flex w-full bg-white justify-between">
+    <button type="button" className="flex p-2 bg-blue-500 text-white rounded-[4px]">Create customer with same details</button>
+    <button onClick={handelcxpopup} type="button" className="flex p-2 bg-violet-500 text-white rounded-[4px]">Customer Linking</button>
+  
+  </div>
+  {cxpopup&&<div className="fixed inset-0 z-50 flex items-center justify-center">
+      {/* BACKDROP */}
+      {/* <div
+        className="absolute inset-0 bg-black/40"
+        onClick={handelcxpopup}
+      /> */}
+
+      {/* MODAL */}
+      <div className="relative bg-white w-[360px] rounded-lg shadow-lg p-5 z-10">
+        
+        {/* HEADER */}
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-sm font-semibold">Add Customer</h2>
+          <button
+            onClick={()=>{handelcxpopup(),setCxdropdown(false)}}
+            className="text-gray-400 hover:text-black"
+          >
+            ✕
+          </button>
+        </div>
+
+        {/* INPUT */}
+        <input
+         onClick={()=>{setCxdropdown(true)}}
+          type="text"
+          placeholder="Enter customer name"
+          // onClick={()=>{setCxdropdown(true)}
+          value={selectedcx?.customer_name}
+          // onChange={(e) => s(e.target.value)}
+          className="w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        {cxdropdown &&
+  customerdata.map((cx) => (
+    <div
+      className="cursor-pointer px-3 py-2 text-sm 
+                 hover:bg-blue-50 hover:text-blue-600 
+                 transition-all duration-150
+                 
+                 flex items-center gap-2"
+      onClick={(e) => {
+        setSelectedcx(cx);
+        console.log(698, selectedcx);
+      }}
+    >
+      <div className="w-7 h-7 rounded-full bg-blue-100 
+                      text-blue-700 font-semibold text-xs 
+                      flex items-center justify-center">
+        {cx.customer_name?.charAt(0)}
+      </div>
+
+      <span className="font-medium">
+        {cx.customer_name}
+      </span>
+    </div>
+  ))}
+
+       
+
+        {/* ACTIONS */}
+        <div className="flex justify-end gap-2 mt-4">
+          <button
+            onClick={handelcxpopup}
+            className="px-4 py-1.5 text-sm rounded-md border hover:bg-gray-100"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={()=>{setCxpopup(false),setForm({...form,customer_name:selectedcx?.customer_name})}}
+            type="button"
+            className="px-4 py-1.5 text-sm rounded-md bg-blue-600 text-white hover:bg-blue-700"
+          >
+            Add
+          </button>
+        </div>
+      </div>
+    </div>}
+  
 
   {/* ACTIONS */}
   <div className="flex justify-end gap-4 pt-4">
@@ -815,7 +757,7 @@ const [selectedTcs, setSelectedTcs] = useState("");
       className="px-6 py-2.5 text-sm rounded-lg bg-blue-600 text-white 
                  hover:bg-blue-700 shadow-md transition"
     >
-      Save Customer
+      Save Vendor
     </button>
   </div>
 </form>
@@ -847,7 +789,7 @@ const [selectedTcs, setSelectedTcs] = useState("");
               </motion.div>
 
               <motion.div variants={fade} className="w-full lg:w-[60%]">
-                <h2 className="text-3xl font-semibold leading-tight mb-4">Manage your customers efficiently.</h2>
+                <h2 className="text-3xl font-semibold leading-tight mb-4">All your vendors in one place.</h2>
 
                 <motion.ul variants={stagger} className="flex flex-col gap-3 w-full text-[15px]">
                   {[
@@ -877,4 +819,4 @@ const [selectedTcs, setSelectedTcs] = useState("");
   );
 };
 
-export default Customer;
+export default Vendor;

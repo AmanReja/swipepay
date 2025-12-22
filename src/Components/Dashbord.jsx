@@ -47,27 +47,35 @@ const Dashbord = () => {
         )}
       </AnimatePresence>
 
-      <div
-        className={`w-full h-screen flex 
-        ${theme === "dark" ? "bg-gray-900 text-gray-100" : "bg-[#f9f9f9] text-gray-900"}
-      `}
-      >
-        {/* FIXED SIDEBAR */}
-       
-          <Sidebar />
-        
+      <div className="h-screen w-full overflow-hidden bg-gray-50">
 
-        {/* MAIN CONTENT AREA */}
-        <div
-          className="ml-52 w-full   h-screen overflow-y-auto p-2"
-        >
-         
-          <Outlet />
-          <Footer></Footer>
-        </div>
-        
-        
-      </div>
+{/* NAVBAR */}
+
+  <Navbar />
+
+
+{/* BODY */}
+<div className="flex pt-[56px] h-full">
+
+  {/* SIDEBAR */}
+  <div className="fixed left-0 top-[56px] w-[80px] h-[calc(100vh-56px)]  overflow-y-auto">
+    <Sidebar />
+  </div>
+
+  {/* MAIN CONTENT + FOOTER */}
+  <main className="ml-[200px] w-[calc(100%-202px)] h-[calc(100vh-56px)] overflow-y-auto flex flex-col">
+
+    {/* PAGE CONTENT */}
+    <div className="flex-1 p-6">
+      <Outlet />
+    </div>
+
+    {/* FOOTER */}
+ <Footer></Footer>
+
+  </main>
+</div>
+</div>
       
     </>
   );

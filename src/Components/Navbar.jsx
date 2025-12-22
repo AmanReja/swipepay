@@ -173,10 +173,11 @@ console.log("json",selectedCompany);
 
   return (
     <div
-  className={`w-[100%] ${
-    theme === "dark" ? "" : "bg-white "
-  } h-[50px] flex justify-between px-[10px] sm:px-[5S0px] items-center`}
->
+    className={`fixed top-0 left-0 z-50 w-full ${
+      theme === "dark" ? "" : "bg-white"
+    } h-[50px] flex justify-between px-[10px] sm:px-[50px] items-center`}
+  >
+  
  
 
  <div className="flex justify-center items-center h-full gap-[30px]">

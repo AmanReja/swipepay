@@ -8,7 +8,7 @@ const Footer = () => {
 
   return (
     <footer
-      className={`w-full   h-[60px] 
+      className={`w-full   h-[60px] pl-[20px] mt-[40px]
         ${theme === "dark" 
           ? "bg-gray-900 text-gray-300 border-gray-700" 
           : "bg-transparent text-gray-700 border-gray-300"

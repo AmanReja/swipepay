@@ -23,7 +23,7 @@ const Salesorders = ({ theme }) => {
       initial="hidden"
       animate="show"
       variants={stagger}
-      className="flex flex-col gap-[20px] overflow-y-auto max-h-[500px] py-[10px]"
+      className="flex flex-col gap-[20px] overflow-y-auto h-auto py-[10px]"
     >
       {/* Top Banner */}
     <Offers></Offers>
