@@ -5,7 +5,7 @@ import Offers from "./Offers";
 import webinar from "../assets/images/webinar.svg";
 import { toast, Toaster } from "sonner";
 import {ChevronDown,Plus} from "lucide-react";
-import {get_customer,addcustomer,addmerchant} from "../redux/action";
+import {get_customer,addcustomer,addmerchant, getmerchant} from "../redux/action";
 import { useDispatch,useSelector } from "react-redux";
 import { Company } from "../Contexts/Company";
 
@@ -17,7 +17,8 @@ const Vendor = ({ theme }) => {
  
   const dispatch = useDispatch();
   const customerdata = useSelector((state)=>state.customers.customers?.customers);
-  console.log(20,customerdata);
+  const vendor = useSelector((state)=>state.merchant.merchant);
+  console.log(20,vendor);
 
   const [cxpopup, setCxpopup] = useState(false);
   const [selectedcx, setSelectedcx] = useState(null);
@@ -57,7 +58,12 @@ const [selectedTcs, setSelectedTcs] = useState("");
   
   }, [istcsactive,istdsactive])
   
-
+   useEffect(()=>{
+    if (company?.companyName) {
+      
+    }
+    dispatch(getmerchant(company.companyName))
+   },[dispatch])
 
 
 
@@ -149,6 +155,7 @@ const [selectedTcs, setSelectedTcs] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
   const [indicatorStyle, setIndicatorStyle] = useState({});
   const tabRefs = useRef([]);
+  const [isboth,setIsboth]=useState(false)
 
 
 
@@ -242,6 +249,76 @@ const [selectedTcs, setSelectedTcs] = useState("");
     
   }
 
+
+  const createvendorand_customer =(e)=>{
+    e.preventDefault()
+    try {
+      const vendor = {
+  
+    
+        vendor_name: form.customer_name,
+        phone: form.phone,
+        email: form.email,
+        gstin: form.gst,
+      
+        company_name: form.company,
+       
+      
+        opening_balance: form.opening_balance,
+        
+       
+      
+        balance_type: form.balance_type,
+      
+        rcm_enabled: form.rcm_enabled ? 1 : 0,
+      
+        tds: istdsactive,                 // "0" | "1"
+        tds_data:selectedTds,
+      
+        tcs: istcsactive,                 // "0" | "1"
+        tcs_data: selectedTcs
+      };
+  
+      dispatch(addmerchant(vendor,company.companyName))
+  
+  
+      const customer = {
+    
+      
+        customer_name: form.customer_name,
+        phone: form.phone,
+        email: form.email,
+        gst: form.gst,
+      
+        companyName: form.company,
+       
+      
+        opening_balance: form.opening_balance,
+        
+       
+      
+        balance_type: form.balance_type,
+      
+        rcm_enabled: form.rcm_enabled ? 1 : 0,
+      
+        tds: istdsactive,                 // "0" | "1"
+        tds_data:selectedTds,
+      
+        tcs: istcsactive,                 // "0" | "1"
+        tcs_data: selectedTcs
+      };
+  
+  
+      dispatch(addcustomer(customer,company.companyName))
+    } catch (error) {
+      console.log(error);
+    } finally{
+      setIsboth(false)
+    }
+ 
+
+  }
+
   return (
     <>
       <Toaster position="top-right" richColors closeButton />
@@ -274,6 +351,108 @@ const [selectedTcs, setSelectedTcs] = useState("");
 
               
             </motion.div>
+            <table className="min-w-[900px] w-full text-sm">
+          
+          {/* HEADER */}
+          <thead className="bg-gray-50">
+  <tr className="text-gray-500">
+    <th className="px-4 py-3 text-left font-medium">
+      <div className="flex items-center gap-1">
+        Vendor
+        <i className="fa-solid fa-sort text-[10px]" />
+      </div>
+    </th>
+
+  
+
+    <th className="px-4 py-3 text-left font-medium">
+      <div className="flex items-center gap-1">
+        Opening Balance
+        <i className="fa-solid fa-sort text-[10px]" />
+      </div>
+    </th>
+
+    <th className="px-4 py-3 text-left font-medium">
+      Balance Type
+    </th>
+
+    <th className="px-4 py-3">Action</th>
+  </tr>
+</thead>
+
+
+          {/* BODY */}
+          <tbody>
+  {vendor?.map((vendor, i) => (
+    <tr
+      key={vendor.vendor_id}
+      className="last:border-none hover:bg-gray-50 transition"
+    >
+      {/* ITEM */}
+      <td className="px-4 py-4">
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-full bg-rose-200 flex items-center justify-center font-semibold text-xs">
+            {getInitials(vendor.vendor_name)}
+          </div>
+
+          <div>
+            <p className="font-medium text-gray-900">
+              {vendor.vendor_name}
+            </p>
+            <p className="text-xs text-gray-500">
+              {vendor.company_name} •{" "}
+              <span className="text-indigo-600">{vendor.gstin}</span>
+            </p>
+          </div>
+        </div>
+      </td>
+
+      {/* QTY */}
+     
+
+      {/* SELLING PRICE */}
+      <td className="px-4 py-4 font-semibold">
+        ₹ {Number(vendor.opening_balance).toFixed(2)}
+      </td>
+
+      {/* PURCHASE PRICE */}
+      <td className="px-4 py-4">
+  <span
+    className={`font-semibold text-[10px] ${
+      vendor.balance_type === "credit"
+        ? "text-green-800 bg-green-200 p-2 rounded-[5px] "
+        : vendor.balance_type === "debit"
+        ? "text-red-800 bg-red-200 p-2 rounded-[5px]"
+        : ""
+    }`}
+  >
+    {vendor.balance_type?.toUpperCase()}
+  </span>
+</td>
+
+
+      {/* ACTIONS */}
+      <td className="px-4 py-4">
+        <div className="flex items-center gap-2">
+          <button className="p-2 rounded-md bg-gray-100 hover:bg-gray-200">
+            <i className="fa-solid fa-bars text-xs" />
+          </button>
+
+          <button className="px-3 py-1 rounded-md bg-yellow-100 text-yellow-700 text-xs font-medium">
+            ✎ Edit
+          </button>
+
+          <button className="p-2 rounded-md bg-gray-100 hover:bg-gray-200">
+            <i className="fa-solid fa-ellipsis-vertical text-xs" />
+          </button>
+        </div>
+      </td>
+    </tr>
+  ))}
+</tbody>
+
+
+        </table>
      
   
 
@@ -658,7 +837,7 @@ const [selectedTcs, setSelectedTcs] = useState("");
 
   </div>
   <div className="flex w-full bg-white justify-between">
-    <button type="button" className="flex p-2 bg-blue-500 text-white rounded-[4px]">Create customer with same details</button>
+    <button onClick={()=>{setIsboth(true)}} type="button" className="flex p-2 bg-blue-500 text-white rounded-[4px]">Create customer with same details</button>
     <button onClick={handelcxpopup} type="button" className="flex p-2 bg-violet-500 text-white rounded-[4px]">Customer Linking</button>
   
   </div>
@@ -753,7 +932,7 @@ const [selectedTcs, setSelectedTcs] = useState("");
 
     <button
       type="submit"
-      onClick={handelsubmit}
+      onClick={isboth?createvendorand_customer:handelsubmit}
       className="px-6 py-2.5 text-sm rounded-lg bg-blue-600 text-white 
                  hover:bg-blue-700 shadow-md transition"
     >
