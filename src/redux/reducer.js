@@ -1,4 +1,4 @@
-import { ADD_COMPANY ,GET_COMPANY,ADD_CUSTOMER,GET_CUSTOMER,ADD_MERCHANT,GET_MERCHANT,GET_PRODUCTS} from "./action";
+import { ADD_COMPANY ,GET_COMPANY,ADD_CUSTOMER,GET_CUSTOMER,ADD_MERCHANT,GET_MERCHANT,GET_PRODUCTS,ADD_CATEGORY,GET_CATEGORY,ADD_PRODUCT,GET_INVOICE} from "./action";
 
 
 const initialaddcomState ={
@@ -87,6 +87,57 @@ export const productReducer =(state=initialproductState,action)=>{
      return{
         ...state,
         products:action.payload.data
+     }
+       
+    } else if(action.type===ADD_PRODUCT){
+
+        return {
+            ...state,
+            products:[action.payload,...state.products]
+        }
+    }
+    else{
+        return state
+    }
+
+}
+
+
+const initialcategoryState ={
+    category:[],
+}
+
+export const categoryReducer =(state=initialcategoryState,action)=>{
+
+   if(action.type===GET_CATEGORY){
+     return{
+        ...state,
+        category:action.payload
+     }
+       
+    } else if(action.type===ADD_CATEGORY){
+         return{
+            ...state,
+            category:[action.payload,...state.category]
+         }
+    }
+    else{
+        return state
+    }
+
+}
+
+const initialinvoiceState ={
+    invoice:[],
+}
+
+export const invoiceReducer =(state=initialinvoiceState,action)=>{
+
+   if(action.type===GET_INVOICE){
+     return{
+        ...state,
+        invoice:action.payload.invoices
+
      }
        
     } 

@@ -23,6 +23,16 @@ export const SEARCH_VENDOR_CX = "SEARCH_VENDOR_CX";
 
 
 export const GET_PRODUCTS = "GET_PRODUCTS";
+export const ADD_PRODUCT = "ADD_PRODUCT";
+
+
+
+export const ADD_CATEGORY = "ADD_CATEGORY";
+export const GET_CATEGORY = "GET_CATEGORY";
+
+
+export const GET_INVOICE = "GET_INVOICE";
+
 
 
 
@@ -306,11 +316,41 @@ export const getmerchant = (company_name) => async (dispatch) => {
 
 
 
+export const addproduct = (product,company) => async (dispatch) => {
+  console.log(244,product);
+  const token = localStorage.getItem("token") || {};
+  const res = await fetch(`${baseUrl}/v1/user/product-service/${company}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body:JSON.stringify(product)
+  });
+
+  if (res.status === 401) {
+    localStorage.removeItem("token");
+    window.location.href = "/";
+    return;
+  }
+
+  if (res.status===201) {
+    alert("add product successfull")
+    dispatch(getproducts(company))
+    
+  }
+   
+
+  const data = await res.json();
+  dispatch({ type: "ADD_PRODUCT", payload: data });
+};
+
+
 export const getproducts = (company_name) => async (dispatch) => {
   console.log(205,company_name);
  
   const token = localStorage.getItem("token") || {};
-  const res = await fetch(`${baseUrl}/v1/vendor/see/merchant/${company_name}`, {
+  const res = await fetch(`${baseUrl}/v1/user/product-service/${company_name}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -371,4 +411,97 @@ export const search_vendor_cx = () => async (dispatch) => {
 
   console.log(232,data);
   dispatch({ type: "SEARCH_VENDOR_CX", payload: data });
+};
+
+
+export const addcategory = (category,company) => async (dispatch) => {
+  console.log(244,category);
+  const token = localStorage.getItem("token") || {};
+  const res = await fetch(`${baseUrl}/v1/user/categories/${company}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body:JSON.stringify(category)
+  });
+
+  if (res.status === 401) {
+    localStorage.removeItem("token");
+    window.location.href = "/";
+    return;
+  }
+
+  if (res.status===201) {
+    alert("add category successfull")
+    dispatch(getcategory(company))
+    
+  }
+   
+
+  const data = await res.json();
+  dispatch({ type: "ADD_CATEGORY", payload: data });
+};
+
+export const getcategory = (company_name) => async (dispatch) => {
+  console.log(205,company_name);
+ 
+  const token = localStorage.getItem("token") || {};
+  const res = await fetch(`${baseUrl}/v1/user/categories/${company_name}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+     
+      Authorization: `Bearer ${token}`,
+    },
+  
+  });
+
+  if (res.status === 401) {
+    localStorage.removeItem("token");
+    window.location.href = "/";
+    return;
+  }
+
+  // if (res.status===200) {
+  //   // alert("addcompany successfull")
+    
+  // }
+   
+
+  const data = await res.json();
+
+  console.log(232,data);
+  dispatch({ type: "GET_CATEGORY", payload: data });
+};
+export const getinvoice = (company_name) => async (dispatch) => {
+  console.log(205,company_name);
+ 
+  const token = localStorage.getItem("token") || {};
+  const res = await fetch(`${baseUrl}/v1/user/invoice/${company_name}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+     
+      Authorization: `Bearer ${token}`,
+    },
+  
+  });
+
+  if (res.status === 401) {
+    localStorage.removeItem("token");
+    window.location.href = "/";
+    return;
+  }
+
+  // if (res.status===200) {
+  //   // alert("addcompany successfull")
+    
+  // }
+   
+
+  const data = await res.json();
+
+  console.log(232,data);
+  dispatch({ type: "GET_INVOICE", payload: data });
 };

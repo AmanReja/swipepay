@@ -5,12 +5,14 @@ import Offers from "./Offers";
 import webinar from "../assets/images/webinar.svg";
 import { toast, Toaster } from "sonner";
 import {ChevronDown,Plus} from "lucide-react";
-import {get_customer,addcustomer} from "../redux/action";
+import {get_customer,getcategory,addcategory,addproduct,getproducts} from "../redux/action";
 import { useDispatch,useSelector } from "react-redux";
 import { Company } from "../Contexts/Company";
 
 
 const Productandservices = ({ theme }) => {
+
+
 
  
 
@@ -23,12 +25,23 @@ const Productandservices = ({ theme }) => {
   const dispatch = useDispatch();
   const customerdata = useSelector((state)=>state.customers.customers?.customers);
   console.log(16,customerdata);
+  const categorydata = useSelector((state)=>state.category.category);
+  const productdata = useSelector((state)=>state.products.products);
+  console.log("pro",productdata);
 
   
   const { company } = useContext(Company);
 
 
 
+
+
+   useEffect(() => {
+   dispatch(getproducts(company.companyName))
+   
+     
+   }, [dispatch])
+   
 
 
 
@@ -73,10 +86,14 @@ const generate10DigitNumber = () => {
 
   const [isModelOpen, setIsModelOpen] = useState(false);
   const [isshowinstore, setIsshowinstore] = useState(false);
-  const [isnotforsale, setIsnotforsale] = useState(false);
+  // const [isnotforsale, setIsnotforsale] = useState(false);
+  const [opencategory, setOpencategory] = useState(false);
+  const [categoryopen,setCategoryopen] = useState(false);
+  const [selectedcategory,setSelectedcategory] = useState(null);
+
   const handleModel = () => setIsModelOpen((v) => !v);
 
-  const tabs = ["All Customers", "Groups", "Deleted"];
+  const tabs = ["Items", "Categories", "Groups","Price Lists","Deleted"];
   
   const [activeIndex, setActiveIndex] = useState(0);
   const [indicatorStyle, setIndicatorStyle] = useState({});
@@ -93,35 +110,61 @@ const generate10DigitNumber = () => {
 
   const [form, setForm] = useState({
 
-    type:"",
+    type:"product",
     name:"",
     description:"",
     selling_price:"",
     purchase_price:"",
-    price_includes_tax:"",
+    price_includes_tax:null,
     primary_unit:"",
     additional_info:"",
     hsn_sac:"",
     barcode:"",
     category_id:"",
     image_url:"",
-    opening_quantity:"",
-    opening_purchase_price:"",
-    opening_stock_value:"",
-
+   
 
     discount_type:"",
     discount_value:"",
     low_stock_alert_at:"",
-    show_online:"",
-    not_for_sale:""
+    show_online:null,
+    not_for_sale:null
 
   });
+  const [caform, setCaform] = useState({
+
+    
+
+
+    category_name:"",
+        description:"",
+        image_url:"",
+        show_online : false, 
+      
+
+  });
+
+
+  const handelcategorypost = (e)=>{
+    
+      dispatch(addcategory(caform,company.companyName))
+
+  }
+
+
+
+
+  useEffect(() => {
+      dispatch(getcategory(company.companyName))
   
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
-  };
+ 
+  }, [dispatch])
+  
+
+
+
+  
+ 
 
 
   useEffect(() => {
@@ -146,38 +189,42 @@ const generate10DigitNumber = () => {
   const handelsubmit =(e)=>{
     e.preventDefault()
 
-    alert(JSON.stringify(form));
-    // const payload = {
-  
-    
-    //   customer_name: form.customer_name,
-    //   phone: form.phone,
-    //   email: form.email,
-    //   gst: form.gst,
-    
-    //   companyName: form.company,
-     
-    
-    //   opening_balance: form.opening_balance,
-      
-     
-    
-    //   balance_type: form.balance_type,
-    
-    //   rcm_enabled: form.rcm_enabled ? 1 : 0,
-    
-    //   tds: istdsactive,                 // "0" | "1"
-    //   tds_data:selectedTds,
-    
-    //   tcs: istcsactive,                 // "0" | "1"
-    //   tcs_data: selectedTcs
-    // };
+  console.log(149,form);
 
+
+    //  dispatch(addproduct(form,company.companyName))
+
+
+     const payload = {
+      type: form.type,
+      name: form.name,
+      description: form.description,
+      selling_price: form.selling_price,
+      purchase_price: form.purchase_price,
+      price_includes_tax: form.price_includes_tax===1?true:false,
+      primary_unit: form.primary_unit
+      ,
+      additional_info: form.additional_info,
+      hsn_sac: form.hsn_sac,
+      barcode: form.barcode,
+      category_id: form.category_id,
+      image_url: form.image_url,
+    
+     
+    
+      discount_type: form.discount_type || "",
+      discount_value: form.discount_value || "",
+      low_stock_alert_at: form.low_stock_alert_at || "",
+    
+      show_online: form.show_online ?? null,
+      not_for_sale: form.not_for_sale ?? null,
+    };
+    
    
  
 
 
-    // dispatch(addcustomer(payload,company.companyName))
+    dispatch(addproduct(payload,company.companyName))
     
   }
 
@@ -205,7 +252,7 @@ const generate10DigitNumber = () => {
             {/* Header */}
             <motion.div variants={fade} className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-[5px]">
-                <h1 className="text-[26px] font-bold">Customers</h1>
+                <h1 className="text-[26px] font-bold">Products & Services</h1>
                 <div className="flex bg-blue-500 h-[22px] rounded-full w-[22px] justify-center items-center">
                   <i className="fa-solid text-white text-[12px] fa-user"></i>
                 </div>
@@ -266,99 +313,100 @@ const generate10DigitNumber = () => {
       
       {/* TABLE WRAPPER */}
      
-        <table className="min-w-[900px] w-full text-sm">
-          
-          {/* HEADER */}
-          <thead className="bg-gray-50 ">
-            <tr className="text-gray-500">
-              <th className="px-4 py-3 text-left font-medium">
-                <div className="flex items-center gap-1">
-                Name
-                  <i className="fa-solid fa-sort text-[10px]" />
-                </div>
-              </th>
+      <table className="min-w-[900px] w-full text-sm">
+  {/* HEADER */}
+  <thead className="bg-gray-50">
+    <tr className="text-gray-500">
+      <th className="px-4 py-3 text-left font-medium">Name</th>
+      <th className="px-4 py-3 text-left font-medium">Qty</th>
+      <th className="px-4 py-3 text-left font-medium">
+        Selling Price (Disc %)
+      </th>
+      <th className="px-4 py-3 text-left font-medium">
+        Purchase Price
+      </th>
+      <th className="px-4 py-3"></th>
+    </tr>
+  </thead>
 
-              <th className="px-4 py-3 text-left font-medium">
-                <div className="flex items-center gap-1">
-                  Qty
-                  <i className="fa-solid fa-sort text-[10px]" />
-                </div>
-              </th>
+  {/* BODY */}
+  <tbody>
+    {productdata?.map((product) => (
+      <tr
+        key={product.id}
+        className=" hover:bg-gray-50 transition"
+      >
+        {/* ITEM */}
+        <td className="px-4 py-4">
+          <div className="flex items-center gap-3">
+            {/* Image / Initial */}
+        
+              <div className="w-9 h-9 rounded-full bg-indigo-200 flex items-center justify-center font-semibold text-xs">
+                {product.name?.charAt(0)}
+              </div>
+           
 
-              <th className="px-4 py-3 text-left font-medium">
-                <div className="flex items-center gap-1">
-                  Selling Price (Disc %)
-                  <i className="fa-solid fa-sort text-[10px]" />
-                </div>
-              </th>
+            <div>
+              <p className="font-medium text-gray-900">
+                {product.name}
+              </p>
+              <p className="text-xs text-gray-500">
+                {product.type} ·{" "}
+                <span className="text-indigo-600">
+                  #{product.id}
+                </span>
+              </p>
+            </div>
+          </div>
+        </td>
 
-              <th className="px-4 py-3 text-left font-medium">
-                Purchase Price
-              </th>
+        {/* QTY */}
+        <td
+          className={`px-4 py-4 font-semibold ${
+            product.quantity <= product.low_stock_alert_at
+              ? "bg-red-50 text-red-600"
+              : ""
+          }`}
+        >
+          {product.quantity}
+        </td>
 
-              <th className="px-4 py-3"></th>
-            </tr>
-          </thead>
+        {/* SELLING PRICE */}
+        <td className="px-4 py-4 font-semibold">
+          ₹ {Number(product.selling_price).toFixed(2)}
+          {product.discount_value && (
+            <span className="text-xs text-green-600 ml-1">
+              ({product.discount_value}%)
+            </span>
+          )}
+        </td>
 
-          {/* BODY */}
-          <tbody>
-            {customerdata?.map((customer,i)=>(<tr className=" last:border-none hover:bg-gray-50 transition">
-              
-              {/* ITEM */}
-              <td className="px-4 py-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full bg-rose-200 flex items-center justify-center font-semibold text-xs">
-                    {getInitials(customer.customer_name)}
-                  </div>
+        {/* PURCHASE PRICE */}
+        <td className="px-4 py-4">
+          ₹ {Number(product.purchase_price).toFixed(2)}
+        </td>
 
-                  <div>
-                    <p className="font-medium text-gray-900">
-                      {customer.customer_name}
-                    </p>
-                    <p className="text-xs text-gray-500">
-                      Product <span className="text-indigo-600">00000000</span>
-                    </p>
-                  </div>
-                </div>
-              </td>
+        {/* ACTIONS */}
+        <td className="px-4 py-4">
+          <div className="flex items-center gap-2">
+            <button className="p-2 rounded-md bg-gray-100 hover:bg-gray-200">
+              <i className="fa-solid fa-bars text-xs" />
+            </button>
 
-              {/* QTY */}
-              <td className="px-4 py-4 bg-red-50 font-semibold">
-                0
-              </td>
+            <button className="px-3 py-1 rounded-md bg-yellow-100 text-yellow-700 text-xs font-medium">
+              ✎ Edit
+            </button>
 
-              {/* SELLING PRICE */}
-              <td className="px-4 py-4 font-semibold">
-                ₹ 100.00
-              </td>
+            <button className="p-2 rounded-md bg-gray-100 hover:bg-gray-200">
+              <i className="fa-solid fa-ellipsis-vertical text-xs" />
+            </button>
+          </div>
+        </td>
+      </tr>
+    ))}
+  </tbody>
+</table>
 
-              {/* PURCHASE PRICE */}
-              <td className="px-4 py-4">
-                ₹ 0.00
-              </td>
-
-              {/* ACTIONS */}
-              <td className="px-4 py-4">
-                <div className="flex items-center gap-2">
-                  <button className="p-2 rounded-md bg-gray-100 hover:bg-gray-200">
-                    <i className="fa-solid fa-bars text-xs" />
-                  </button>
-
-                  <button className="px-3 py-1 rounded-md bg-yellow-100 text-yellow-700 text-xs font-medium">
-                    ✎ Edit
-                  </button>
-
-                  <button className="p-2 rounded-md bg-gray-100 hover:bg-gray-200">
-                    <i className="fa-solid fa-ellipsis-vertical text-xs" />
-                  </button>
-                </div>
-              </td>
-
-            </tr>))}
-            
-          </tbody>
-
-        </table>
      
    
 
@@ -368,6 +416,167 @@ const generate10DigitNumber = () => {
 </div>
 
 </div>
+
+
+
+
+{/* Overlay */}
+{ categoryopen && (
+  <div
+    onClick={""}
+    className="fixed inset-0 bg-black/70 z-80"
+  />
+)}
+
+{/* Popup Container */}
+<div
+  className={`fixed top-0 right-0 h-full w-[650px] z-80 shadow-2xl
+    transition-all duration-300 flex flex-col
+    ${categoryopen ? "translate-x-0" : "translate-x-full"}
+    ${theme === "dark"
+      ? "bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100"
+      : "bg-gray-50 text-gray-900"}
+  `}
+>
+  {/* Header */}
+  <div
+    className={`flex items-center justify-between px-6 py-4 border-b flex-none
+      ${theme === "dark" ? "border-gray-700 bg-gray-900" : "border-gray-200 bg-white"}
+    `}
+  >
+    <h2 className="text-lg font-semibold tracking-wide">Add Category</h2>
+    <button
+      onClick={() => setCategoryopen(false)}
+      className="w-8 h-8 flex items-center justify-center rounded-full
+                 hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+    >
+      ✕
+    </button>
+    
+  </div>
+
+  {/* Body */}
+  <div className="flex-1 overflow-y-auto p-6">
+    <form   className="space-y-6">
+
+      {/* Upload */}
+      <div className="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm border dark:border-gray-700">
+        <label className="text-sm font-medium block mb-3">
+          Product Image
+        </label>
+
+        <div className="flex items-center gap-4">
+          <div
+            className="w-24 h-24 rounded-xl border-2 border-dashed
+                       border-gray-300 dark:border-gray-600
+                       flex items-center justify-center
+                       text-sm font-medium text-gray-500
+                       hover:border-blue-500 hover:text-blue-600
+                       transition cursor-pointer"
+          >
+            + Upload
+          </div>
+
+          <p className="text-xs text-gray-500 leading-relaxed">
+            PNG / JPEG up to 3MB<br />
+            <span className="text-gray-400">1024×1024 recommended</span>
+          </p>
+        </div>
+      </div>
+
+      {/* Category */}
+      <div className="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm border dark:border-gray-700">
+        <label htmlFor="category" className="text-sm font-medium block mb-2">
+          Category Name
+        </label>
+        <input onChange={(e)=>{setCaform({...caform,category_name:e.target.value})}}
+          id="category"
+          type="text"
+          value={caform.category_name}
+          placeholder="Eg. Electronics"
+          className="w-full rounded-lg border border-gray-300 dark:border-gray-600
+                     bg-transparent px-4 py-2.5 text-sm
+                     focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+        />
+      </div>
+
+      {/* Description */}
+      <div className="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm border dark:border-gray-700">
+        <label htmlFor="des" className="text-sm font-medium block mb-2">
+          Description
+        </label>
+        <textarea  onChange={(e)=>{setCaform({...caform,description:e.target.value})}}
+          id="des"
+          rows={3}
+          value={caform.description}
+          placeholder="Short category description"
+          className="w-full rounded-lg border border-gray-300 dark:border-gray-600
+                     bg-transparent px-4 py-2.5 text-sm resize-none
+                     focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+        />
+      </div>
+
+      {/* Toggle */}
+      <div className="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm border dark:border-gray-700">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-sm font-medium">Show in Online Store</p>
+            <p className="text-xs text-gray-500 mt-1">
+              Visible in store and available for purchase
+            </p>
+          </div>
+
+          <label className="relative cursor-pointer">
+            <input
+              type="checkbox"
+              checked={caform.show_online}
+              onChange={(e) => {e.target.checked?setCaform({...caform,show_online :true}):setCaform({...caform,show_online :false})}}
+              className="sr-only"
+            />
+
+            <div
+              className={`w-11 h-6 rounded-full transition
+                ${caform.show_online===true ? "bg-green-600" : "bg-gray-300"}
+              `}
+            />
+            <div
+              className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow
+                transition-transform
+                ${caform.show_online===true ? "translate-x-5" : ""}
+              `}
+            />
+          </label>
+        </div>
+      </div>
+
+    </form>
+  </div>
+
+  {/* Footer */}
+  <div
+    className={`flex justify-end gap-3 px-6 py-4 border-t flex-none
+      ${theme === "dark" ? "border-gray-700 bg-gray-900" : "border-gray-200 bg-white"}
+    `}
+  >
+    <button
+      onClick={() => setCategoryopen(false)}
+      className="px-5 py-2 rounded-lg border border-gray-300
+                 hover:bg-gray-100 dark:hover:bg-gray-700 transition text-sm"
+    >
+      Cancel
+    </button>
+
+    <button onClick={handelcategorypost}
+      className="px-5 py-2 rounded-lg bg-blue-600 text-white
+                 hover:bg-blue-700 shadow-md transition text-sm"
+    >
+      Save Category
+    </button>
+  </div>
+</div>
+
+
+
 
         
 {isModelOpen && (
@@ -429,7 +638,7 @@ const generate10DigitNumber = () => {
     className={`
       absolute top-1 bottom-1 w-1/2 rounded-md
       bg-blue-600 shadow-sm
-      transition-all duration-300 ease-out
+      transition-all duration-200 ease-out
       ${form.type === "product" ? "left-1" : "left-[48%]"}
     `}
   />
@@ -465,7 +674,7 @@ const generate10DigitNumber = () => {
       {/* PRODUCT NAME */}
       <div>
         <label className="text-sm font-medium">
-          Product Name <span className="text-red-500">*</span>
+         {form.type==="product"?"Product Name":"Service Name"}<span className="text-red-500">*</span>
         </label>
         <input onChange={(e)=>{setForm({...form,name:e.target.value})}}
           placeholder="Enter item name"
@@ -491,7 +700,7 @@ const generate10DigitNumber = () => {
       {/* PRIMARY UNIT */}
       <div>
         <label className="text-sm font-medium">Primary Unit</label>
-        <input  onChange={(e)=>{setForm({...form,Primary_Unit:e.target.value})}} className="mt-1 w-full rounded-md border px-3 py-2 text-sm" />
+        <input value={form.primary_unit}  onChange={(e)=>{setForm({...form,primary_unit:e.target.value})}} className="mt-1 w-full rounded-md border px-3 py-2 text-sm" />
       </div>
 
       {/* MORE DETAILS */}
@@ -556,8 +765,9 @@ const generate10DigitNumber = () => {
      
     "
   >
-    <option>Percentage (%)</option>
-    <option>Amount (₹)</option>
+    <option selected value="">Select Type</option>
+    <option  value="percentage">Percentage (%)</option>
+    <option value="amount">Amount (₹)</option>
   </select>
 </div>
 
@@ -597,8 +807,8 @@ const generate10DigitNumber = () => {
   <label className="relative cursor-pointer">
     <input
       type="checkbox"
-      checked={isshowinstore}
-      onChange={(e) => {e.target.checked?setIsshowinstore(true):setIsshowinstore(false)}}
+      checked={form.show_online}
+      onChange={(e) => {e.target.checked?setForm({...form,show_online:true}):setForm({...form,show_online:false})}}
       className="sr-only peer"
     />
 
@@ -606,7 +816,7 @@ const generate10DigitNumber = () => {
     <div
       className={`
         w-10 h-5 rounded-full transition
-        ${isshowinstore ? "bg-green-600" : "bg-gray-300"}
+        ${form.show_online ? "bg-green-600" : "bg-gray-300"}
       `}
     />
 
@@ -616,7 +826,7 @@ const generate10DigitNumber = () => {
         absolute top-0.5 left-0.5
         w-4 h-4 bg-white rounded-full shadow
         transition-transform
-        ${isshowinstore ? "translate-x-5" : ""}
+        ${form.show_online ? "translate-x-5" : ""}
       `}
     />
   </label>
@@ -636,8 +846,8 @@ const generate10DigitNumber = () => {
   <label className="relative cursor-pointer">
     <input
       type="checkbox"
-      checked={isnotforsale}
-      onChange={(e) => {e.target.checked?setIsnotforsale(true):setIsnotforsale(false)}}
+      checked={form.not_for_sale}
+      onChange={(e) => {e.target.checked?setForm({...form,not_for_sale:true}):setForm({...form,not_for_sale:false})}}
       className="sr-only peer"
     />
 
@@ -645,7 +855,7 @@ const generate10DigitNumber = () => {
     <div
       className={`
         w-10 h-5 rounded-full transition
-        ${isnotforsale ? "bg-gray-600" : "bg-gray-300"}
+        ${form.not_for_sale ? "bg-gray-600" : "bg-gray-300"}
       `}
     />
 
@@ -655,7 +865,7 @@ const generate10DigitNumber = () => {
         absolute top-0.5 left-0.5
         w-4 h-4 bg-white rounded-full shadow
         transition-transform
-        ${isnotforsale ? "translate-x-5" : ""}
+        ${form.not_for_sale ? "translate-x-5" : ""}
       `}
     />
   </label>
@@ -694,9 +904,11 @@ const generate10DigitNumber = () => {
             <label className="text-sm font-medium">Purchase Price</label>
             <div className="flex mt-1">
               <input onChange={(e)=>{setForm({...form,purchase_price:e.target.value})}}  className="flex-1 rounded-l-md border px-3 py-2 text-sm" />
-              <select onChange={handleChange} className="rounded-r-md border border-l-0 px-3 py-2 text-sm">
-                <option>with Tax</option>
-                <option>without Tax</option>
+              <select  onChange={(e)=>{setForm({...form,price_includes_tax
+:e.target.value})}}                                                                                                                                                         className="rounded-r-md border border-l-0 px-3 py-2 text-sm">
+                <option value="" >Select</option>
+                <option value={1} >with Tax</option>
+                <option value={0} >without Tax</option>
               </select>
             </div>
           </div>
@@ -704,11 +916,11 @@ const generate10DigitNumber = () => {
         </div>
       
 
-        <div className="grid grid-cols-2 gap-5 items-center">
+        <div className="flex justify-between ">
           <div>
             <label className="text-sm font-medium">Barcode</label>
             <div className="flex gap-2 mt-1">
-              <input value={form.barcode} onChange={handleChange} className="flex-1 rounded-md border px-3 py-2 text-sm" />
+              <input value={form.barcode} onChange={(e)=>{setForm({...form,barcode:e.target.value})}} className="flex-1 rounded-md border px-3 py-2 text-sm" />
               <button
   type="button"
   onClick={() =>
@@ -724,12 +936,69 @@ const generate10DigitNumber = () => {
 
             </div>
           </div>
-          <div>
-            <label className="text-sm font-medium">Category</label>
-            <select className="mt-1 w-full rounded-md border px-3 py-2 text-sm">
-              <option>Select Category</option>
-            </select>
+          <div className="relative">
+  <label className="text-sm font-medium text-gray-700">
+    Category
+  </label>
+
+  {/* Input Trigger */}
+  <input value={selectedcategory}
+    onClick={() => setOpencategory((prev) => !prev)}
+    className="mt-1 w-full flex items-center justify-between
+               rounded-lg border border-gray-300 bg-white
+               px-4 py-2.5 text-sm cursor-pointer
+               hover:border-blue-500 focus:ring-2 focus:ring-blue-500
+               transition"
+  >
+  
+    
+  </input>
+
+  {/* Dropdown */}
+  <div
+    className={`absolute z-50 mt-2 w-full overflow-hidden
+      rounded-xl border border-gray-200 bg-white shadow-lg
+      transform transition-all duration-200
+      ${opencategory
+        ? "opacity-100 scale-100"
+        : "opacity-0 scale-95 pointer-events-none"}
+    `}
+  >
+    {/* Category List */}
+    <div className="max-h-48 overflow-y-auto">
+      {categorydata.length > 0 ? (
+        categorydata.map((ca) => (
+          <div onClick={()=>{setSelectedcategory(ca.category_name),setForm({...form,category_id:ca.id}),setOpencategory(false)}}
+            key={ca.id}
+            className="px-4 py-2.5 text-sm text-gray-700
+                       hover:bg-blue-50 hover:text-blue-600
+                       cursor-pointer transition"
+          >
+            {ca.category_name}
           </div>
+        ))
+      ) : (
+        <div className="px-4 py-3 text-sm text-gray-400">
+          No categories found
+        </div>
+      )}
+    </div>
+
+    {/* Add Category */}
+    <div className="border-t bg-gray-50 p-3">
+      <button
+        type="button"
+        onClick={() => setCategoryopen(true)}
+        className="w-full text-sm font-medium text-blue-600
+                   hover:text-blue-700 hover:bg-blue-50
+                   rounded-lg py-2 transition"
+      >
+        + Add Category
+      </button>
+    </div>
+  </div>
+</div>
+
         </div>
       
 

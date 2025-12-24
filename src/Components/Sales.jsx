@@ -1,4 +1,4 @@
-import React, { useState,useEffect  } from "react";
+import React, { useState,useEffect,useContext  } from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import { motion } from "framer-motion";
 
@@ -6,8 +6,20 @@ import { motion } from "framer-motion";
 import webinar from "../assets/images/sales.webp";
 import Offers from "./Offers";
 import { toast ,Toaster } from "sonner";
+import {getinvoice} from "../redux/action";
+import { useDispatch,useSelector } from "react-redux";
+import { Company } from "../Contexts/Company";
 
 const Sales = ({ theme }) => {
+  const { company } = useContext(Company);
+
+
+
+ const dispatch = useDispatch();
+
+ const invoicedata = useSelector((state)=>state.invoice.invoice);
+ console.log("inv",invoicedata);
+
   // Fade animation only
   const fade = {
     hidden: { opacity: 0 },
@@ -25,6 +37,18 @@ const Sales = ({ theme }) => {
   };
   console.log(24,isModelOpen);
 
+
+
+
+
+
+
+  useEffect(() => {
+    
+  
+ dispatch(getinvoice(company.companyName))
+  }, [dispatch])
+  
  
   useEffect(() => {
     const shouldShow = localStorage.getItem("showLoginToast");
@@ -133,6 +157,109 @@ const Sales = ({ theme }) => {
           </motion.button>
         </div>
       </motion.div>
+      <table className="min-w-[900px] w-full text-sm">
+  {/* HEADER */}
+  <thead className="bg-gray-50">
+    <tr className="text-gray-500">
+      <th className="px-4 py-3 text-left font-medium">Customer</th>
+      <th className="px-4 py-3 text-left font-medium">Invoice</th>
+      <th className="px-4 py-3 text-left font-medium">Invoice Date</th>
+      <th className="px-4 py-3 text-left font-medium">Total</th>
+      <th className="px-4 py-3 text-left font-medium">Due</th>
+      <th className="px-4 py-3 text-left font-medium">Status</th>
+      <th className="px-4 py-3"></th>
+    </tr>
+  </thead>
+
+  {/* BODY */}
+  <tbody>
+    {invoicedata?.map((invoice) => (
+      <tr
+        key={invoice.invoice_id}
+        className=" hover:bg-gray-50 transition"
+      >
+        {/* CUSTOMER */}
+        <td className="px-4 py-4">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-full bg-indigo-200 flex items-center justify-center font-semibold text-xs">
+              {invoice.customer_name?.charAt(0)}
+            </div>
+
+            <div>
+              <p className="font-medium text-gray-900">
+                {invoice.customer_name}
+              </p>
+              <p className="text-xs text-gray-500">
+                {invoice.phone}
+              </p>
+            </div>
+          </div>
+        </td>
+
+        {/* INVOICE */}
+        <td className="px-4 py-4 font-medium text-indigo-600">
+          {invoice.invoice_number}
+        </td>
+
+        {/* DATE */}
+        <td className="px-4 py-4 text-gray-700">
+          {new Date(invoice.invoice_date).toLocaleDateString()}
+        </td>
+
+        {/* TOTAL */}
+        <td className="px-4 py-4 font-semibold">
+          ₹ {Number(invoice.grand_total).toFixed(2)}
+        </td>
+
+        {/* DUE */}
+        <td
+          className={`px-4 py-4 font-semibold ${
+            invoice.remaining_amount > 0
+              ? "text-red-600"
+              : "text-green-600"
+          }`}
+        >
+          ₹ {Number(invoice.remaining_amount).toFixed(2)}
+        </td>
+
+        {/* STATUS */}
+        <td className="px-4 py-4">
+          <span
+            className={`px-2 py-1 rounded-full text-xs font-medium
+              ${
+                invoice.status === "paid"
+                  ? "bg-green-100 text-green-700"
+                  : invoice.status === "sent"
+                  ? "bg-yellow-100 text-yellow-700"
+                  : "bg-gray-100 text-gray-700"
+              }
+            `}
+          >
+            {invoice.status}
+          </span>
+        </td>
+
+        {/* ACTIONS */}
+        <td className="px-4 py-4">
+          <div className="flex items-center gap-2">
+            <button className="p-2 rounded-md bg-gray-100 hover:bg-gray-200">
+              <i className="fa-solid fa-eye text-xs" />
+            </button>
+
+            <button className="px-3 py-1 rounded-md bg-blue-100 text-blue-700 text-xs font-medium">
+              View
+            </button>
+
+            <button className="p-2 rounded-md bg-gray-100 hover:bg-gray-200">
+              <i className="fa-solid fa-ellipsis-vertical text-xs" />
+            </button>
+          </div>
+        </td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
 
       {/* Background Overlay */}
       {isModelOpen && (
