@@ -66,9 +66,9 @@ const Invoice = () => {
                   <p>{invoiceData.date}</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Due Date</p>
+                  <p className="text-sm text-gray-500 ">Due Date</p>
                   <h2 className="text-lg font-semibold">{invoiceData.dueDate}</h2>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">Bill To</p>
+                  <p className="text-sm text-gray-500 ">Bill To</p>
                   <p>{invoiceData.client}</p>
                 </div>
               </div>

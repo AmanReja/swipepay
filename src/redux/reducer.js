@@ -1,4 +1,4 @@
-import { ADD_COMPANY ,GET_COMPANY,ADD_CUSTOMER,GET_CUSTOMER,ADD_MERCHANT,GET_MERCHANT,GET_PRODUCTS,ADD_CATEGORY,GET_CATEGORY,ADD_PRODUCT,GET_INVOICE} from "./action";
+import { ADD_COMPANY ,GET_COMPANY,ADD_CUSTOMER,GET_CUSTOMER,ADD_MERCHANT,GET_MERCHANT,GET_PRODUCTS,ADD_CATEGORY,GET_CATEGORY,ADD_PRODUCT,GET_INVOICE, GET_EXPENSE,GET_PAYMENTS,ADD_EXP_CATEGORY,GET_EXP_CATEGORY} from "./action";
 
 
 const initialaddcomState ={
@@ -141,6 +141,72 @@ export const invoiceReducer =(state=initialinvoiceState,action)=>{
      }
        
     } 
+    else{
+        return state
+    }
+
+}
+const initialexpenseState ={
+    expense:[],
+}
+
+export const expenseReducer =(state=initialexpenseState,action)=>{
+
+   if(action.type===GET_EXPENSE){
+     return{
+        ...state,
+        expense:action.payload.data
+
+     }
+       
+    } 
+    else{
+        return state
+    }
+
+}
+const initialpaymentState ={
+    payments:[],
+}
+
+export const paymentReducer =(state=initialpaymentState,action)=>{
+
+   if(action.type===GET_PAYMENTS){
+     return{
+        ...state,
+        payments:action.payload
+
+     }
+       
+    } 
+    else{
+        return state
+    }
+
+}
+const initialexpcatState ={
+    expcategory:[],
+}
+
+export const expcaReducer =(state=initialexpcatState,action)=>{
+
+   if(action.type===GET_EXP_CATEGORY){
+     return{
+        ...state,
+        expcategory:action.payload
+
+
+     }
+       
+    } else if(ADD_EXP_CATEGORY){
+
+        return{
+            ...state,
+            expcategory:[action.payload,...state.expcategory
+            ]
+        }
+
+    }
     else{
         return state
     }

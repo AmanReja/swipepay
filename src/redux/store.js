@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { addcompanyReducer,customerReducer,merchantReducer,productReducer ,categoryReducer,invoiceReducer} from "./reducer";
+import { addcompanyReducer,customerReducer,merchantReducer,productReducer ,categoryReducer,invoiceReducer,expenseReducer,paymentReducer,expcaReducer} from "./reducer";
 
 const store = configureStore({
   reducer: {
@@ -9,7 +9,10 @@ const store = configureStore({
     merchant:merchantReducer,
     products:productReducer,
     category:categoryReducer,
-    invoice:invoiceReducer
+    invoice:invoiceReducer,
+    expense:expenseReducer,
+    payments:paymentReducer,
+    expcategory:expcaReducer
     
    
   },

@@ -47,6 +47,7 @@ import { CompanyProvider } from "./Contexts/Company";
 import Payments from "./Components/Payments";
 import Packinglists from "./Components/Packinglists";
 import Vendor from "./Components/Vendor";
+import Timeline from "./Components/Timeline";
 
 
 
@@ -100,6 +101,7 @@ const router = createBrowserRouter(
           <Route path="payments" element={<Payments />} />
           <Route path="packinglists" element={<Packinglists />} />
           <Route path="vendor" element={<Vendor />} />
+          <Route path="timeline" element={<Timeline />} />
        
      
         

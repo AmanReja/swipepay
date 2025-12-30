@@ -5,19 +5,20 @@ import Offers from "./Offers";
 import webinar from "../assets/images/webinar.svg";
 import { toast, Toaster } from "sonner";
 import {ChevronDown,Plus} from "lucide-react";
-import {get_customer,addcustomer} from "../redux/action";
+import {get_customer,addcustomer,getpayments} from "../redux/action";
 import { useDispatch,useSelector } from "react-redux";
 import { Company } from "../Contexts/Company";
 
 
-const Packinglists = ({ theme }) => {
+const Timeline = ({ theme }) => {
 
 
 
  
   const dispatch = useDispatch();
-  const customerdata = useSelector((state)=>state.customers.customers?.customers);
-  console.log(16,customerdata);
+//   const customerdata = useSelector((state)=>state.customers.customers?.customers);
+  const paymentsdata = useSelector((state)=>state.payments.payments);
+  console.log(21,paymentsdata);
 
   
   const { company } = useContext(Company);
@@ -111,6 +112,9 @@ const [selectedTcs, setSelectedTcs] = useState("");
     if (company?.companyName) {
       dispatch(get_customer(company.companyName));
     }
+   dispatch(getpayments(company.companyName))
+
+
   }, [company, dispatch]);
 
   const fade = {
@@ -127,7 +131,7 @@ const [selectedTcs, setSelectedTcs] = useState("");
   const [isModelOpen, setIsModelOpen] = useState(false);
   const handleModel = () => setIsModelOpen((v) => !v);
 
-  const tabs = ["All Customers", "Groups", "Deleted"];
+  const tabs = ["Success", "Cancelled"];
   
   const [activeIndex, setActiveIndex] = useState(0);
   const [indicatorStyle, setIndicatorStyle] = useState({});
@@ -247,10 +251,8 @@ const [selectedTcs, setSelectedTcs] = useState("");
             {/* Header */}
             <motion.div variants={fade} className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-[5px]">
-                <h1 className="text-[26px] font-bold">Customers</h1>
-                <div className="flex bg-blue-500 h-[22px] rounded-full w-[22px] justify-center items-center">
-                  <i className="fa-solid text-white text-[12px] fa-user"></i>
-                </div>
+                <h1 className="text-[24px] font-bold">Payments Timeline</h1>
+              
               </div>
 
               
@@ -262,7 +264,7 @@ const [selectedTcs, setSelectedTcs] = useState("");
             key={i}
             ref={(el) => (tabRefs.current[i] = el)}
             className={`cursor-pointer pb-2 ${
-              activeIndex === i ? "text-blue-400" : ""
+              activeIndex === i ? "text-blue-600" : ""
             }`}
             onClick={() => setActiveIndex(i)}
           >
@@ -272,7 +274,7 @@ const [selectedTcs, setSelectedTcs] = useState("");
 
         {/* Sliding Indicator */}
         <div
-          className="absolute bottom-0 h-[2px] bg-blue-400 transition-all duration-300"
+          className="absolute bottom-1 h-[2px] bg-blue-600 transition-all duration-300"
           style={indicatorStyle}
         ></div>
       </ul>
@@ -306,24 +308,31 @@ const [selectedTcs, setSelectedTcs] = useState("");
       >
         <table className="min-w-full text-sm">
           {/* HEADER */}
-          <thead className="sticky top-0 z-10 bg-gray-50 border-b">
-            <tr className="text-left text-gray-500 font-medium">
-              <th className="px-5 py-3">#</th>
-              <th className="px-5 py-3">Customer</th>
-              <th className="px-5 py-3">Phone</th>
-              <th className="px-5 py-3">Email</th>
-              <th className="px-5 py-3">Company</th>
-              <th className="px-5 py-3 text-right">Actions</th>
+          <thead className="sticky top-0 z-10 bg-gray-50 ">
+            <tr className="text-left text-gray-500 font-medium text-[12px]">
+              <th className="px-5 py-3">Amount
+</th>
+              <th className="px-5 py-3">	
+Mode</th>
+              <th className="px-5 py-3">	
+Party Name</th>
+              <th className="px-5 py-3">	Date / Created Time</th>
+              <th className="px-5 py-3">Bank Details
+</th>
+              <th className="px-5 py-3 text-right">Created By
+</th>
+              <th className="px-5 py-3 text-right">Status
+</th>
             </tr>
           </thead>
 
           {/* BODY */}
-          <tbody className="divide-y">
-            {customerdata?.length > 0 ? (
-              customerdata.map((cust, index) => (
+          <tbody className="">
+            {paymentsdata?.length > 0 ? (
+              paymentsdata.map((cust, index) => (
                 <tr key={cust.id} className="group hover:bg-gray-50 transition">
                   {/* Index */}
-                  <td className="px-5 py-4 text-gray-400">{index + 1}</td>
+                  {/* <td className="px-5 py-4 text-gray-400">{index + 1}</td> */}
 
                   {/* Name + Avatar */}
                   <td className="px-5 py-4">
@@ -367,7 +376,7 @@ const [selectedTcs, setSelectedTcs] = useState("");
             ) : (
               <tr>
                 <td colSpan="6" className="px-6 py-10 text-center text-gray-500">
-                  No customers found
+                  No Data
                 </td>
               </tr>
             )}
@@ -839,4 +848,4 @@ const [selectedTcs, setSelectedTcs] = useState("");
   );
 };
 
-export default Packinglists;
+export default Timeline;

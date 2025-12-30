@@ -165,10 +165,10 @@ const Sidebar = () => {
             onClick={() => toggle("payments")}
             theme={theme}
           >
-            <SubItem to="/dashboard/sales">Invoices</SubItem>
-            <SubItem to="/dashboard/creditnotes">Credit Notes</SubItem>
-            <SubItem to="/dashboard/einvoices">E-invoices</SubItem>
-            <SubItem to="/dashboard/Subscriptions">Subscriptions</SubItem>
+            <SubItem to="/dashboard/timeline">Timeline</SubItem>
+            <SubItem to="/dashboard/creditnotes">Payment Links</SubItem>
+            <SubItem to="/dashboard/einvoices">Journals</SubItem>
+            <SubItem to="/dashboard/Subscriptions">Bank Reconcilation</SubItem>
           </MenuSection>
 
         </nav>

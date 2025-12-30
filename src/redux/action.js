@@ -35,6 +35,18 @@ export const GET_INVOICE = "GET_INVOICE";
 
 
 
+export const GET_EXPENSE = "GET_EXPENSE";
+export const ADD_EXP_CATEGORY = "ADD_EXP_CATEGORY";
+export const GET_EXP_CATEGORY = "GET_EXP_CATEGORY";
+
+
+
+export const GET_PAYMENTS = "GET_PAYMENTS";
+
+
+
+
+
 
 
 
@@ -504,4 +516,131 @@ export const getinvoice = (company_name) => async (dispatch) => {
 
   console.log(232,data);
   dispatch({ type: "GET_INVOICE", payload: data });
+};
+export const getexpense = (company_name) => async (dispatch) => {
+  console.log(205,company_name);
+ 
+  const token = localStorage.getItem("token") || {};
+  const res = await fetch(`${baseUrl}/v1/user/expenses/${company_name}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+     
+      Authorization: `Bearer ${token}`,
+    },
+  
+  });
+
+  if (res.status === 401) {
+    localStorage.removeItem("token");
+    window.location.href = "/";
+    return;
+  }
+
+  // if (res.status===200) {
+  //   // alert("addcompany successfull")
+    
+  // }
+   
+
+  const data = await res.json();
+
+
+  // console.log(541,data);
+  dispatch({ type: "GET_EXPENSE", payload: data });
+};
+export const getpayments = (company_name) => async (dispatch) => {
+  console.log(205,company_name);
+ 
+  const token = localStorage.getItem("token") || {};
+  const res = await fetch(`${baseUrl}/v1/user/payments/timeline/${company_name}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+     
+      Authorization: `Bearer ${token}`,
+    },
+  
+  });
+
+  if (res.status === 401) {
+    localStorage.removeItem("token");
+    window.location.href = "/";
+    return;
+  }
+
+  // if (res.status===200) {
+  //   // alert("addcompany successfull")
+    
+  // }
+   
+
+  const data = await res.json();
+
+
+  console.log(541,data);
+  dispatch({ type: "GET_PAYMENTS", payload: data });
+};
+
+
+
+export const addexpcategory = (category,company) => async (dispatch) => {
+  console.log(244,category);
+  const token = localStorage.getItem("token") || {};
+  const res = await fetch(`${baseUrl}/v1/user/expense-category/${company}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body:JSON.stringify(category)
+  });
+
+  if (res.status === 401) {
+    localStorage.removeItem("token");
+    window.location.href = "/";
+    return;
+  }
+
+  if (res.status===201) {
+    alert("add expcategory successfull")
+    // dispatch(getcategory(company))
+    
+  }
+   
+
+  const data = await res.json();
+  dispatch({ type: "ADD_EXP_CATEGORY", payload: data });
+};
+
+export const getexpcategory = (company_name) => async (dispatch) => {
+  console.log(205,company_name);
+ 
+  const token = localStorage.getItem("token") || {};
+  const res = await fetch(`${baseUrl}/v1/user/expense-category/${company_name}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+     
+      Authorization: `Bearer ${token}`,
+    },
+  
+  });
+
+  if (res.status === 401) {
+    localStorage.removeItem("token");
+    window.location.href = "/";
+    return;
+  }
+
+  // if (res.status===200) {
+  //   // alert("addcompany successfull")
+    
+  // }
+   
+
+  const data = await res.json();
+
+  console.log(232,data);
+  dispatch({ type: "GET_EXP_CATEGORY", payload: data });
 };
