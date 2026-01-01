@@ -5,7 +5,7 @@ import Offers from "./Offers";
 import webinar from "../assets/images/webinar.svg";
 import { toast, Toaster } from "sonner";
 import { ChevronDown, Plus } from "lucide-react";
-import { get_customer, addcustomer, getexpense,addexpcategory, getexpcategory } from "../redux/action";
+import { addexpense, addbank, getexpense, getexpcategory,getbank } from "../redux/action";
 import { useDispatch, useSelector } from "react-redux";
 import { Company } from "../Contexts/Company";
 import { DatePicker } from 'rsuite';
@@ -14,10 +14,39 @@ import { DatePicker } from 'rsuite';
 const Expenses = ({ theme }) => {
 
   const [ispaid, setIspaied] = useState(false);
+  const [bankopen, setBankopen] = useState(false);
+  const [bankbtn, setBankbtn] = useState(false);
+  const [openbankdr, setOpenbankdr] = useState(false);
+  const [selectedbank, setSelectedbank] = useState(null);
+
 
   const [ opencategory,setOpenCategory] = useState(false);
   const[selectedcategory,setSelectedcategory] = useState(null)
 
+
+  const [bankForm, setBankForm] = useState({
+    account_holder_name: "",
+    account_no: "",
+    confirm_account_no: "",
+    ifsc_code: "",
+    bank_name: "",
+    branch_name: "",
+    upi_id: "",
+    upi_number: "",
+    opening_balance: "",
+    notes: "",
+    is_default: false,
+  });
+  
+  const handleBankChange = (e) => {
+    const { name, value } = e.target;
+    setBankForm({ ...bankForm, [name]: value });
+  };
+  
+  const handleToggle = () => {
+    setBankForm({ ...bankForm, is_default: !bankForm.is_default });
+  };
+  
 
 
 
@@ -32,8 +61,10 @@ const Expenses = ({ theme }) => {
   const dispatch = useDispatch();
   const customerdata = useSelector((state) => state.customers.customers?.customers);
   console.log(16, customerdata);
-  const expensedata = useSelector((state) => state.expense.expense);
-  console.log(16, expensedata);
+  const expensedata = useSelector((state) => state.expense.expense?.data);
+  console.log(65, expensedata);
+  const banksdata = useSelector((state) => state.bank.bank?.data);
+  console.log(67, banksdata);
 
 
   const { company } = useContext(Company);
@@ -42,6 +73,19 @@ const Expenses = ({ theme }) => {
   const [selectedTds, setSelectedTds] = useState("");
 
 
+
+  const handelbanksubmit =()=>{
+    console.log(51,bankForm);
+    dispatch(addbank(bankForm,company.companyName))
+  }
+
+
+  useEffect(() => {
+    dispatch(getbank(company.companyName))
+  
+   
+  }, [dispatch])
+  
 
 
   const [istcsactive, setIstcsactive] = useState(false)
@@ -122,10 +166,10 @@ const Expenses = ({ theme }) => {
   ];
   const paymentTypes = [
     "UPI",
-    "CASH",
-    "CARD",
-    "NET BANKING",
-    "CHEQUE",
+    "Cash",
+    "Card",
+    "Net Banking",
+    "Cheque",
     "EMI",
   ];
 
@@ -152,6 +196,9 @@ const Expenses = ({ theme }) => {
       dispatch(getexpcategory(company.companyName))
     }
   }, [company, dispatch]);
+
+
+  console.log(157,company);
 
 
 
@@ -198,13 +245,13 @@ const Expenses = ({ theme }) => {
     notes:"",
 
 
-    category_id:selectedcategory?.id,
+    category_id:"",
     expense_amount:"",
 
 
     vendor_id:"",
-    supplier_invoice_date:"",
-    supplier_invoice_no:"",
+    supplier_invoice_date:null,
+    supplier_invoice_no:null,
     items : [],
 
     rcm_enabled :false,
@@ -213,18 +260,24 @@ const Expenses = ({ theme }) => {
     is_paid : false,         
 
 
-    payment : {}
+    payment : {
+      bank_id:"1",
+      payment_type:"",
+      payment_notes:"",
+      payment_date:""
+    }
 
 
 
 
 
   });
+  
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
-  };
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setForm({ ...form, [name]: value });
+  // };
 
 
   useEffect(() => {
@@ -248,37 +301,17 @@ const Expenses = ({ theme }) => {
 
   const handelsubmit = (e) => {
     e.preventDefault()
-    const payload = {
-
-
-      customer_name: form.customer_name,
-      phone: form.phone,
-      email: form.email,
-      gst: form.gst,
-
-      companyName: form.company,
-
-
-      opening_balance: form.opening_balance,
-
-
-
-      balance_type: form.balance_type,
-
-      rcm_enabled: form.rcm_enabled ? 1 : 0,
-
-      tds: istdsactive,                 // "0" | "1"
-      tds_data: selectedTds,
-
-      tcs: istcsactive,                 // "0" | "1"
-      tcs_data: selectedTcs
-    };
+   console.log(251,form);
+   console.log(selectedcategory);
+   console.log(paymentType);
 
 
 
 
 
-    dispatch(addcustomer(payload, company.companyName))
+
+
+    dispatch(addexpense(form, company.companyName))
 
   }
 
@@ -494,6 +527,221 @@ const Expenses = ({ theme }) => {
             </div>
 
 
+
+            { bankopen && (
+  <div
+    onClick={""}
+    className="fixed inset-0 bg-black/70 z-80"
+  />
+)}
+
+{/* Popup Container */}
+<div
+  className={`fixed top-0 right-0 h-full w-[550px] z-80 shadow-2xl
+    transition-all duration-300 flex flex-col
+    ${bankopen ? "translate-x-0" : "translate-x-full"}
+    ${theme === "dark"
+      ? "bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100"
+      : "bg-gray-50 text-gray-900"}
+  `}
+>
+  {/* Header */}
+  <div
+    className={`flex items-center justify-between px-6 py-4 border-b flex-none
+      ${theme === "dark" ? "border-gray-700 bg-gray-900" : "border-gray-200 bg-white"}
+    `}
+  >
+    <h2 className="text-lg font-semibold tracking-wide">Add Bank</h2>
+    <button
+      onClick={() => setBankopen(false)}
+      className="w-8 h-8 flex items-center justify-center rounded-full
+                 hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+    >
+      ✕
+    </button>
+    
+  </div>
+
+  {/* Body */}
+  <div className="flex-1 overflow-y-auto p-6">
+    <form   className="space-y-6">
+
+    {/* Account Holder */}
+<div>
+  <label className="text-sm font-medium">Account Holder Name</label>
+  <input
+    name="account_holder_name"
+    value={bankForm.account_holder_name}
+    onChange={handleBankChange}
+    className="w-full mt-1 p-2 border rounded-md"
+  />
+</div>
+
+{/* Account No */}
+<div>
+  <label className="text-sm font-medium text-red-600">* Account No</label>
+  <input
+    name="account_no"
+    value={bankForm.account_no}
+    onChange={handleBankChange}
+    className="w-full mt-1 p-2 border rounded-md"
+  />
+</div>
+
+{/* Confirm Account No */}
+<div>
+  <label className="text-sm font-medium text-red-600">* Confirm Bank Account No</label>
+  <input
+    name="confirm_account_no"
+    value={bankForm.confirm_account_no}
+    onChange={handleBankChange}
+    className="w-full mt-1 p-2 border rounded-md"
+  />
+</div>
+
+{/* IFSC */}
+<div>
+  <label className="text-sm font-medium text-red-600">* IFSC Code</label>
+  <div className="flex gap-2">
+    <input
+      name="ifsc_code"
+      value={bankForm.ifsc_code}
+      onChange={handleBankChange}
+      className="flex-1 p-2 border rounded-md"
+    />
+    <button
+      type="button"
+      className="px-3 py-2 border rounded-md text-sm hover:bg-gray-100"
+    >
+      Fetch Bank Details
+    </button>
+  </div>
+</div>
+
+{/* Bank Name */}
+<div>
+  <label className="text-sm font-medium text-red-600">* Bank Name</label>
+  <input
+    name="bank_name"
+    value={bankForm.bank_name}
+    onChange={handleBankChange}
+    className="w-full mt-1 p-2 border rounded-md"
+  />
+</div>
+
+{/* Branch */}
+<div>
+  <label className="text-sm font-medium text-red-600">* Branch Name</label>
+  <input
+    name="branch_name"
+    value={bankForm.branch_name}
+    onChange={handleBankChange}
+    className="w-full mt-1 p-2 border rounded-md"
+  />
+</div>
+
+{/* UPI ID */}
+<div>
+  <label className="text-sm font-medium">
+    UPI (Optional)
+  </label>
+  <div className="flex gap-2">
+    <input
+      name="upi_id"
+      value={bankForm.upi_id}
+      onChange={handleBankChange}
+      placeholder="username@bank"
+      className="flex-1 p-2 border rounded-md"
+    />
+    <button
+      type="button"
+      className="px-3 py-2 border rounded-md text-sm hover:bg-gray-100"
+    >
+      Verify UPI ID
+    </button>
+  </div>
+</div>
+
+{/* UPI Number */}
+<div>
+  <label className="text-sm font-medium">
+    UPI Number (Optional)
+  </label>
+  <input
+    name="upi_number"
+    value={bankForm.upi_number}
+    onChange={handleBankChange}
+    placeholder="GPay / PhonePe"
+    className="w-full mt-1 p-2 border rounded-md"
+  />
+</div>
+
+{/* Opening Balance */}
+<div>
+  <label className="text-sm font-medium">
+    Opening Balance (Optional)
+  </label>
+  <input
+    name="opening_balance"
+    value={bankForm.opening_balance}
+    onChange={handleBankChange}
+    className="w-full mt-1 p-2 border rounded-md"
+  />
+</div>
+
+{/* Notes */}
+<div>
+  <label className="text-sm font-medium">Notes</label>
+  <textarea
+    name="notes"
+    value={bankForm.notes}
+    onChange={handleBankChange}
+    rows={3}
+    placeholder="Beneficiary name, SWIFT code etc."
+    className="w-full mt-1 p-2 border rounded-md"
+  />
+</div>
+
+{/* Default Toggle */}
+<div className="flex items-center gap-3">
+  <input
+    type="checkbox"
+    checked={bankForm.is_default}
+    onChange={handleToggle}
+    className="w-4 h-4"
+  />
+  <span className="text-sm">Set as default bank</span>
+</div>
+
+
+    </form>
+  </div>
+
+  {/* Footer */}
+  <div
+    className={`flex justify-end gap-3 px-6 py-4 border-t flex-none
+      ${theme === "dark" ? "border-gray-700 bg-gray-900" : "border-gray-200 bg-white"}
+    `}
+  >
+    <button
+      onClick={() => setBankopen(false)}
+      className="px-5 py-2 rounded-lg border border-gray-300
+                 hover:bg-gray-100 dark:hover:bg-gray-700 transition text-sm"
+    >
+      Cancel
+    </button>
+
+    <button onClick={handelbanksubmit}
+      className="px-5 py-2 rounded-lg bg-blue-600 text-white
+                 hover:bg-blue-700 shadow-md transition text-sm"
+    >
+      Save Bank
+    </button>
+  </div>
+</div>
+
+
+
             {/* Background Overlay */}
             {isModelOpen &&
 
@@ -515,7 +763,7 @@ const Expenses = ({ theme }) => {
 
               {/* Body */}
               <div className="flex-1 overflow-y-auto p-5 text-sm">
-                <form className="max-w-3xl mx-auto bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-lg p-8 space-y-8">
+                <form  className="max-w-3xl mx-auto bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-lg p-8 space-y-8">
 
                   {/* BASIC DETAILS */}
                   <div className="space-y-4">
@@ -580,6 +828,7 @@ const Expenses = ({ theme }) => {
           onClick={() => {
             setSelectedcategory(ca),
             setOpenCategory(false);
+            setForm({...form,category_id:ca.id})
           }}
           className="px-4 py-2 text-sm cursor-pointer 
             hover:bg-blue-50 transition"
@@ -735,20 +984,20 @@ const Expenses = ({ theme }) => {
                       <input
                         id="paid"
                         type="checkbox"
-                        checked={ispaid===true}
-                        onChange={(e) => {e.target.checked?setIspaied(true):setIspaied(false)}}
+                        checked={form.is_paid===true}
+                        onChange={(e) => {e.target.checked?setForm({...form,is_paid:true}):setForm({...form,is_paid:false})}}
                         className="sr-only peer"
                       />
 
                       {/* Track */}
                       <div
-                        className={`w-11 h-6 rounded-full transition ${ispaid===true ? "bg-blue-600" : "bg-gray-300"
+                        className={`w-11 h-6 rounded-full transition ${form.is_paid===true ? "bg-blue-600" : "bg-gray-300"
                           }`}
                       />
 
                       {/* Thumb */}
                       <div
-                        className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${ispaid===true  ? "translate-x-5" : ""
+                        className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${form.is_paid===true  ? "translate-x-5" : ""
                           }`}
                       />
                     </label>
@@ -757,7 +1006,7 @@ const Expenses = ({ theme }) => {
 
 
                   {/* <h3>payments</h3> */}
-                {ispaid&&
+                {form.is_paid&&
                   <div className="relative w-full flex flex-col justify-between h-[300px]">
                    
 
@@ -765,29 +1014,129 @@ const Expenses = ({ theme }) => {
 
                   <h3 className="font-semibold mb-2">Payment Type</h3>
 
-<div className="flex flex-wrap items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
   {paymentTypes.map((type) => (
-    <button
-      key={type}
-      type="button"
-      onClick={() => setPaymentType(type)}
-      className={`px-4 py-2 rounded-lg text-sm font-medium border transition
-        ${
-          paymentType === type
-            ? "bg-blue-600 text-white border-blue-600"
-            : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
-        }`}
-    >
-      {type}
-    </button>
+    <div key={type} className="relative group">
+      
+      {/* Tooltip */}
+
+      {Array.isArray(banksdata)&&banksdata.length<0? <div
+        className="absolute top-[-70px] left-1/2 -translate-x-1/2
+        bg-black text-white text-xs px-3 py-2 rounded
+        opacity-0 group-hover:opacity-100
+        transition whitespace-nowrap z-50"
+      >
+        <p className="mb-2">Add bank details to enable</p>
+
+        <button
+          type="button"
+          onClick={() => setBankopen(true)}
+          className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-xs"
+        >
+          Add Bank
+        </button>
+      </div>:""}
+     
+
+      {/* Payment Button */}
+      <button
+        type="button"
+        onClick={() =>
+          setForm({
+            ...form,
+            payment: {
+              ...form.payment,
+              payment_type: type,
+            },
+          })
+        }
+        className={`px-4 py-2 rounded-lg text-sm font-medium border transition ${form.payment.payment_type===type?"bg-blue-600 text-white border-blue-600":"bg-white text-gray-700 border-gray-300 hover:bg-gray-100"}
+            
+          `}
+      >
+        {type}
+      </button>
+    </div>
   ))}
 </div>
 
-<h3>Payment Date</h3>
 
-<input type="date" className="p-2 border border-gray-400 rounded-[8px]" />
+
+<h3>Payment Date</h3>
+<input
+  type="date"
+  value={form.payment.payment_date}
+  onChange={(e) =>
+    setForm({
+      ...form,
+      payment: {
+        ...form.payment,
+        payment_date: e.target.value,
+      },
+    })
+  }
+  className="p-2 border border-gray-400 rounded-[8px]"
+/>
+
 <h3>Payment Notes</h3>
-<textarea placeholder="Payment Notes" className="border p-2 w-full rounded-[5px] border-gray-400 outline-none" name="" id="" cols="" rows=""></textarea>
+
+<textarea
+  value={form.payment.payment_notes}
+  onChange={(e) =>
+    setForm({
+      ...form,
+      payment: {
+        ...form.payment,
+        payment_notes: e.target.value,
+      },
+    })
+  }
+  placeholder="Payment Notes"
+  className="border p-2 w-full rounded-[5px] border-gray-400 outline-none"
+  rows={4}
+/>
+
+<div className="relative w-full">
+  <label htmlFor="bankid">Select Bank</label>
+  {/* Input */}
+  <input id="bankid"
+    type="text"
+    readOnly
+    value={selectedbank?.account_holder_name || ""}
+    onClick={() => setOpenbankdr(true)}
+    placeholder="Select Bank"
+    className="w-full p-2 border rounded-md cursor-pointer"
+  />
+
+  {/* Dropdown */}
+  {openbankdr && (
+    <div className="absolute z-50 mt-1 w-full bg-white rounded-lg shadow-lg border">
+      <div className="max-h-48 overflow-y-auto">
+        {banksdata?.map((ba) => (
+          <div
+            key={ba.id}
+            onClick={() => {
+              setSelectedbank(ba);
+              setForm({
+                ...form,
+                payment: {
+                  ...form.payment,
+                  bank_id: ba.id,
+                },
+              });
+              setOpenbankdr(false);
+            }}
+            className="px-4 py-2 text-sm cursor-pointer hover:bg-blue-50 transition"
+          >
+            <p className="font-medium">{ba.account_holder_name}</p>
+            <p className="text-xs text-gray-500">{ba.bank_name}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  )}
+</div>
+
 
                   </div>}
                 
@@ -807,7 +1156,9 @@ const Expenses = ({ theme }) => {
                 <button onClick={handleModel} className="px-4 py-2 bg-gray-200 rounded-md">
                   Close
                 </button>
-                <button className="px-4 py-2 bg-blue-600 text-white rounded-md">Add Expense</button>
+                <button onClick={(e)=>{
+                  handelsubmit(e)
+                }} className="px-4 py-2 bg-blue-600 text-white rounded-md">Add Expense</button>
               </div>
             </div>
 
