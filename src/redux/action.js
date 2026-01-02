@@ -52,6 +52,12 @@ export const GET_BANK = "GET_BANK";
 
 
 
+export const GET_WAREHOUSE = "GET_WAREHOUSE";
+export const UPDATE_WAREHOUSE_STOCK = "UPDATE_WAREHOUSE_STOCK";
+export const DELETE_WAREHOUSE_STOCK = "DELETE_WAREHOUSE_STOCK";
+
+
+
 
 
 
@@ -336,7 +342,7 @@ export const getmerchant = (company_name) => async (dispatch) => {
 
 
 export const addproduct = (product,company) => async (dispatch) => {
-  console.log(244,product);
+  console.log(345,product);
   const token = localStorage.getItem("token") || {};
   const res = await fetch(`${baseUrl}/v1/user/product-service/${company}`, {
     method: "POST",
@@ -753,3 +759,105 @@ export const addbank = (bankdetails,company) => async (dispatch) => {
   const data = await res.json();
   dispatch({ type: "ADD_BANK", payload: data });
 };
+
+
+
+export const getwarehouse = (company_name) => async (dispatch) => {
+  console.log(205,company_name);
+ 
+  const token = localStorage.getItem("token") || {};
+  const res = await fetch(`${baseUrl}/v1/user/warehouse/${company_name}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+     
+      Authorization: `Bearer ${token}`,
+    },
+  
+  });
+
+  if (res.status === 401) {
+    localStorage.removeItem("token");
+    window.location.href = "/";
+    return;
+  }
+
+  // if (res.status===200) {
+  //   // alert("addcompany successfull")
+    
+  // }
+   
+
+  const data = await res.json();
+
+  console.log(232,data);
+  dispatch({ type: "GET_WAREHOUSE", payload: data });
+};
+export const updatewarehousestock = (company_name,productName,stockdata) => async (dispatch) => {
+  console.log(205,company_name);
+ 
+  const token = localStorage.getItem("token") || {};
+  const res = await fetch(`${baseUrl}/v1/user/inventory/stock-add/${company_name}/${productName}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+     
+      Authorization: `Bearer ${token}`,
+    },
+    body:JSON.stringify(stockdata)
+  
+  });
+
+  if (res.status === 401) {
+    localStorage.removeItem("token");
+    window.location.href = "/";
+    return;
+  }
+
+  if (res.status===200) {
+    alert("add-stock successfull")
+    dispatch(getwarehouse(company_name))
+    
+  }
+   
+
+  const data = await res.json();
+
+  console.log(232,data);
+  dispatch({ type: "UPDATE_WAREHOUSE_STOCK", payload: data });
+};
+export const deletewarehousestock = (company_name,productName) => async (dispatch) => {
+  console.log(205,company_name);
+ 
+  const token = localStorage.getItem("token") || {};
+  const res = await fetch(`${baseUrl}/v1/user/inventory/stock-add/${company_name}/${productName}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+     
+      Authorization: `Bearer ${token}`,
+    },
+   
+  
+  });
+
+  if (res.status === 401) {
+    localStorage.removeItem("token");
+    window.location.href = "/";
+    return;
+  }
+
+  if (res.status===200) {
+    alert("remove-stock succesfull")
+    dispatch(getwarehouse(company_name))
+    
+  }
+   
+
+  const data = await res.json();
+
+  console.log(232,data);
+  dispatch({ type: "DELETE_WAREHOUSE_STOCK", payload: data });
+};
+
+

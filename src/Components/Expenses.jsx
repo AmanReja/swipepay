@@ -2,13 +2,13 @@ import React, { useState, useEffect, useRef, useContext } from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import Offers from "./Offers";
-import webinar from "../assets/images/webinar.svg";
+import webinar from "../assets/images/sales.webp";
 import { toast, Toaster } from "sonner";
 import { ChevronDown, Plus } from "lucide-react";
 import { addexpense, addbank, getexpense, getexpcategory,getbank } from "../redux/action";
 import { useDispatch, useSelector } from "react-redux";
 import { Company } from "../Contexts/Company";
-import { DatePicker } from 'rsuite';
+
 
 
 const Expenses = ({ theme }) => {
@@ -482,9 +482,9 @@ const Expenses = ({ theme }) => {
                               {`Exp - ${exp.with_tax} `}
                             </td>
                             <td className="px-4 py-4">
-                              {exp.created_at
-                              }
-                            </td>
+  {new Date(exp.created_at).toLocaleDateString("en-IN")}
+</td>
+
                             <td className="px-4 py-4">
                               {exp.vendor_name
                               }
@@ -1173,11 +1173,11 @@ const Expenses = ({ theme }) => {
               </motion.div>
 
               <motion.div variants={fade} className="w-full lg:w-[60%]">
-                <h2 className="text-3xl font-semibold leading-tight mb-4">Manage your customers efficiently.</h2>
+                <h2 className="text-3xl font-semibold leading-tight mb-4">Manage your Expanses efficiently.</h2>
 
                 <motion.ul variants={stagger} className="flex flex-col gap-3 w-full text-[15px]">
                   {[
-                    "Add and manage customer details effortlessly.",
+                    "Add and manage Expanse details effortlessly.",
                     "Track outstanding balances and transaction history.",
                     "Send invoices, reminders, and updates instantly.",
                   ].map((text, i) => (
@@ -1192,7 +1192,7 @@ const Expenses = ({ theme }) => {
                   variants={fade}
                   className="mt-6 h-[40px] cursor-pointer w-full flex justify-center items-center rounded-[8px] px-6 py-3 bg-blue-600 text-white shadow hover:bg-blue-700 transition"
                 >
-                  + Add New Customer
+                  + Add New Expanse
                 </motion.button>
               </motion.div>
             </motion.div>

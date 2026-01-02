@@ -18,7 +18,10 @@ const Productandservices = ({ theme }) => {
 
 
 
-
+  const [qty, setQty] = useState(null);
+  const [purchasePrice, setPurchasePrice] = useState(null);
+  const [stockValue, setStockValue] = useState(null);
+  
 
 
  
@@ -40,7 +43,7 @@ const Productandservices = ({ theme }) => {
    dispatch(getproducts(company.companyName))
    
      
-   }, [dispatch])
+   }, [dispatch,company])
    
 
 
@@ -122,6 +125,11 @@ const generate10DigitNumber = () => {
     barcode:"",
     category_id:"",
     image_url:"",
+    opening_quantity:"",
+    opening_purchase_price:"",
+    opening_stock_value:"",
+
+
    
 
     discount_type:"",
@@ -210,7 +218,9 @@ const generate10DigitNumber = () => {
       category_id: form.category_id,
       image_url: form.image_url,
     
-     
+      opening_quantity:form.opening_quantity,
+      opening_purchase_price:form.opening_purchase_price,
+      opening_stock_value:form.opening_stock_value,
     
       discount_type: form.discount_type || "",
       discount_value: form.discount_value || "",
@@ -296,7 +306,7 @@ const generate10DigitNumber = () => {
             Actions <ChevronDown/>
           </div>
           <div  onClick={handleModel} className="px-4 h-[30px] cursor-pointer flex items-center text-white bg-blue-600 rounded-md text-sm font-medium">
-          <Plus size={20} /> New Customer
+          <Plus size={20} /> New Products
           </div>
         </div>
         <div className="mt-6 overflow-x-auto">
@@ -1021,6 +1031,78 @@ const generate10DigitNumber = () => {
           />
         </div>
       </div>
+      <div className="flex flex-col gap-[10px]">
+        <div>
+          <label htmlFor="">
+          Opening Stock OPTIONAL
+          </label>
+
+
+        </div>
+        <div className="bg-white p-6 rounded-lg w-full">
+  <div className="grid grid-cols-2 gap-6">
+    {/* Opening Quantity */}
+    <div className="flex flex-col gap-1">
+      <label className="text-sm font-medium text-gray-700">
+        Opening Quantity
+      </label>
+
+      <input
+        type="number"
+        value={form.opening_quantity}
+        placeholder="0"
+        onChange={(e) => {setForm({...form,opening_quantity:e.target.value})}}
+        className={`p-2 rounded border outline-none ${
+          form.opening_quantity < 0 ? "border-red-500" : "border-gray-300"
+        }`}
+      />
+
+      {form.opening_quantity < 0 && (
+        <p className="text-xs text-red-500">
+          Quantity cannot be negative
+        </p>
+      )}
+
+      <p className="text-xs text-gray-400">
+        *Quantity of the product available in your existing inventory
+      </p>
+    </div>
+
+    {/* Purchase Price */}
+    <div className="flex flex-col gap-1">
+      <label className="text-sm font-medium text-gray-700">
+        Opening Purchase Price (with tax)
+      </label>
+
+      <input
+        type="number"
+        placeholder="0"
+        value={form.opening_purchase_price}
+        onChange={(e) => {setForm({...form,opening_purchase_price:e.target.value})}}
+        className="p-2 rounded border border-gray-300 outline-none"
+      />
+    </div>
+  </div>
+
+  {/* Stock Value */}
+  <div className="mt-6">
+    <label className="text-sm font-medium text-gray-700">
+      Opening Stock Value (with tax)
+    </label>
+
+    <input
+      type="number"
+      value={form.opening_stock_value}
+   placeholder="0"
+   onChange={(e) => {setForm({...form,opening_stock_value:e.target.value})}}
+      
+      className="mt-1 p-2 w-full rounded border border-gray-300 bg-gray-100 "
+    />
+  </div>
+</div>
+
+      
+      </div>
 
     </form>
   </div>
@@ -1077,7 +1159,7 @@ const generate10DigitNumber = () => {
                   variants={fade}
                   className="mt-6 h-[40px] cursor-pointer w-full flex justify-center items-center rounded-[8px] px-6 py-3 bg-blue-600 text-white shadow hover:bg-blue-700 transition"
                 >
-                  + Add New Customer
+                  + New Products
                 </motion.button>
               </motion.div>
             </motion.div>
