@@ -1092,7 +1092,7 @@ const generate10DigitNumber = () => {
 
     <input
       type="number"
-      value={form.opening_stock_value}
+      value={form.opening_quantity*form.opening_purchase_price}
    placeholder="0"
    onChange={(e) => {setForm({...form,opening_stock_value:e.target.value})}}
       

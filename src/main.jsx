@@ -48,6 +48,7 @@ import Payments from "./Components/Payments";
 import Packinglists from "./Components/Packinglists";
 import Vendor from "./Components/Vendor";
 import Timeline from "./Components/Timeline";
+import Createinvoice from "./Components/Createinvoice";
 
 
 
@@ -82,6 +83,7 @@ const router = createBrowserRouter(
        
        
           <Route path="invoices" element={<Invoices />} />
+          <Route path="createinvoice" element={<Createinvoice />} />
           <Route path="salesorders" element={<Salesorders />} />
           <Route path="proformainvoices" element={<Proformainvoices />} />
           <Route path="deliverychallan" element={<Deliverychallan />} />
@@ -101,7 +103,7 @@ const router = createBrowserRouter(
           <Route path="payments" element={<Payments />} />
           <Route path="packinglists" element={<Packinglists />} />
           <Route path="vendor" element={<Vendor />} />
-          <Route path="timeline" element={<Timeline />} />
+          <Route path="inventorytimeline" element={<Timeline />} />
        
      
         

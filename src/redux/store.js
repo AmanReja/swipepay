@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { addcompanyReducer,customerReducer,merchantReducer,productReducer ,categoryReducer,invoiceReducer,expenseReducer,paymentReducer,expcaReducer,bankReducer,warehouseReducer} from "./reducer";
+import { addcompanyReducer,customerReducer,merchantReducer,productReducer ,categoryReducer,invoiceReducer,expenseReducer,paymentReducer,expcaReducer,bankReducer,warehouseReducer,inventorytimelineReducer} from "./reducer";
 
 const store = configureStore({
   reducer: {
@@ -14,7 +14,8 @@ const store = configureStore({
     payments:paymentReducer,
     expcategory:expcaReducer,
     bank:bankReducer,
-    warehouse:warehouseReducer
+    warehouse:warehouseReducer,
+    timeline:inventorytimelineReducer
 
     
    

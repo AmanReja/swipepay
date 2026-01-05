@@ -5,7 +5,7 @@ import Offers from "./Offers";
 import webinar from "../assets/images/webinar.svg";
 import { toast, Toaster } from "sonner";
 import {ChevronDown,Plus} from "lucide-react";
-import {get_customer,addcustomer,getpayments} from "../redux/action";
+import {get_customer,addcustomer,getpayments,getinventorytimeline} from "../redux/action";
 import { useDispatch,useSelector } from "react-redux";
 import { Company } from "../Contexts/Company";
 
@@ -49,6 +49,9 @@ const [selectedTcs, setSelectedTcs] = useState("");
   }, [istcsactive,istdsactive])
   
 
+
+
+  
 
 
 
@@ -105,6 +108,10 @@ const [selectedTcs, setSelectedTcs] = useState("");
     },
   ];
   
+
+  const timelinedata = useSelector((state)=>state.timeline.timeline?.timeline
+  );
+  console.log("time",timelinedata);
   
 
 
@@ -113,6 +120,8 @@ const [selectedTcs, setSelectedTcs] = useState("");
       dispatch(get_customer(company.companyName));
     }
    dispatch(getpayments(company.companyName))
+
+   dispatch(getinventorytimeline(company.companyName))
 
 
   }, [company, dispatch]);
@@ -249,35 +258,16 @@ const [selectedTcs, setSelectedTcs] = useState("");
         >
           <div className={`flex flex-col rounded-[10px] p-4 ${theme === "dark" ? "bg-gray-900" : "bg-white"}`}>
             {/* Header */}
-            <motion.div variants={fade} className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-[5px]">
-                <h1 className="text-[24px] font-bold">Payments Timeline</h1>
+            <motion.div variants={fade} className="flex items-center justify-between ">
+              <div className="flex items-center gap-[2px]">
+                <h1 className="text-[24px] font-bold">Inventory Timeline</h1>
               
               </div>
 
               
             </motion.div>
             <div className=" pb-2 relative">
-      <ul className="flex gap-10 text-gray-500 font-medium text-sm relative">
-        {tabs.map((tab, i) => (
-          <li
-            key={i}
-            ref={(el) => (tabRefs.current[i] = el)}
-            className={`cursor-pointer pb-2 ${
-              activeIndex === i ? "text-blue-600" : ""
-            }`}
-            onClick={() => setActiveIndex(i)}
-          >
-            {tab}
-          </li>
-        ))}
-
-        {/* Sliding Indicator */}
-        <div
-          className="absolute bottom-1 h-[2px] bg-blue-600 transition-all duration-300"
-          style={indicatorStyle}
-        ></div>
-      </ul>
+    
     </div>
     <div className="flex mt-6 items-center h-[50px] gap-4">
           <div className="flex items-center border rounded-md hover:ring-2 hover:ring-black duration-100 bg-white shadow-sm w-[500px] h-[30px] px-2">
@@ -289,12 +279,8 @@ const [selectedTcs, setSelectedTcs] = useState("");
             />
           </div>
 
-          <div className="px-4 h-[30px] flex items-center bg-gray-200 rounded-md text-sm font-medium">
-            Actions <ChevronDown/>
-          </div>
-          <div  onClick={handleModel} className="px-4 h-[30px] cursor-pointer flex items-center text-white bg-blue-600 rounded-md text-sm font-medium">
-          <Plus size={20} /> New Customer
-          </div>
+    
+         
         </div>
         <div className="mt-6 overflow-x-auto">
         <div className="mt-6 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
@@ -308,79 +294,94 @@ const [selectedTcs, setSelectedTcs] = useState("");
       >
         <table className="min-w-full text-sm">
           {/* HEADER */}
-          <thead className="sticky top-0 z-10 bg-gray-50 ">
-            <tr className="text-left text-gray-500 font-medium text-[12px]">
-              <th className="px-5 py-3">Amount
-</th>
-              <th className="px-5 py-3">	
-Mode</th>
-              <th className="px-5 py-3">	
-Party Name</th>
-              <th className="px-5 py-3">	Date / Created Time</th>
-              <th className="px-5 py-3">Bank Details
-</th>
-              <th className="px-5 py-3 text-right">Created By
-</th>
-              <th className="px-5 py-3 text-right">Status
-</th>
-            </tr>
-          </thead>
+          <thead className="bg-gray-50">
+  <tr className="text-left text-gray-500 font-medium text-[12px]">
+    <th className="px-4 py-3">Item</th>
+    <th className="px-4 py-3">Stock In</th>
+    <th className="px-4 py-3">Stock Out</th>
+    <th className="px-4 py-3">Source</th>
+    <th className="px-4 py-3">Category</th>
+    <th className="px-4 py-3">Remarks</th>
+    <th className="px-4 py-3">Date / Updated By</th>
+    <th className="px-4 py-3 text-right">Actions</th>
+  </tr>
+</thead>
+
+
+
+
 
           {/* BODY */}
           <tbody className="">
-            {paymentsdata?.length > 0 ? (
-              paymentsdata.map((cust, index) => (
-                <tr key={cust.id} className="group hover:bg-gray-50 transition">
-                  {/* Index */}
-                  {/* <td className="px-5 py-4 text-gray-400">{index + 1}</td> */}
+  {timelinedata?.length > 0 ? (
+    timelinedata.map((row, index) => (
+      <tr key={index} className="hover:bg-gray-50">
+        {/* Item */}
+        <td className="px-4 py-3 font-medium text-gray-900">
+          {row.item}
+        </td>
 
-                  {/* Name + Avatar */}
-                  <td className="px-5 py-4">
-                    <div className="flex items-center gap-3">
-                      <div className="h-9 w-9 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-semibold">
-                        {cust.customer_name?.[0] || "-"}
-                      </div>
-                      <div>
-                        <p className="font-medium text-gray-900">{cust.customer_name}</p>
-                        <p className="text-xs text-gray-500">ID: {cust.id}</p>
-                      </div>
-                    </div>
-                  </td>
+        {/* Stock In */}
+        <td className="px-4 py-3 bg-green-50 text-green-700 font-semibold">
+          {row.stock_in || ""}
+        </td>
 
-                  {/* Phone */}
-                  <td className="px-5 py-4 text-gray-700">{cust.phone || "-"}</td>
+        {/* Stock Out */}
+        <td className="px-4 py-3 bg-red-50 text-red-600 font-semibold">
+          {row.stock_out || ""}
+        </td>
 
-                  {/* Email */}
-                  <td className="px-5 py-4 text-gray-700">{cust.email || "-"}</td>
+        {/* Source */}
+        <td className="px-4 py-3 text-indigo-700 text-xs font-medium capitalize">
+          {row.source}
+        </td>
 
-                  {/* Company */}
-                  <td className="px-5 py-4">
-                    <span className="inline-flex items-center rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700">
-                      {cust.corp_id || "-"}
-                    </span>
-                  </td>
+        {/* Category */}
+        <td className="px-4 py-3 text-gray-700">
+          {row.category || ""}
+        </td>
 
-                  {/* Actions */}
-                  <td className="px-5 py-4 text-right">
-                    <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition">
-                      <button className="px-3 py-1.5 text-xs rounded-md bg-blue-600 text-white hover:bg-blue-700">
-                        View
-                      </button>
-                      <button className="px-3 py-1.5 text-xs rounded-md border hover:bg-gray-100">
-                        Edit
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="6" className="px-6 py-10 text-center text-gray-500">
-                  No Data
-                </td>
-              </tr>
-            )}
-          </tbody>
+        {/* Remarks */}
+        <td className="px-4 py-3 text-gray-700">
+          {row.remarks}
+        </td>
+
+        {/* Date / Updated By */}
+        <td className="px-4 py-3">
+          <p className="text-gray-800">
+            {new Date(row.date).toLocaleDateString("en-IN", {
+              day: "2-digit",
+              month: "short",
+              year: "numeric",
+            })}
+          </p>
+          <p className="text-xs text-gray-400">by</p>
+        </td>
+
+        {/* Actions */}
+        <td className="px-4 py-3 text-right">
+          <div className="flex justify-end gap-2">
+            <button className="flex items-center gap-1 rounded-md bg-yellow-100 px-2 py-1 text-xs text-yellow-700 hover:bg-yellow-200">
+            <i class="fa-regular fa-pen-to-square"></i> Edit
+            
+            </button>
+            <button className="rounded-md bg-red-100 px-2 py-1 text-xs text-red-600 hover:bg-red-200">
+            <i class="fa fa-sm fa-trash "></i> 
+            </button>
+          </div>
+        </td>
+      </tr>
+    ))
+  ) : (
+    <tr>
+      <td colSpan="8" className="px-6 py-10 text-center text-gray-400">
+        No Data
+      </td>
+    </tr>
+  )}
+</tbody>
+
+
         </table>
       </motion.div>
     </AnimatePresence>

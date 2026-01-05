@@ -155,6 +155,7 @@ const Sidebar = () => {
             onClick={() => toggle("inventory")}
           >
  <SubItem to="/dashboard/warehouses">Warehouses</SubItem>
+ <SubItem to="/dashboard/inventorytimeline">Timeline</SubItem>
 
           </MenuSection>
 

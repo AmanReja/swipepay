@@ -12,8 +12,10 @@ import {Company} from "../Contexts/Company";
 const Warehouses = ({ theme }) => {
   const {company}=useContext(Company);
   const [isModelOpen, setIsModelOpen] = useState(false);
-  const [isediting, setIsediting] = useState(false);
-  const [currentproductname, setCurrentproductname] = useState("");
+  const [isadding, setIsadding] = useState(false);
+  const [selectedforstock,setSelectedforstock] =useState(null)
+  
+  const [currentproductid, setCurrentproductid] = useState("");
   const handleModel = () => setIsModelOpen((v) => !v);
 
 
@@ -52,16 +54,33 @@ const Warehouses = ({ theme }) => {
 
  const dispatch = useDispatch()
  const warehousedata= useSelector((state=>state.warehouse.warehouse?.items));
- console.log("war",warehousedata); 
+ const warehousesummary= useSelector((state=>state.warehouse.warehouse?.summary));
+ console.log("war",warehousesummary); 
 
 
- const editform = (item) => {
-  setIsediting(true);
-  setCurrentproductname(item.name)
+ const addform = (item) => {
+  setSelectedforstock(item)
+  setIsadding(true);
+  setCurrentproductid(item.id)
 
   setForm({
     quantity: item.quantity ?? 0,
-    recordDate: item.last_updated
+    record_date: item.last_updated
+      ? item.last_updated.split("T")[0]
+      : new Date().toISOString().split("T")[0],
+    category: item.category ?? "",
+    remarks: item.remarks ?? "",
+    purchasePrice: item.purchase_price ?? 0,
+  });
+};
+ const removeform = (item) => {
+  setSelectedforstock(item)
+  setIsadding(false);
+  setCurrentproductid(item.id)
+
+  setForm({
+    quantity: item.quantity ?? 0,
+    record_date: item.last_updated
       ? item.last_updated.split("T")[0]
       : new Date().toISOString().split("T")[0],
     category: item.category ?? "",
@@ -70,24 +89,45 @@ const Warehouses = ({ theme }) => {
   });
 };
 
-const submitupdate = ()=>{
+const handeladdstock = ()=>{
 
   try {
-    dispatch(updatewarehousestock(company.companyName,currentproductname,form))
+    dispatch(updatewarehousestock(company.companyName,currentproductid,form))
   } catch (error) {
     console.log(error);
     
   } finally{
-    setIsediting(false)
+    setIsadding(false)
     setIsModelOpen(false)
     setForm({ quantity: "",
-      recordDate: "",
+    record_date: "",
       category: "",
       remarks: "",
       purchasePrice: "",})
   }
    
      
+}
+
+
+
+
+const handelremovestock =()=>{
+ 
+  try {
+    dispatch(deletewarehousestock(company.companyName,currentproductid,form))
+  } catch (error) {
+    console.log(error);
+    
+  } finally{
+    // setIsediting(false)
+    setIsModelOpen(false)
+    setForm({ quantity: "",
+    record_date: "",
+      category: "",
+      remarks: "",
+      purchasePrice: "",})
+  }
 }
 
 
@@ -189,23 +229,28 @@ const submitupdate = ()=>{
   {[
     {
       label: "Low Stock",
-      value: "1 Items (0 Qty)",
+    value: `${warehousesummary?.negative_stock
+      ?.items} Items (${warehousesummary?.negative_stock?.qty})`,
       color: "from-pink-400/10 to-pink-500/20",
     },
     {
       label: "Positive Stock",
-      value: "1 Items (0 Qty)",
+      value: `${warehousesummary?.positive_stock
+        ?.items} Items (${warehousesummary?.positive_stock?.qty})`,
       color: "from-green-400/10 to-green-500/20",
     },
     {
       label: "Stock Value Sales Price",
-      value: "₹ 0",
+      value:`${warehousesummary?.stock_value
+        .sale_price}`,
       color: "from-sky-400/10 to-sky-500/20",
       wide: true,
     },
     {
       label: "Stock Value With Purchase",
-      value: "₹ 0",
+      value: `${warehousesummary?.stock_value
+        .purchase_price
+      }`,
       color: "from-amber-400/10 to-amber-500/20",
       wide: true,
     },
@@ -275,7 +320,7 @@ const submitupdate = ()=>{
         </td>
 
         <td className="p-4 text-gray-700">
-          {item.qty_display || item.quantity}
+          { item.quantity}
         </td>
 
         <td className="p-4 text-gray-700">
@@ -297,11 +342,11 @@ const submitupdate = ()=>{
         </td>
 
         <td className="p-4 rounded-br-2xl flex flex-col gap-2">
-          <button onClick={(e)=>{handleModel(),editform(item)}} className="bg-emerald-100 text-emerald-700 h-[32px] rounded-lg font-medium text-xs hover:bg-emerald-200 transition">
+          <button onClick={(e)=>{handleModel(),addform(item)}} className="bg-emerald-100 text-emerald-700 h-[32px] rounded-lg font-medium text-xs hover:bg-emerald-200 transition">
             Stock In
           </button>
 
-          <button className="bg-rose-100 text-rose-700 h-[32px] rounded-lg font-medium text-xs hover:bg-rose-200 transition">
+          <button onClick={(e)=>{handleModel(),removeform(item)}} className="bg-rose-100 text-rose-700 h-[32px] rounded-lg font-medium text-xs hover:bg-rose-200 transition">
             Stock Out
           </button>
         </td>
@@ -328,8 +373,8 @@ const submitupdate = ()=>{
           theme === "dark" ? "bg-gray-900" : "bg-white"
         }`}
       >
-        <h2 className="text-lg font-semibold">Customer Settings</h2>
-        <button onClick={handleModel}>✕</button>
+        <h2 className="text-lg font-semibold">{selectedforstock?.name}</h2>
+        <button onClick={()=>{handleModel(),setIsadding(false)}}>✕</button>
       </div>
 
       {/* Body */}
@@ -362,7 +407,7 @@ const submitupdate = ()=>{
       <input
         type="date"
         name="recordDate"
-        value={form.recordDate}
+        value={form.record_date}
         onChange={handleChange}
         className="p-2 rounded border border-gray-300"
       />
@@ -432,10 +477,10 @@ const submitupdate = ()=>{
           theme === "dark" ? "bg-gray-900" : "bg-white"
         }`}
       >
-        <button onClick={handleModel} className="px-4 py-2 bg-gray-200 rounded-md">
+        <button onClick={()=>{handleModel(),setIsadding(false)}} className="px-4 py-2 bg-gray-200 rounded-md">
           Close
         </button>
-        <button className="px-4 py-2 bg-green-600 text-white rounded-md">Add Stock</button>
+        <button onClick={()=>{isadding?handeladdstock():handelremovestock()}} className="px-4 py-2 bg-green-600 text-white rounded-md">{isadding?"Add Stock":"Remove Stock"}</button>
       </div>
     </div>
 

@@ -57,6 +57,9 @@ export const UPDATE_WAREHOUSE_STOCK = "UPDATE_WAREHOUSE_STOCK";
 export const DELETE_WAREHOUSE_STOCK = "DELETE_WAREHOUSE_STOCK";
 
 
+export const GET_INVENTORY_TIMELINE = "GET_INVENTORY_TIMELINE";
+
+
 
 
 
@@ -793,11 +796,11 @@ export const getwarehouse = (company_name) => async (dispatch) => {
   console.log(232,data);
   dispatch({ type: "GET_WAREHOUSE", payload: data });
 };
-export const updatewarehousestock = (company_name,productName,stockdata) => async (dispatch) => {
-  console.log(205,company_name);
+export const updatewarehousestock = (company_name,productid,stockdata) => async (dispatch) => {
+  console.log(205,company_name,stockdata);
  
   const token = localStorage.getItem("token") || {};
-  const res = await fetch(`${baseUrl}/v1/user/inventory/stock-add/${company_name}/${productName}`, {
+  const res = await fetch(`${baseUrl}/v1/user/inventory/stock-add/${company_name}/${productid}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -826,17 +829,18 @@ export const updatewarehousestock = (company_name,productName,stockdata) => asyn
   console.log(232,data);
   dispatch({ type: "UPDATE_WAREHOUSE_STOCK", payload: data });
 };
-export const deletewarehousestock = (company_name,productName) => async (dispatch) => {
-  console.log(205,company_name);
+export const deletewarehousestock = (company_name,productid,stockdata) => async (dispatch) => {
+  console.log(205,company_name,productid);
  
   const token = localStorage.getItem("token") || {};
-  const res = await fetch(`${baseUrl}/v1/user/inventory/stock-add/${company_name}/${productName}`, {
-    method: "DELETE",
+  const res = await fetch(`${baseUrl}/v1/user/inventory/stock-remove/${company_name}/${productid}`, {
+    method: "PUT",
     headers: {
       "Content-Type": "application/json",
      
       Authorization: `Bearer ${token}`,
     },
+    body:JSON.stringify(stockdata)
    
   
   });
@@ -861,3 +865,37 @@ export const deletewarehousestock = (company_name,productName) => async (dispatc
 };
 
 
+
+
+
+export const getinventorytimeline = (company_name) => async (dispatch) => {
+  console.log(205,company_name);
+ 
+  const token = localStorage.getItem("token") || {};
+  const res = await fetch(`${baseUrl}/v1/user/inventory/timeline/${company_name}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+     
+      Authorization: `Bearer ${token}`,
+    },
+  
+  });
+
+  if (res.status === 401) {
+    localStorage.removeItem("token");
+    window.location.href = "/";
+    return;
+  }
+
+  // if (res.status===200) {
+  //   // alert("addcompany successfull")
+    
+  // }
+   
+
+  const data = await res.json();
+
+  console.log(899,data);
+  dispatch({ type: "GET_INVENTORY_TIMELINE", payload: data });
+};
