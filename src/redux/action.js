@@ -31,7 +31,7 @@ export const ADD_CATEGORY = "ADD_CATEGORY";
 export const GET_CATEGORY = "GET_CATEGORY";
 
 
-export const GET_INVOICE = "GET_INVOICE";
+
 
 
 
@@ -58,6 +58,11 @@ export const DELETE_WAREHOUSE_STOCK = "DELETE_WAREHOUSE_STOCK";
 
 
 export const GET_INVENTORY_TIMELINE = "GET_INVENTORY_TIMELINE";
+
+
+
+export const ADD_INVOICE = "ADD_INVOICE";
+export const GET_INVOICE = "GET_INVOICE";
 
 
 
@@ -502,6 +507,8 @@ export const getcategory = (company_name) => async (dispatch) => {
   console.log(232,data);
   dispatch({ type: "GET_CATEGORY", payload: data });
 };
+
+
 export const getinvoice = (company_name) => async (dispatch) => {
   console.log(205,company_name);
  
@@ -533,6 +540,40 @@ export const getinvoice = (company_name) => async (dispatch) => {
   console.log(232,data);
   dispatch({ type: "GET_INVOICE", payload: data });
 };
+
+
+export const addinvoice = (invoicedata,company_name) => async (dispatch) => {
+  console.log(244,invoicedata);
+  const token = localStorage.getItem("token") || {};
+  const res = await fetch(`${baseUrl}/v1/user/invoice/${company_name}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body:JSON.stringify(invoicedata)
+  });
+
+  if (res.status === 401) {
+    localStorage.removeItem("token");
+    window.location.href = "/";
+    return;
+  }
+
+  if (res.status===201) {
+    alert("add invoice successfull")
+    dispatch(getinvoice(company_name))
+    
+  }
+   
+
+  const data = await res.json();
+  dispatch({ type: "ADD_INVOICE", payload: data });
+};
+
+
+
+
 export const getexpense = (company_name) => async (dispatch) => {
   console.log(205,company_name);
  

@@ -9,8 +9,10 @@ import { toast ,Toaster } from "sonner";
 import {getinvoice} from "../redux/action";
 import { useDispatch,useSelector } from "react-redux";
 import { Company } from "../Contexts/Company";
+import {useNavigate} from "react-router-dom";
 
 const Sales = ({ theme }) => {
+  const navigate =useNavigate()
   const { company } = useContext(Company);
 
 
@@ -148,7 +150,7 @@ const Sales = ({ theme }) => {
           </motion.button>
 
           {/* Button 3 */}
-          <motion.button
+          <motion.button onClick={()=>{navigate("/dashboard/createinvoice")}}
             variants={fade}
             className="px-[10px] h-[36px] rounded hover:scale-108 bg-blue-600 text-white font-medium shadow 
             hover:bg-blue-700 transition"

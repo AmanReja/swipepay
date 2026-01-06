@@ -1,4 +1,4 @@
-import { ADD_COMPANY ,GET_COMPANY,ADD_CUSTOMER,GET_CUSTOMER,ADD_MERCHANT,GET_MERCHANT,GET_PRODUCTS,ADD_CATEGORY,GET_CATEGORY,ADD_PRODUCT,GET_INVOICE, GET_EXPENSE,GET_PAYMENTS,ADD_EXP_CATEGORY,GET_EXP_CATEGORY, ADD_EXPENSE,ADD_BANK,GET_BANK,GET_WAREHOUSE,GET_INVENTORY_TIMELINE} from "./action";
+import { ADD_COMPANY ,GET_COMPANY,ADD_CUSTOMER,GET_CUSTOMER,ADD_MERCHANT,GET_MERCHANT,GET_PRODUCTS,ADD_CATEGORY,GET_CATEGORY,ADD_PRODUCT,GET_INVOICE, GET_EXPENSE,GET_PAYMENTS,ADD_EXP_CATEGORY,GET_EXP_CATEGORY, ADD_EXPENSE,ADD_BANK,GET_BANK,GET_WAREHOUSE,GET_INVENTORY_TIMELINE, ADD_INVOICE} from "./action";
 
 
 const initialaddcomState ={
@@ -140,7 +140,13 @@ export const invoiceReducer =(state=initialinvoiceState,action)=>{
 
      }
        
-    } 
+    } else if(action.type===ADD_INVOICE){
+        return{
+             ...state,
+             invoice:[action.payload,...state.invoice]
+
+        }
+    }
     else{
         return state
     }
