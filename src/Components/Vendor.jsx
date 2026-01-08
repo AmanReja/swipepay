@@ -245,7 +245,7 @@ const [selectedTcs, setSelectedTcs] = useState("");
  
 
 
-    dispatch(addmerchant(payload,company.companyName,selectedcx.id))
+    dispatch(addmerchant(payload,company.companyName,selectedcx?.id))
     
   }
 

@@ -1,5 +1,5 @@
 import React, { useState,useEffect,useContext } from "react";
-import {get_customer,getproducts,addinvoice,getinvoice} from "../redux/action";
+import {get_customer,getproducts,addinvoice,getinvoice,getbank} from "../redux/action";
 import { Company } from "../Contexts/Company";
 import {useSelector,useDispatch} from "react-redux";
 
@@ -11,7 +11,8 @@ const Createinvoice = () => {
  const customerdata = useSelector((state)=>state.customers.customers?.customers);
  console.log(12,customerdata);
  const productdata = useSelector((state)=>state.products.products);
- console.log("pro",productdata);
+ const bankdata = useSelector((state)=>state.bank.bank?.data);
+ console.log("bankdata",bankdata);
  
 
 
@@ -19,6 +20,7 @@ const Createinvoice = () => {
   if (company?.companyName) {
     dispatch(get_customer(company.companyName));
     dispatch(getproducts(company.companyName));
+    dispatch(getbank(company.companyName));
   }
 }, [company, dispatch]);
 
@@ -36,12 +38,48 @@ const Createinvoice = () => {
 const [qty,setQty]=useState("")
 
 
+
+
+
+const [notesOpen, setNotesOpen] = useState(true);
+const [termsOpen, setTermsOpen] = useState(true);
+const [openBank, setOpenBank] = useState(false);
+const [selectedBank, setSelectedBank] = useState(null);
+
+const [notes, setNotes] = useState("");
+const [terms, setTerms] = useState("");
+
+const [ewaybill, setEwaybill] = useState(false);
+const [einvoice, setEinvoice] = useState(false);
+
+const [extraDiscount, setExtraDiscount] = useState(0);
+const [roundOff, setRoundOff] = useState(true);
+
+const [bank, setBank] = useState("Cash (-)");
+const [fullyPaid, setFullyPaid] = useState(false);
+
+const [payment, setPayment] = useState({
+
+  
+  mode: "upi",
+  remarks:"",
+  amount:"",
+  bank_id:null
+});
+
+
+const totalAmount = addedProducts.reduce((acc, product) => {
+  return acc + product.quantity * product.unit_price;
+}, 0);
+
+
+
 console.log(39,addedProducts);
 
 const handleAddProduct = () => {
   const newItem = {
     rowId: Date.now(),       
-    product_id: product.id,  
+    product_service_id: product.id,  
     product_name: product.name,
     quantity: qty,
     unit_price: product.selling_price,
@@ -91,14 +129,14 @@ const handelsubmit =()=>{
 
     invoice_number_prefix:invoicenumberprefix.fx1+invoicenumberprefix.fx2,
     customer_ids : selectedCxIds,
-    product_service_id:product.id,
+   
     
     invoice_date:invoiceDate,
     due_date:dueDate,
     reference:reference,
     invoice_type : "regular",
-    payments : [],
-    item:""
+    payments : [payment],
+    items:addedProducts
     
     
   } 
@@ -489,7 +527,232 @@ useEffect(() => {
 
 </table>
 
+
           </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      {/* LEFT */}
+      <div className="space-y-4">
+        {/* NOTES */}
+        <div className="border rounded-lg">
+          <button
+            onClick={() => setNotesOpen(!notesOpen)}
+            className="w-full flex justify-between items-center px-4 py-3 font-medium"
+          >
+            Notes
+            <span>ⓘ</span>
+          </button>
+
+          {notesOpen && (
+            <div className="px-4 pb-4">
+              <textarea
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                placeholder="Enter your notes, say thanks, or anything else"
+                className="w-full border rounded-md p-3 text-sm"
+              />
+            </div>
+          )}
+        </div>
+
+        {/* TERMS */}
+        <div className="border rounded-lg">
+          <button
+            onClick={() => setTermsOpen(!termsOpen)}
+            className="w-full flex justify-between items-center px-4 py-3 font-medium"
+          >
+            Terms & Conditions
+            <span>ⓘ</span>
+          </button>
+
+          {termsOpen && (
+            <div className="px-4 pb-4">
+              <textarea
+                value={terms}
+                onChange={(e) => setTerms(e.target.value)}
+                placeholder="Enter your business Terms and Conditions"
+                className="w-full border rounded-md p-3 text-sm"
+              />
+            </div>
+          )}
+        </div>
+
+        {/* TOGGLES */}
+        <div className="space-y-3">
+          <label className="flex items-center gap-3 text-sm">
+            <input
+              type="checkbox"
+              checked={ewaybill}
+              onChange={(e) => setEwaybill(e.target.checked)}
+            />
+            Create E-Waybill
+          </label>
+
+          <label className="flex items-center gap-3 text-sm">
+            <input
+              type="checkbox"
+              checked={einvoice}
+              onChange={(e) => setEinvoice(e.target.checked)}
+            />
+            Create E-Invoice
+          </label>
+        </div>
+      </div>
+
+      {/* RIGHT */}
+      <div className="space-y-4">
+        {/* SUMMARY */}
+        <div className="bg-emerald-50 rounded-lg p-4 space-y-2">
+          <div className="flex justify-between text-sm">
+            <span>Extra Discount</span>
+            <input
+              type="number"
+              value={extraDiscount}
+              onChange={(e) => setExtraDiscount(Number(e.target.value))}
+              className="w-20 border rounded px-2 text-right"
+            />
+          </div>
+
+          <div className="flex justify-between text-sm">
+            <span>Taxable Amount</span>
+            <span>₹ 0.00</span>
+          </div>
+
+          <div className="flex justify-between items-center text-sm">
+            <span>Round Off</span>
+            <input
+              type="checkbox"
+              checked={roundOff}
+              onChange={(e) => setRoundOff(e.target.checked)}
+            />
+          </div>
+
+          <div className="flex justify-between font-semibold text-lg">
+            <span>Total Amount</span>
+            <span>₹{totalAmount}</span>
+          </div>
+
+          <div className="flex justify-between text-xs text-gray-500">
+            <span>Total Discount</span>
+            <span>₹ 0.00</span>
+          </div>
+        </div>
+
+        {/* BANK */}
+        <div>
+          <div className="flex justify-between text-sm mb-1">
+            <span>Select Bank</span>
+            <button className="text-indigo-600">＋ Add New Bank</button>
+          </div>
+
+          <div className="relative w-full">
+  <input
+    readOnly
+    value={selectedBank ? selectedBank.bank_name : "Select Bank"}
+    onClick={() => setOpenBank(!openBank)}
+    className="w-full border rounded-md px-3 py-2 bg-purple-50 cursor-pointer"
+  />
+  {openBank && (
+    <div className="absolute z-50 mt-1 w-full bg-white border rounded-md shadow-lg max-h-48 overflow-y-auto">
+      {bankdata?.map((b) => (
+        <div
+          key={b.id}
+          onClick={() => {
+            setSelectedBank(b);
+            setPayment({
+              ...payment,
+              bank_id: b.id
+              // 👈 send this to backend
+            });
+            setOpenBank(false);
+          }}
+          className="px-3 py-2 hover:bg-purple-100 cursor-pointer text-sm"
+        >
+          {b.bank_name}
+        </div>
+      ))}
+    </div>
+  )}
+</div>
+
+        </div>
+
+        {/* PAYMENT */}
+        <div className="bg-emerald-50 rounded-lg p-4">
+          <div className="flex justify-between mb-2 text-sm font-medium">
+            <span>Add payment</span>
+            <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={fullyPaid}
+                onChange={(e) => setFullyPaid(e.target.checked)}
+              />
+              Mark as fully paid
+            </label>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <textarea
+              value={payment.notes}
+              onChange={(e) =>
+                setPayment({ ...payment, notes: e.target.value })
+              }
+              placeholder="Advance received, UTR number etc..."
+              className="border rounded-md p-2 text-sm md:col-span-1"
+            />
+
+            <input
+              type="number"
+              value={payment.amount}
+              onChange={(e) =>
+                setPayment({ ...payment, amount: Number(e.target.value) })
+              }
+              placeholder="enter amount"
+              className="border rounded-md px-2"
+            />
+
+<select
+  value={payment.mode}
+  onChange={(e) =>
+    setPayment({ ...payment, mode: e.target.value })
+  }
+  className="border rounded-md px-2"
+>
+  <option value="upi">UPI</option>
+  <option value="cash">Cash</option>
+  <option value="bank">NB</option>
+</select>
+
+          </div>
+          <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4 space-y-2">
+  <div className="flex justify-between text-sm text-gray-700">
+    <span>Total Amount</span>
+    <span className="font-medium">
+      ₹ {Number(totalAmount || 0).toFixed(2)}
+    </span>
+  </div>
+
+  <div className="flex justify-between text-sm text-gray-700">
+    <span>Paid Amount</span>
+    <span className="font-medium">
+      ₹ {Number(payment.amount || 0).toFixed(2)}
+    </span>
+  </div>
+
+  <div className="border-t pt-2 flex justify-between text-base font-semibold text-emerald-700">
+    <span>Balance Amount</span>
+    <span>
+      ₹ {(Number(totalAmount || 0) - Number(payment.amount || 0)).toFixed(2)}
+    </span>
+  </div>
+</div>
+
+
+          <button className="mt-3 text-sm text-gray-600">
+            ⊕ Split Payment
+          </button>
+        </div>
+      </div>
+    </div>
         </div>
 
         {/* Footer Actions */}
@@ -500,7 +763,7 @@ useEffect(() => {
           <button className="px-4 py-2 rounded-md border text-sm">
             Save and Print
           </button>
-          <button  className="px-4 py-2 rounded-md bg-blue-600 text-white text-sm">
+          <button onClick={()=>{handelsubmit()}} className="px-4 py-2 rounded-md bg-blue-600 text-white text-sm">
             Save →
           </button>
         </div>

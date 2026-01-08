@@ -35,7 +35,7 @@ const Creditnotes = ({ theme }) => {
           theme === "dark" ? "text-gray-100 bg-gray-900" : "text-gray-900"
         }`}
       >
-        <div className="flex flex-col bg-white rounded-[10px] dark:bg-gray-900 p-4">
+        <div className="flex flex-col bg-white rounded-[10px]  p-4">
 
           {/* Header */}
           <motion.div

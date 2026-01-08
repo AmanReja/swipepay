@@ -47,9 +47,12 @@ const Sales = ({ theme }) => {
 
   useEffect(() => {
     
+    if (company?.companyName) {
+      dispatch(getinvoice(company.companyName))
+    }
   
- dispatch(getinvoice(company.companyName))
-  }, [dispatch])
+ 
+  }, [dispatch,company])
   
  
   useEffect(() => {

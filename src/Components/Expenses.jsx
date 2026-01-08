@@ -81,10 +81,14 @@ const Expenses = ({ theme }) => {
 
 
   useEffect(() => {
-    dispatch(getbank(company.companyName))
+
+    if (company.companyName) {
+      dispatch(getbank(company.companyName))
+    }
+   
   
    
-  }, [dispatch])
+  }, [dispatch,company])
   
 
 

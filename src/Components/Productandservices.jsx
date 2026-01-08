@@ -40,7 +40,11 @@ const Productandservices = ({ theme }) => {
 
 
    useEffect(() => {
-   dispatch(getproducts(company.companyName))
+
+    if (company.companyName) {
+      dispatch(getproducts(company.companyName))
+    }
+   
    
      
    }, [dispatch,company])
