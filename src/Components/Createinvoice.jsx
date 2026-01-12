@@ -31,6 +31,7 @@ const Createinvoice = () => {
   const [selectedcx, setSelectedcx] = useState([]);
   const [invoicenumberprefix, setInvoicenumberprefix] = useState({fx1:"INV-",fx2:""});
   const [reference, setReference] = useState("");
+  const [invoicetype, setInvoicetype] = useState("regular");
   const [addedProducts, setAddedProducts] = useState([]);
   const [iscxopen, setIscxopen] = useState(false);
   const [isproductopen, setIsproductopen] = useState(false);
@@ -134,7 +135,7 @@ const handelsubmit =()=>{
     invoice_date:invoiceDate,
     due_date:dueDate,
     reference:reference,
-    invoice_type : "regular",
+    invoice_type : invoicetype,
     payments : [payment],
     items:addedProducts
     
@@ -179,10 +180,12 @@ useEffect(() => {
       <div className="flex justify-between items-center mb-6">
         <div className="flex items-center gap-3">
           <p className="text-sm text-gray-500">Type</p>
-          <button className="flex items-center gap-1 font-semibold text-gray-800">
-            Bill of Supply
-            <span className="text-gray-400">▼</span>
-          </button>
+         <select onChange={(e)=>{setInvoicetype(e.target.value)}} className="outline-none border-[2px] rounded-[5px] border-gray-400" name="" id="">
+          <option defaultChecked value="regular">Regular</option>
+          <option value="bill of supply">Bill of Supply</option>
+          <option value="export/sez">Export/sez</option>
+          <option value="muilty currency">Muilty currency</option>
+         </select>
           <div className="flex items-center w-fit border rounded-lg overflow-hidden bg-white shadow-sm">
   <select value={invoicenumberprefix.fx1} onChange={(e)=>{setInvoicenumberprefix({...invoicenumberprefix,fx1:e.target.value})}}
     className="px-3 py-2 text-sm bg-gray-100 border-r focus:outline-none cursor-pointer"

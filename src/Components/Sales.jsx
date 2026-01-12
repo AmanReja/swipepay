@@ -436,7 +436,8 @@ const Sales = ({ theme }) => {
       </div>
 
       {/* Content Section */}
-      <motion.div
+
+      {Array.isArray(invoicedata)&&invoicedata.length===0? <motion.div
         variants={stagger}
         className={`w-full flex flex-col lg:flex-row items-center gap-10 p-6 py-[50px] ${
           theme === "dark" ? "bg-gray-800 text-gray-100" : "bg-white text-gray-900"
@@ -487,7 +488,8 @@ const Sales = ({ theme }) => {
             </div>
           </motion.div>
         </motion.div>
-      </motion.div>
+      </motion.div>:""}
+     
     </div>
   </motion.div>
 
