@@ -296,66 +296,93 @@ const handelremovestock =()=>{
         </div>
 
         {/* ---------------- Table ---------------- */}
-        <div className="overflow-hidden mt-8 rounded-2xl shadow-lg border border-gray-200">
-        <table className="w-full text-sm border-collapse">
-  <thead className="bg-gray-100 h-[50px] text-gray-700 font-semibold">
-    <tr>
-      <td className="p-3 rounded-tl-2xl">Item</td>
-      <td className="p-3">Qty</td>
-      <td className="p-3">Purchase Price</td>
-      <td className="p-3">Sale Price</td>
-      <td className="p-3">Last Updated</td>
-      <td className="p-3 rounded-tr-2xl">Actions</td>
-    </tr>
-  </thead>
-
-  <tbody>
-    {warehousedata?.map((item) => (
-      <tr
-        key={item.id}
-        className="bg-white hover:bg-gray-50 transition"
-      >
-        <td className="p-4 rounded-bl-2xl text-gray-800">
-          {item.name}
-        </td>
-
-        <td className="p-4 text-gray-700">
-          { item.quantity}
-        </td>
-
-        <td className="p-4 text-gray-700">
-          ₹{Number(item.purchase_price).toFixed(2)}
-        </td>
-
-        <td className="p-4 text-gray-700">
-          ₹{Number(item.selling_price).toFixed(2)}
-        </td>
-
-        <td className="p-4 text-gray-600">
-          {new Date(item.last_updated).toLocaleDateString("en-IN", {
-            day: "2-digit",
-            month: "short",
-            year: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-          })}
-        </td>
-
-        <td className="p-4 rounded-br-2xl flex flex-col gap-2">
-          <button onClick={(e)=>{handleModel(),addform(item)}} className="bg-emerald-100 text-emerald-700 h-[32px] rounded-lg font-medium text-xs hover:bg-emerald-200 transition">
-            Stock In
-          </button>
-
-          <button onClick={(e)=>{handleModel(),removeform(item)}} className="bg-rose-100 text-rose-700 h-[32px] rounded-lg font-medium text-xs hover:bg-rose-200 transition">
-            Stock Out
-          </button>
-        </td>
+        <div className="mt-8 overflow-hidden rounded-3xl border border-gray-200 shadow-sm bg-white">
+  <table className="w-full text-sm">
+    
+    {/* HEADER */}
+    <thead className="sticky top-0 z-10 bg-gradient-to-r from-gray-50 to-gray-100 text-gray-700">
+      <tr className="h-[52px]">
+        <th className="px-5 text-left font-semibold">Item</th>
+        <th className="px-5 text-center font-semibold">Qty</th>
+        <th className="px-5 text-right font-semibold">Purchase</th>
+        <th className="px-5 text-right font-semibold">Sale</th>
+        <th className="px-5 text-center font-semibold">Last Updated</th>
+        <th className="px-5 text-center font-semibold">Actions</th>
       </tr>
-    ))}
-  </tbody>
-</table>
+    </thead>
 
+    {/* BODY */}
+    <tbody className="divide-y divide-gray-100">
+      {warehousedata?.map((item, index) => (
+        <tr
+          key={item.id}
+          className={`transition ${
+            index % 2 === 0 ? "bg-white" : "bg-gray-50"
+          } hover:bg-indigo-50/40`}
+        >
+          {/* Item */}
+          <td className="px-5 py-4 font-medium text-gray-900">
+            {item.name}
+          </td>
+
+          {/* Quantity */}
+          <td className="px-5 py-4 text-center">
+            <span className="inline-flex items-center justify-center px-3 py-1 rounded-full text-xs font-semibold bg-indigo-100 text-indigo-700">
+              {item.quantity}
+            </span>
+          </td>
+
+          {/* Purchase */}
+          <td className="px-5 py-4 text-right text-gray-700">
+            ₹{Number(item.purchase_price).toFixed(2)}
+          </td>
+
+          {/* Sale */}
+          <td className="px-5 py-4 text-right font-medium text-emerald-600">
+            ₹{Number(item.selling_price).toFixed(2)}
+          </td>
+
+          {/* Date */}
+          <td className="px-5 py-4 text-center text-gray-600 text-xs">
+            {new Date(item.last_updated).toLocaleDateString("en-IN", {
+              day: "2-digit",
+              month: "short",
+              year: "2-digit",
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
+          </td>
+
+          {/* Actions */}
+          <td className="px-5 py-4">
+            <div className="flex justify-center gap-2">
+              <button
+                onClick={() => {
+                  handleModel();
+                  addform(item);
+                }}
+                className="px-3 h-[32px] rounded-lg bg-emerald-100 text-emerald-700 text-xs font-medium hover:bg-emerald-200 transition"
+              >
+                + Stock In
+              </button>
+
+              <button
+                onClick={() => {
+                  handleModel();
+                  removeform(item);
+                }}
+                className="px-3 h-[32px] rounded-lg bg-rose-100 text-rose-700 text-xs font-medium hover:bg-rose-200 transition"
+              >
+                − Stock Out
+              </button>
+            </div>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
 </div>
+
 
 {isModelOpen &&
             
@@ -480,7 +507,7 @@ const handelremovestock =()=>{
         <button onClick={()=>{handleModel(),setIsadding(false)}} className="px-4 py-2 bg-gray-200 rounded-md">
           Close
         </button>
-        <button onClick={()=>{isadding?handeladdstock():handelremovestock()}} className="px-4 py-2 bg-green-600 text-white rounded-md">{isadding?"Add Stock":"Remove Stock"}</button>
+        <button onClick={()=>{isadding?handeladdstock():handelremovestock()}} className={`px-4 py-2 ${isadding?"bg-green-600":"bg-red-600"}  text-white rounded-md`}>{isadding?"Add Stock":"Remove Stock"}</button>
       </div>
     </div>
 

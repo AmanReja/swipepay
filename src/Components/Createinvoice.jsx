@@ -11,6 +11,7 @@ const Createinvoice = () => {
  const customerdata = useSelector((state)=>state.customers.customers?.customers);
  console.log(12,customerdata);
  const productdata = useSelector((state)=>state.products.products);
+ console.log(14,productdata);
  const bankdata = useSelector((state)=>state.bank.bank?.data);
  console.log("bankdata",bankdata);
  
@@ -70,8 +71,45 @@ const [payment, setPayment] = useState({
 
 
 const totalAmount = addedProducts.reduce((acc, product) => {
-  return acc + product.quantity * product.unit_price;
+  const qty = Number(product.quantity || 0);
+  const price = Number(product.unit_price || 0);
+  const discount = Number(product.discount || 0);
+
+  const discountAmount =
+    product.discount_type === "percentage"
+      ? (price * discount) / 100
+      : discount;
+
+  return acc + qty * (price - discountAmount);
 }, 0);
+
+const totaldiscount = addedProducts.reduce((acc, product) => {
+  const qty = Number(product.quantity || 0);
+  const price = Number(product.unit_price || 0);
+  const discount = Number(product.discount || 0);
+
+  const discountAmount =
+    product.discount_type === "percentage"
+      ? (price * discount) / 100
+      : discount;
+return  acc + qty * discountAmount
+
+}, 0);
+
+
+
+
+
+
+
+const generatenum = () => {
+  return Math.floor(Math.random() * 100000);
+};
+
+useEffect(() => {
+  const randomNum = generatenum();
+  setInvoicenumberprefix({...invoicenumberprefix,fx2:randomNum});
+}, []);
 
 
 
@@ -84,8 +122,14 @@ const handleAddProduct = () => {
     product_name: product.name,
     quantity: qty,
     unit_price: product.selling_price,
-    discount: product.discount || 0,
-    total: qty * product.selling_price
+    discount: product.discount_value || 0,
+    total:
+    product.discount_type === "percentage"
+      ? qty * (product.selling_price - (product.selling_price * product.discount_value) / 100)
+      : qty * product.selling_price - product.discount_value
+,  
+    discount_type:product.discount_type
+
   };
 
   setAddedProducts((prev) => [...prev, newItem]);
@@ -197,6 +241,7 @@ useEffect(() => {
 
   <input onChange={(e)=>{setInvoicenumberprefix({...invoicenumberprefix,fx2:e.target.value})}}
     type="text"
+    value={invoicenumberprefix.fx2}
     placeholder="1"
     className="px-3 py-2 text-sm w-24 focus:outline-none"
   />
@@ -219,7 +264,7 @@ useEffect(() => {
               <p className="text-sm font-semibold text-gray-700">
                 Customer details
               </p>
-              <button className="text-xs text-blue-600">
+              <button className="text-xs hover:underline hover:text-black text-gray-600">
                 + Add new Customer?
               </button>
             </div>
@@ -364,7 +409,7 @@ useEffect(() => {
               <p className="text-sm font-semibold text-gray-700">
                 Products & Services
               </p>
-              <button className="text-xs text-blue-600">
+              <button className="text-xs hover:text-black hover:underline">
                 + Add new Product?
               </button>
             </div>
@@ -500,9 +545,9 @@ useEffect(() => {
               updateRow(item.rowId, "discount", Number(e.target.value))
             }
           />
-          <select className="px-2 py-1 text-xs bg-gray-100 outline-none">
-            <option value="%">%</option>
-            <option value="₹">₹</option>
+          <select  className="px-2 py-1 text-xs bg-gray-100 outline-none">
+            <option value={item.discount_type}>{item.discount_type==="percentage"?"%":"₹"}</option>
+            
           </select>
         </div>
       </td>
@@ -636,7 +681,7 @@ useEffect(() => {
 
           <div className="flex justify-between text-xs text-gray-500">
             <span>Total Discount</span>
-            <span>₹ 0.00</span>
+            <span>₹{totaldiscount}</span>
           </div>
         </div>
 

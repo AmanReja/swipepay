@@ -470,6 +470,7 @@ const Sales = ({ theme }) => {
           {/* CTA */}
           <motion.button
             variants={fade}
+            onClick={()=>{navigate("/dashboard/createinvoice")}}
             className="mt-6 h-[40px] w-full flex justify-center items-center rounded-[8px] px-6 py-3 bg-blue-600 
             text-white shadow hover:bg-blue-700 hover:ring-3 hover:ring-blue-600 transition"
           >
