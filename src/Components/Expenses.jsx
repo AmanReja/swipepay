@@ -483,8 +483,7 @@ const Expenses = ({ theme }) => {
 
                             {/* PURCHASE PRICE */}
                             <td className="px-4 py-4">
-                              {`Exp - ${exp.with_tax} `}
-                            </td>
+                              {exp.expense_number}                            </td>
                             <td className="px-4 py-4">
   {new Date(exp.created_at).toLocaleDateString("en-IN")}
 </td>

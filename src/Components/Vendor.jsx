@@ -63,7 +63,7 @@ const [selectedTcs, setSelectedTcs] = useState("");
       
     }
     dispatch(getmerchant(company.companyName))
-   },[dispatch])
+   },[dispatch,company])
 
 
 
@@ -497,7 +497,7 @@ const [selectedTcs, setSelectedTcs] = useState("");
         name="customer_name"
         value={form.customer_name}
         onChange={handleChange}
-        placeholder="Enter customer name"
+        placeholder="Enter Vendor name"
         className="w-full mt-1 rounded-lg border border-gray-300 px-4 py-2.5 text-sm 
                    focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
       />
@@ -987,7 +987,7 @@ const [selectedTcs, setSelectedTcs] = useState("");
                   variants={fade}
                   className="mt-6 h-[40px] cursor-pointer w-full flex justify-center items-center rounded-[8px] px-6 py-3 bg-blue-600 text-white shadow hover:bg-blue-700 transition"
                 >
-                  + Add New Customer
+                  + Add New Vendor
                 </motion.button>
               </motion.div>
             </motion.div>

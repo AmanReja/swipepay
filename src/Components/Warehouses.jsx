@@ -225,58 +225,83 @@ const handelremovestock =()=>{
     </div>
 
         {/* ---------------- Stats Cards ---------------- */}
-        <div className="flex flex-wrap mt-4 gap-4">
+        <div className="flex flex-wrap mt-6 gap-5">
   {[
     {
       label: "Low Stock",
-    value: `${warehousesummary?.negative_stock
-      ?.items} Items (${warehousesummary?.negative_stock?.qty})`,
-      color: "from-pink-400/10 to-pink-500/20",
+      value: `${warehousesummary?.negative_stock?.items} Items`,
+      sub: `Qty: ${warehousesummary?.negative_stock?.qty}`,
+      color: "from-rose-400/20 to-rose-600/30",
+      icon: "⚠️",
     },
     {
       label: "Positive Stock",
-      value: `${warehousesummary?.positive_stock
-        ?.items} Items (${warehousesummary?.positive_stock?.qty})`,
-      color: "from-green-400/10 to-green-500/20",
+      value: `${warehousesummary?.positive_stock?.items} Items`,
+      sub: `Qty: ${warehousesummary?.positive_stock?.qty}`,
+      color: "from-emerald-400/20 to-emerald-600/30",
+      icon: "✅",
     },
     {
-      label: "Stock Value Sales Price",
-      value:`${warehousesummary?.stock_value
-        .sale_price}`,
-      color: "from-sky-400/10 to-sky-500/20",
+      label: "Stock Value (Sale)",
+      value: `₹ ${Number(
+        warehousesummary?.stock_value?.sale_price || 0
+      ).toLocaleString("en-IN")}`,
+      sub: "Selling price value",
+      color: "from-sky-400/20 to-sky-600/30",
       wide: true,
+      icon: "💰",
     },
     {
-      label: "Stock Value With Purchase",
-      value: `${warehousesummary?.stock_value
-        .purchase_price
-      }`,
-      color: "from-amber-400/10 to-amber-500/20",
+      label: "Stock Value (Purchase)",
+      value: `₹ ${Number(
+        warehousesummary?.stock_value?.purchase_price || 0
+      ).toLocaleString("en-IN")}`,
+      sub: "Purchase cost value",
+      color: "from-amber-400/20 to-amber-600/30",
       wide: true,
+      icon: "📦",
     },
   ].map((item, index) => (
     <div
       key={index}
       className={`
+        relative overflow-hidden
         bg-gradient-to-br ${item.color}
-        p-5 rounded-2xl shadow-md border border-white/60 backdrop-blur-lg
-        transition-all duration-300 hover:shadow-xl hover:scale-[1.03]
-        ${item.wide ? "w-[260px]" : "w-[210px]"}
+        p-6 rounded-3xl
+        shadow-lg border border-white/50
+        backdrop-blur-xl
+        transition-all duration-300
+        hover:shadow-2xl hover:-translate-y-1
+        ${item.wide ? "w-[300px]" : "w-[230px]"}
       `}
     >
-      <p className="text-[13px] font-semibold text-gray-600 tracking-wide">
-        {item.label}
-      </p>
+      {/* Glow effect */}
+      <div className="absolute inset-0 opacity-0 hover:opacity-100 transition bg-white/5 rounded-3xl" />
 
-      <p className="text-[22px] font-extrabold text-gray-800 mt-1">
+      {/* Header */}
+      <div className="flex items-center gap-2">
+        {/* <span className="text-xl">{item.icon}</span> */}
+        <p className="text-[13px] font-semibold text-gray-700 uppercase tracking-wide">
+          {item.label}
+        </p>
+      </div>
+
+      {/* Main Value */}
+      <p className="text-[26px] font-extrabold text-gray-900 mt-2">
         {item.value}
       </p>
 
-      {/* Subtle detail line */}
-      
+      {/* Sub text */}
+      <p className="text-[12px] text-gray-600 mt-1">
+        {item.sub}
+      </p>
+
+      {/* Decorative gradient line */}
+      <div className="absolute bottom-0 left-0 w-full h-[3px] bg-gradient-to-r from-transparent via-white/40 to-transparent" />
     </div>
   ))}
 </div>
+
 
 
         {/* ---------------- Search ---------------- */}
@@ -296,7 +321,7 @@ const handelremovestock =()=>{
         </div>
 
         {/* ---------------- Table ---------------- */}
-        <div className="mt-8 overflow-hidden rounded-3xl border border-gray-200 shadow-sm bg-white">
+        <div className="mt-8 overflow-hidden rounded-xl border border-gray-200 shadow-sm bg-white">
   <table className="w-full text-sm">
     
     {/* HEADER */}
@@ -361,9 +386,10 @@ const handelremovestock =()=>{
                   handleModel();
                   addform(item);
                 }}
-                className="px-3 h-[32px] rounded-lg bg-emerald-100 text-emerald-700 text-xs font-medium hover:bg-emerald-200 transition"
+                className="px-3 h-[32px] flex items-center gap-[10px] rounded-lg bg-emerald-100 text-emerald-900 text-xs font-medium hover:bg-emerald-200 transition"
               >
-                + Stock In
+                <p className="border-emerald-900 border-2 rounded-full h-[18px] w-[18px] flex items-center text-center contain-content justify-center"><i class="fa-solid fa-plus text-emerald-900 text-[10px]"></i></p>
+                <p>Stock In</p>
               </button>
 
               <button
@@ -371,9 +397,10 @@ const handelremovestock =()=>{
                   handleModel();
                   removeform(item);
                 }}
-                className="px-3 h-[32px] rounded-lg bg-rose-100 text-rose-700 text-xs font-medium hover:bg-rose-200 transition"
+                className="px-3 h-[32px] flex items-center gap-[10px] rounded-lg bg-red-100 text-red-700 text-xs font-medium hover:bg-emerald-200 transition"
               >
-                − Stock Out
+              <p className="border-red-700 border-2 rounded-full h-[18px] w-[18px] flex items-center text-center contain-content justify-center"><i class="fa-solid fa-plus text-red-700 text-[10px]"></i></p>
+                <p>Stock Out</p>
               </button>
             </div>
           </td>

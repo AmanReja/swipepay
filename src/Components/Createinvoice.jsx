@@ -1,11 +1,12 @@
-import React, { useState,useEffect,useContext } from "react";
-import {get_customer,getproducts,addinvoice,getinvoice,getbank} from "../redux/action";
+import React, { useState,useEffect,useContext,useRef  } from "react";
+import {get_customer,getproducts,addinvoice,getinvoice,getbank,addsignature} from "../redux/action";
 import { Company } from "../Contexts/Company";
 import {useSelector,useDispatch} from "react-redux";
+import { toast, Toaster } from "sonner";
 
 
 
-const Createinvoice = () => {
+const Createinvoice = ({theme}) => {
  const dispatch = useDispatch()
  const {company} = useContext(Company);
  const customerdata = useSelector((state)=>state.customers.customers?.customers);
@@ -59,6 +60,160 @@ const [roundOff, setRoundOff] = useState(true);
 
 const [bank, setBank] = useState("Cash (-)");
 const [fullyPaid, setFullyPaid] = useState(false);
+const [isModelOpen, setIsModelOpen] = useState(false);
+const handleModel = () => {
+  setIsModelOpen((prev) => !prev);
+};
+
+
+
+const [signatureName, setSignatureName] = useState("");
+  const [activeTab, setActiveTab] = useState("upload"); // upload | type | draw
+  const [signatureFile, setSignatureFile] = useState(null);
+  const canvasRef = useRef(null);
+const ctxRef = useRef(null);
+
+const [isDrawing, setIsDrawing] = useState(false);
+const [signatureDraw, setSignatureDraw] = useState(null);
+const [typedSignature, setTypedSignature] = useState(null);
+
+
+useEffect(() => {
+  if (activeTab !== "draw") return;
+
+  const canvas = canvasRef.current;
+  const ctx = canvas.getContext("2d");
+
+  const ratio = window.devicePixelRatio || 1;
+  canvas.width = canvas.offsetWidth * ratio;
+  canvas.height = canvas.offsetHeight * ratio;
+  ctx.scale(ratio, ratio);
+
+  ctx.lineCap = "round";
+  ctx.strokeStyle = "#000";
+  ctx.lineWidth = 2;
+
+  ctxRef.current = ctx;
+}, [activeTab]);
+
+
+const startDrawing = (e) => {
+  e.preventDefault();
+  setIsDrawing(true);
+
+  const { offsetX, offsetY } = getPosition(e);
+  ctxRef.current.beginPath();
+  ctxRef.current.moveTo(offsetX, offsetY);
+};
+
+const draw = (e) => {
+  if (!isDrawing) return;
+  e.preventDefault();
+
+  const { offsetX, offsetY } = getPosition(e);
+  ctxRef.current.lineTo(offsetX, offsetY);
+  ctxRef.current.stroke();
+};
+
+const stopDrawing = () => {
+  setIsDrawing(false);
+  ctxRef.current.closePath();
+
+  // Save signature as image
+  const image = canvasRef.current.toDataURL("image/png");
+  setSignatureDraw(image);
+};
+
+const getPosition = (e) => {
+  const canvas = canvasRef.current;
+  const rect = canvas.getBoundingClientRect();
+
+  if (e.touches) {
+    return {
+      offsetX: e.touches[0].clientX - rect.left,
+      offsetY: e.touches[0].clientY - rect.top,
+    };
+  }
+
+  return {
+    offsetX: e.nativeEvent.offsetX,
+    offsetY: e.nativeEvent.offsetY,
+  };
+};
+
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (!["image/png", "image/jpeg"].includes(file.type)) {
+      alert("Only PNG or JPEG images are allowed");
+      return;
+    }
+
+    setSignatureFile(file);
+  };
+
+  const handleSubmit = async () => {
+    if (!signatureName) {
+      toast.error("Signature name is required");
+      return;
+    }
+  
+    const fd = new FormData();
+  
+    fd.append("signature_name", signatureName);
+    fd.append("signature_type", activeTab);
+  
+    // ========== UPLOAD ==========
+    if (activeTab === "upload") {
+      if (!signatureFile) {
+        toast.error("Please upload a signature image");
+        return;
+      }
+      fd.append("signature", signatureFile);
+    }
+  
+    // ========== DRAW ==========
+    if (activeTab === "draw") {
+      if (!signatureDraw) {
+        toast.error("Please draw your signature");
+        return;
+      }
+      fd.append("signature_text", signatureDraw); // base64
+    }
+  
+    // ========== TYPE ==========
+    if (activeTab === "type") {
+      if (!typedSignature) {
+        toast.error("Please type your signature");
+        return;
+      }
+      fd.append("signature_text", typedSignature);
+      fd.append("font_name", selectedFont);
+    }
+  
+    // DEBUG
+    for (let pair of fd.entries()) {
+      console.log(pair[0], pair[1]);
+    }
+  
+    try {
+      dispatch(addsignature(fd, company.companyName));
+    } catch (err) {
+      toast.error("Error connecting to server");
+    }
+  };
+  
+  
+
+
+
+
+
+
+
+
 
 const [payment, setPayment] = useState({
 
@@ -169,6 +324,8 @@ const handelsubmit =()=>{
 
 
 
+  console.log(327,payment);
+
    
    const invoicedata ={
 
@@ -219,7 +376,7 @@ useEffect(() => {
   
 
   return (
-    <div className="bg-gray-50 min-h-screen p-6">
+    <div className="bg-gray-50 min-h-screen p-2">
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <div className="flex items-center gap-3">
@@ -264,9 +421,15 @@ useEffect(() => {
               <p className="text-sm font-semibold text-gray-700">
                 Customer details
               </p>
-              <button className="text-xs hover:underline hover:text-black text-gray-600">
-                + Add new Customer?
+              <div className="flex gap-[5px] items-center">
+              <button className=" h-[10px] flex text-center items-center bg-gray-700 rounded-full  text-white">
+              <i class="fa-solid fa-plus text-[8px]"></i>
               </button>
+              <button className="text-xs hover:underline hover:text-black text-gray-600">
+                 Add new Customer?
+              </button>
+              </div>
+              
             </div>
 
             <div className="relative bg-blue-50 rounded-xl p-3">
@@ -350,6 +513,166 @@ useEffect(() => {
 )}
 
 
+{/* Overlay */}
+{isModelOpen && (
+  <div
+    onClick={handleModel}
+    className="fixed inset-0 bg-black/70 z-40"
+  />
+)}
+
+{/* Side Panel */}
+<div
+  className={`fixed top-0 h-full w-[650px] z-50 shadow-xl flex flex-col transition-all duration-300
+    ${isModelOpen ? "right-0" : "right-[-650px]"}
+    ${theme === "dark" ? "bg-gray-800 text-gray-100" : "bg-gray-100 text-gray-900"}
+  `}
+>
+  {/* ================= HEADER ================= */}
+  <div
+    className={`flex justify-between items-center p-4 pb-3 shadow-md flex-none
+      ${theme === "dark" ? "bg-gray-900 text-gray-100" : "bg-white"}
+    `}
+  >
+    <h2 className="text-lg font-semibold">Document Settings</h2>
+    <button onClick={handleModel}>✕</button>
+  </div>
+
+  {/* ================= CONTENT ================= */}
+  <div className="flex-1 overflow-y-auto p-5">
+    <div className="max-w-xl bg-white p-6 rounded-lg border space-y-4">
+      
+      {/* Signature Name */}
+      <div>
+        <label className="block text-sm font-medium mb-1">
+          Signature Name <span className="text-red-500">*</span>
+        </label>
+
+        <input
+          type="text"
+          value={signatureName}
+          onChange={(e) => setSignatureName(e.target.value)}
+          placeholder="Signature Name (This is only for your reference and will not be shown on the documents)"
+          className="w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+        />
+
+        <p className="text-xs text-gray-500 mt-1">
+          Signature Name is only for your reference and will not be shown on the documents.
+        </p>
+      </div>
+
+      {/* Tabs */}
+      <div className="flex gap-6 border-b text-sm">
+        {["upload", "type", "draw"].map((tab) => (
+          <button
+            key={tab}
+            onClick={() => setActiveTab(tab)}
+            className={`pb-2 capitalize transition-colors
+              ${
+                activeTab === tab
+                  ? "border-b-2 border-blue-600 text-blue-600 font-medium"
+                  : "text-gray-500"
+              }
+            `}
+          >
+            {tab}
+          </button>
+        ))}
+      </div>
+
+      {/* Upload Tab */}
+      {activeTab === "upload" && (
+        <div className="space-y-3">
+          <label className="flex flex-col items-center justify-center w-32 h-28 border-2 border-dashed rounded-md cursor-pointer text-gray-500 hover:border-blue-500">
+            <span className="text-xl">+</span>
+            <span className="text-xs">Upload</span>
+
+            <input
+              type="file"
+              accept="image/png,image/jpeg"
+              onChange={handleFileChange}
+              className="hidden"
+            />
+          </label>
+
+          {signatureFile && (
+            <p className="text-sm text-green-600">
+              Selected: {signatureFile.name}
+            </p>
+          )}
+
+          <p className="text-xs text-gray-500">
+            Images must be PNG or JPEG, recommended 1:1 (1024×1024) or 4:3 (640×480).
+          </p>
+        </div>
+      )}
+
+      {/* Type Tab */}
+      {activeTab === "type" && (
+        <input
+        onChange={(e)=>{setTypedSignature(e.target.value)}}
+          type="text"
+          value={typedSignature}
+          placeholder="Type your signature"
+          className="w-full border rounded-md px-3 py-2 text-sm"
+        />
+      )}
+
+      {/* Draw Tab */}
+      {activeTab === "draw" && (
+  <div className="space-y-3">
+    <canvas
+      ref={canvasRef}
+      className="w-full h-32 border rounded-md bg-white cursor-crosshair"
+      onMouseDown={startDrawing}
+      onMouseMove={draw}
+      onMouseUp={stopDrawing}
+      onMouseLeave={stopDrawing}
+      onTouchStart={startDrawing}
+      onTouchMove={draw}
+      onTouchEnd={stopDrawing}
+    />
+
+    <div className="flex justify-end gap-2">
+      <button
+        onClick={() => {
+          ctxRef.current.clearRect(
+            0,
+            0,
+            canvasRef.current.width,
+            canvasRef.current.height
+          );
+          setSignatureDraw(null);
+        }}
+        className="px-3 py-1 text-sm bg-gray-200 rounded-md"
+      >
+        Clear
+      </button>
+    </div>
+  </div>
+)}
+
+    </div>
+  </div>
+
+  {/* ================= FOOTER ================= */}
+  <div
+    className={`flex justify-end gap-2 p-4 shadow-md flex-none
+      ${theme === "dark" ? "bg-gray-900" : "bg-white"}
+    `}
+  >
+    <button
+      className="px-4 py-2 bg-gray-200 rounded-md"
+      onClick={handleModel}
+    >
+      Close
+    </button>
+
+    <button onClick={()=>{handleSubmit()}} className="px-4 py-2 bg-blue-600 text-white rounded-md">
+      Add Signature
+    </button>
+  </div>
+</div>
 
 
 </div>
@@ -732,7 +1055,7 @@ useEffect(() => {
               <input
                 type="checkbox"
                 checked={fullyPaid}
-                onChange={(e) => setFullyPaid(e.target.checked)}
+                onChange={(e) =>e.target.checked? setFullyPaid(true):setFullyPaid(false)}
               />
               Mark as fully paid
             </label>
@@ -750,9 +1073,10 @@ useEffect(() => {
 
             <input
               type="number"
-              value={payment.amount}
-              onChange={(e) =>
-                setPayment({ ...payment, amount: Number(e.target.value) })
+              value={fullyPaid===true?totalAmount :payment.amount}
+              onChange={(e) =>{
+                
+                setPayment({ ...payment, amount: fullyPaid===true?Number(totalAmount):Number(e.target.value) })}
               }
               placeholder="enter amount"
               className="border rounded-md px-2"
@@ -798,8 +1122,20 @@ useEffect(() => {
           <button className="mt-3 text-sm text-gray-600">
             ⊕ Split Payment
           </button>
+        </div> <div className="p-2">
+        <label className="text-[12px]" htmlFor="">
+        Select Signature
+        </label>
+        <div className="flex bg-pink-200 p-2 rounded h-[120px]">
+          <div className="flex rounded bg-white hover:border-dashed hover:border-[1px] border-blue-500 h-[40px] items-center justify-center w-full">
+          <button onClick={()=>{handleModel()}} className="text-red-500" >Add Signature to Invoice (optional)</button>
+          </div>
+          
         </div>
+
       </div>
+      </div>
+      
     </div>
         </div>
 
@@ -816,6 +1152,9 @@ useEffect(() => {
           </button>
         </div>
       </div>
+
+
+     
     </div>
   );
 };

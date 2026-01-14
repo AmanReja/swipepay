@@ -1,4 +1,4 @@
-import { ADD_COMPANY ,GET_COMPANY,ADD_CUSTOMER,GET_CUSTOMER,ADD_MERCHANT,GET_MERCHANT,GET_PRODUCTS,ADD_CATEGORY,GET_CATEGORY,ADD_PRODUCT,GET_INVOICE, GET_EXPENSE,GET_PAYMENTS,ADD_EXP_CATEGORY,GET_EXP_CATEGORY, ADD_EXPENSE,ADD_BANK,GET_BANK,GET_WAREHOUSE,GET_INVENTORY_TIMELINE, ADD_INVOICE} from "./action";
+import { ADD_COMPANY ,GET_COMPANY,ADD_CUSTOMER,GET_CUSTOMER,ADD_MERCHANT,GET_MERCHANT,GET_PRODUCTS,ADD_CATEGORY,GET_CATEGORY,ADD_PRODUCT,GET_INVOICE, GET_EXPENSE,GET_PAYMENTS,ADD_EXP_CATEGORY,GET_EXP_CATEGORY, ADD_EXPENSE,ADD_BANK,GET_BANK,GET_WAREHOUSE,GET_INVENTORY_TIMELINE, ADD_INVOICE,ADD_SIGNATURE} from "./action";
 
 
 const initialaddcomState ={
@@ -277,6 +277,26 @@ export const inventorytimelineReducer =(state=initialinventorytimelineState,acti
      return{
         ...state,
         timeline:action.payload
+
+
+     }
+       
+     } 
+    else{
+        return state
+    }
+
+}
+const initialsignatureState ={
+    signature:[],
+}
+
+export const signatureReducer =(state=initialsignatureState,action)=>{
+
+   if(action.type===ADD_SIGNATURE){
+     return{
+        ...state,
+        signature:[action.payload,...state.signature]
 
 
      }

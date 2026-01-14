@@ -67,6 +67,13 @@ export const GET_INVOICE = "GET_INVOICE";
 
 
 
+export const ADD_SIGNATURE = "ADD_SIGNATURE";
+
+
+
+
+
+
 
 
 
@@ -939,4 +946,35 @@ export const getinventorytimeline = (company_name) => async (dispatch) => {
 
   console.log(899,data);
   dispatch({ type: "GET_INVENTORY_TIMELINE", payload: data });
+};
+
+
+
+export const addsignature = (formdata,company_name) => async (dispatch) => {
+  console.log(106,formdata);
+  const token = localStorage.getItem("token") || {};
+  const res = await fetch(`${baseUrl}/v1/user/signature/${company_name}`, {
+    method: "POST",
+    headers: {
+     
+      Authorization: `Bearer ${token}`,
+    },
+    body:formdata
+  });
+
+  if (res.status === 401) {
+    localStorage.removeItem("token");
+    window.location.href = "/";
+    return;
+  }
+
+  if (res.status===201) {
+    alert("addcompany successfull")
+    dispatch(get_company())
+  }
+   
+
+  const data = await res.json();
+  console.log(data);
+  dispatch({ type: "ADD_SIGNATURE", payload: data });
 };
