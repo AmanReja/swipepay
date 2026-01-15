@@ -10,10 +10,12 @@ import {getinvoice} from "../redux/action";
 import { useDispatch,useSelector } from "react-redux";
 import { Company } from "../Contexts/Company";
 import {useNavigate} from "react-router-dom";
+import Invoicepreview from "./Invoicepreview";
 
 const Sales = ({ theme }) => {
   const navigate =useNavigate()
   const { company } = useContext(Company);
+  const [openPreview, setOpenPreview] = useState(false);
 
 
 
@@ -297,7 +299,7 @@ const Sales = ({ theme }) => {
               theme === "dark" ? "text-gray-100" : "text-black"
             }`}
           >
-            <button className="px-3 py-1.5 rounded-[5px] hover:ring-1 hover:ring-blue-400 border-blue-800 border-[1px] text-sm">
+            <button onClick={()=>{setOpenPreview(true)}} className="px-3 py-1.5 rounded-[5px] hover:ring-1 hover:ring-blue-400 border-blue-800 border-[1px] text-sm">
               ❤️ Invoice Templates
             </button>
 
@@ -434,6 +436,55 @@ const Sales = ({ theme }) => {
           </button>
         </div>
       </div>
+
+
+      <div
+  className={`
+    fixed inset-0 z-50 bg-black/60 backdrop-blur-sm
+    transition-opacity duration-300
+    ${openPreview ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}
+  `}
+  onClick={() => setOpenPreview(false)}
+>
+  {/* POPUP */}
+  <div
+    onClick={(e) => e.stopPropagation()}
+    className={`
+      absolute top-0 left-0 w-full h-[90vh]
+      bg-gray-100 shadow-2xl overflow-hidden
+      transform transition-transform duration-300 ease-out
+      ${openPreview ? "translate-y-0" : "-translate-y-full"}
+    `}
+  >
+    {/* HEADER */}
+    <div className="sticky top-0 z-10 bg-white border-b px-6 py-4 flex items-center justify-between">
+      <h2 className="text-lg font-semibold">Invoice Templates</h2>
+      <button
+        onClick={() => setOpenPreview(false)}
+        className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200"
+      >
+        ✕
+      </button>
+    </div>
+
+    {/* BODY */}
+    <div className="h-[calc(90vh-64px)] overflow-y-auto p-4">
+      <div className="grid gap-4 justify-center grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+        {Array.from({ length: 14 }).map((_, index) => (
+          <div
+            key={index}
+            className="w-[150px] h-[185px] bg-white border rounded-lg shadow hover:shadow-lg hover:scale-[1.03] transition cursor-pointer flex items-center justify-center"
+          >
+            Template {index + 1}
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 
       {/* Content Section */}
 

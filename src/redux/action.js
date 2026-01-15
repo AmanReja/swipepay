@@ -18,6 +18,7 @@ export const GET_CUSTOMER = "GET_CUSTOMER";
 
 export const ADD_MERCHANT = "ADD_MERCHANT";
 export const GET_MERCHANT = "GET_MERCHANT";
+export const GET_BANK_BY_IFSC = "GET_BANK_BY_IFSC";
 export const SEARCH_VENDOR_CX = "SEARCH_VENDOR_CX";
 
 
@@ -295,8 +296,8 @@ export const get_customer = (company_name) => async (dispatch) => {
 
 
 
-export const addmerchant = (vendor,company,id) => async (dispatch) => {
-  console.log(244,vendor);
+export const addmerchant = (payload,company) => async (dispatch) => {
+  console.log(244,payload);
   const token = localStorage.getItem("token") || {};
   const res = await fetch(`${baseUrl}/v1/vendor/add/merchant/${company}`, {
     method: "POST",
@@ -304,7 +305,7 @@ export const addmerchant = (vendor,company,id) => async (dispatch) => {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-    body:JSON.stringify({vendor,linked_customer_id:id?id:null})
+    body:JSON.stringify(payload)
   });
 
   if (res.status === 401) {
@@ -568,7 +569,7 @@ export const addinvoice = (invoicedata,company_name) => async (dispatch) => {
   }
 
   if (res.status===201) {
-    alert("add invoice successfull")
+    alert("invoice created")
     dispatch(getinvoice(company_name))
     
   }
@@ -977,4 +978,38 @@ export const addsignature = (formdata,company_name) => async (dispatch) => {
   const data = await res.json();
   console.log(data);
   dispatch({ type: "ADD_SIGNATURE", payload: data });
+};
+
+
+export const getbankbyifsc = (ifsc) => async (dispatch) => {
+  console.log(205,ifsc);
+ 
+  const token = localStorage.getItem("token") || {};
+  const res = await fetch(`${baseUrl}/v1/user/ifsc/${ifsc}
+  `, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+     
+      Authorization: `Bearer ${token}`,
+    },
+  
+  });
+
+  if (res.status === 401) {
+    localStorage.removeItem("token");
+    window.location.href = "/";
+    return;
+  }
+
+  // if (res.status===200) {
+  //   // alert("addcompany successfull")
+    
+  // }
+   
+
+  const data = await res.json();
+
+  console.log(899,data);
+  dispatch({ type: "GET_BANK_BY_IFSC", payload: data });
 };

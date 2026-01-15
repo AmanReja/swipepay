@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { addcompanyReducer,customerReducer,merchantReducer,productReducer ,categoryReducer,invoiceReducer,expenseReducer,paymentReducer,expcaReducer,bankReducer,warehouseReducer,inventorytimelineReducer,signatureReducer} from "./reducer";
+import { addcompanyReducer,customerReducer,merchantReducer,productReducer ,categoryReducer,invoiceReducer,expenseReducer,paymentReducer,expcaReducer,bankReducer,warehouseReducer,inventorytimelineReducer,signatureReducer,ifscReducer} from "./reducer";
 
 const store = configureStore({
   reducer: {
@@ -16,7 +16,8 @@ const store = configureStore({
     bank:bankReducer,
     warehouse:warehouseReducer,
     timeline:inventorytimelineReducer,
-    signature:signatureReducer
+    signature:signatureReducer,
+    ifsc:ifscReducer
 
     
    

@@ -38,7 +38,7 @@ const Createinvoice = ({theme}) => {
   const [iscxopen, setIscxopen] = useState(false);
   const [isproductopen, setIsproductopen] = useState(false);
   const [product, setProduct] = useState(null);
-const [qty,setQty]=useState("")
+const [qty,setQty]=useState("1")
 
 
 
@@ -72,6 +72,7 @@ const [signatureName, setSignatureName] = useState("");
   const [signatureFile, setSignatureFile] = useState(null);
   const canvasRef = useRef(null);
 const ctxRef = useRef(null);
+
 
 const [isDrawing, setIsDrawing] = useState(false);
 const [signatureDraw, setSignatureDraw] = useState(null);
@@ -539,8 +540,8 @@ useEffect(() => {
   </div>
 
   {/* ================= CONTENT ================= */}
-  <div className="flex-1 overflow-y-auto p-5">
-    <div className="max-w-xl bg-white p-6 rounded-lg border space-y-4">
+  <div className="flex-1  overflow-y-auto p-5">
+    <div className="max-w-xl flex flex-col gap-[50px] bg-white h-[450px] p-6 rounded-lg border space-y-4">
       
       {/* Signature Name */}
       <div>
@@ -562,7 +563,7 @@ useEffect(() => {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-6 border-b text-sm">
+      <div className="flex gap-6  text-sm">
         {["upload", "type", "draw"].map((tab) => (
           <button
             key={tab}
@@ -676,6 +677,8 @@ useEffect(() => {
 
 
 </div>
+
+
 
 
            
@@ -1049,80 +1052,98 @@ useEffect(() => {
 
         {/* PAYMENT */}
         <div className="bg-emerald-50 rounded-lg p-4">
-          <div className="flex justify-between mb-2 text-sm font-medium">
-            <span>Add payment</span>
-            <label className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                checked={fullyPaid}
-                onChange={(e) =>e.target.checked? setFullyPaid(true):setFullyPaid(false)}
-              />
-              Mark as fully paid
-            </label>
-          </div>
+  <div className="flex justify-between mb-2 text-sm font-medium">
+    <span>Add payment</span>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            <textarea
-              value={payment.notes}
-              onChange={(e) =>
-                setPayment({ ...payment, notes: e.target.value })
-              }
-              placeholder="Advance received, UTR number etc..."
-              className="border rounded-md p-2 text-sm md:col-span-1"
-            />
+    <label className="flex items-center gap-2">
+      <input
+        type="checkbox"
+        checked={fullyPaid}
+        onChange={(e) => {
+          const checked = e.target.checked;
+          setFullyPaid(checked);
 
-            <input
-              type="number"
-              value={fullyPaid===true?totalAmount :payment.amount}
-              onChange={(e) =>{
-                
-                setPayment({ ...payment, amount: fullyPaid===true?Number(totalAmount):Number(e.target.value) })}
-              }
-              placeholder="enter amount"
-              className="border rounded-md px-2"
-            />
-
-<select
-  value={payment.mode}
-  onChange={(e) =>
-    setPayment({ ...payment, mode: e.target.value })
-  }
-  className="border rounded-md px-2"
->
-  <option value="upi">UPI</option>
-  <option value="cash">Cash</option>
-  <option value="bank">NB</option>
-</select>
-
-          </div>
-          <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4 space-y-2">
-  <div className="flex justify-between text-sm text-gray-700">
-    <span>Total Amount</span>
-    <span className="font-medium">
-      ₹ {Number(totalAmount || 0).toFixed(2)}
-    </span>
+          setPayment((prev) => ({
+            ...prev,
+            amount: checked ? totalAmount : prev.amount,
+          }));
+        }}
+      />
+      Mark as fully paid
+    </label>
   </div>
 
-  <div className="flex justify-between text-sm text-gray-700">
-    <span>Paid Amount</span>
-    <span className="font-medium">
-      ₹ {Number(payment.amount || 0).toFixed(2)}
-    </span>
+  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+    <textarea
+      value={payment.notes}
+      onChange={(e) =>
+        setPayment({ ...payment, notes: e.target.value })
+      }
+      placeholder="Advance received, UTR number etc..."
+      className="border rounded-md p-2 text-sm"
+    />
+
+    <input
+      type="number"
+      disabled={fullyPaid}
+      value={payment.amount || ""}
+      onChange={(e) => {
+        const value = Math.min(
+          Number(e.target.value || 0),
+          Number(totalAmount || 0)
+        );
+
+        setPayment({ ...payment, amount: value });
+      }}
+      placeholder="Enter amount"
+      className="border rounded-md px-2 disabled:bg-gray-100"
+    />
+
+    <select
+      value={payment.mode}
+      onChange={(e) =>
+        setPayment({ ...payment, mode: e.target.value })
+      }
+      className="border rounded-md px-2"
+    >
+      <option value="upi">UPI</option>
+      <option value="cash">Cash</option>
+      <option value="bank">NB</option>
+    </select>
   </div>
 
-  <div className="border-t pt-2 flex justify-between text-base font-semibold text-emerald-700">
-    <span>Balance Amount</span>
-    <span>
-      ₹ {(Number(totalAmount || 0) - Number(payment.amount || 0)).toFixed(2)}
-    </span>
+  {/* SUMMARY */}
+  <div className="mt-4 bg-emerald-50 border border-emerald-200 rounded-lg p-4 space-y-2">
+    <div className="flex justify-between text-sm">
+      <span>Total Amount</span>
+      <span className="font-medium">
+        ₹ {Number(totalAmount || 0).toFixed(2)}
+      </span>
+    </div>
+
+    <div className="flex justify-between text-sm">
+      <span>Paid Amount</span>
+      <span className="font-medium">
+        ₹ {Number(payment.amount || 0).toFixed(2)}
+      </span>
+    </div>
+
+    <div className="border-t pt-2 flex justify-between font-semibold text-emerald-700">
+      <span>Balance Amount</span>
+      <span>
+        ₹ {Math.max(
+          0,
+          Number(totalAmount || 0) - Number(payment.amount || 0)
+        ).toFixed(2)}
+      </span>
+    </div>
   </div>
+
+  <button className="mt-3 text-sm text-gray-600">
+    ⊕ Split Payment
+  </button>
 </div>
-
-
-          <button className="mt-3 text-sm text-gray-600">
-            ⊕ Split Payment
-          </button>
-        </div> <div className="p-2">
+<div className="p-2">
         <label className="text-[12px]" htmlFor="">
         Select Signature
         </label>

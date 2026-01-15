@@ -5,12 +5,94 @@ import Offers from "./Offers";
 import webinar from "../assets/images/webinar.svg";
 import { toast, Toaster } from "sonner";
 import {ChevronDown,Plus} from "lucide-react";
-import {get_customer,addcustomer,addmerchant, getmerchant} from "../redux/action";
+import {get_customer,addcustomer,addmerchant, getmerchant,getbankbyifsc} from "../redux/action";
 import { useDispatch,useSelector } from "react-redux";
 import { Company } from "../Contexts/Company";
 
 
 const Vendor = ({ theme }) => {
+
+
+  const [bankopen, setBankopen] = useState(false);
+  const [isediting, setIsediting] = useState(false);
+  const [editIndex, setEditIndex] = useState(null);
+  const [addedbank, setAddedbank] = useState([]);
+  const [ismoredetails,seTismoredetails]=useState(false)
+
+
+
+  const handelEdit = (bank, index) => {
+    setIsediting(true);
+    setEditIndex(index);
+    setBankopen(true);
+  
+    setBankForm({
+      account_holder_name: bank.account_holder_name,
+      account_no: bank.account_no,
+      confirm_account_no: bank.confirm_account_no,
+      ifsc_code: bank.ifsc_code,
+      bank_name: bank.bank_name,
+      branch_name: bank.branch_name,
+      nick_name: bank.nick_name,
+      transaction_type: bank.transaction_type,
+      is_default: bank.is_default,
+    });
+  };
+  
+  
+
+  console.log("addedbank",addedbank);
+
+  const [bankForm, setBankForm] = useState({
+    account_holder_name: "",
+    account_no: "",
+    confirm_account_no: "",
+    ifsc_code: "",
+    bank_name: "",
+    branch_name: "",
+    nick_name:"",
+    transaction_type:"IMPS",
+    is_default: false,
+  }); 
+  
+  
+  const handleBankChange = (e) => {
+    const { name, value } = e.target;
+    setBankForm({ ...bankForm, [name]: value });
+  };
+
+
+
+
+
+  
+  const handleToggle = () => {
+    setBankForm({ ...bankForm, is_default: !bankForm.is_default });
+  };
+  
+
+
+
+    const fetchifc =(ifsc)=>{
+dispatch(getbankbyifsc(ifsc))
+
+    }  
+
+
+    const ifscdata = useSelector((state)=>state.ifsc.ifsc);
+
+
+    console.log("ifscdata",ifscdata);
+    useEffect(() => {
+      if (ifscdata) {
+        setBankForm((prev) => ({
+          ...prev,
+          bank_name: ifscdata.bank_name || "",
+          branch_name: ifscdata.branch_name || "",
+        }));
+      }
+    }, [ifscdata]);
+    
 
 
 
@@ -178,9 +260,17 @@ const [selectedTcs, setSelectedTcs] = useState("");
   
     opening_balance: "",
     current_balance: "",
-    balance_type: "",
+    balance_type: "debit",
   
     rcm_enabled: 0,
+   
+    country: "India",
+    address_line1: "",
+    address_line2: "",
+    city: "Bengaluru",
+    state_name: "Karnataka",
+    pincode: ""
+    
   
  
     
@@ -214,29 +304,45 @@ const [selectedTcs, setSelectedTcs] = useState("");
   const handelsubmit =(e)=>{
     e.preventDefault()
     const payload = {
+
+      vendor :{
+        vendor_name: form.customer_name,
+        phone: form.phone,
+        email: form.email,
+        gstin: form.gst,
+      
+        company_name: form.company,
+       
+      
+        opening_balance: form.opening_balance,
+        
+       
+      
+        balance_type: form.balance_type,
+      
+        rcm_enabled: form.rcm_enabled ? 1 : 0,
+      
+        tds: istdsactive,                 // "0" | "1"
+        tds_data:selectedTds,
+      
+        tcs: istcsactive,                 // "0" | "1"
+        tcs_data: selectedTcs,
+        },
+      bank_accounts :addedbank,
+      billing_address :{
+        
+    country: form.country,
+    address_line1: form.address_line1,
+    address_line2: form.address_line2,
+    city: form.city,
+    state_name: form.state_name,
+    pincode: form.pincode
+      },
+      preferences : null,
+      create_customer : false,
+      existing_customer_id :selectedcx?.id
   
     
-      vendor_name: form.customer_name,
-      phone: form.phone,
-      email: form.email,
-      gstin: form.gst,
-    
-      company_name: form.company,
-     
-    
-      opening_balance: form.opening_balance,
-      
-     
-    
-      balance_type: form.balance_type,
-    
-      rcm_enabled: form.rcm_enabled ? 1 : 0,
-    
-      tds: istdsactive,                 // "0" | "1"
-      tds_data:selectedTds,
-    
-      tcs: istcsactive,                 // "0" | "1"
-      tcs_data: selectedTcs
     };
    
 
@@ -245,7 +351,7 @@ const [selectedTcs, setSelectedTcs] = useState("");
  
 
 
-    dispatch(addmerchant(payload,company.companyName,selectedcx?.id))
+    dispatch(addmerchant(payload,company.companyName))
     
   }
 
@@ -562,13 +668,189 @@ const [selectedTcs, setSelectedTcs] = useState("");
       </div>
 
     </div>
-  </div>
+    <div>
+        <label className="text-sm font-medium text-gray-700">Billing Address</label>
+        <div className="grid grid-cols-2 gap-5">
+      <div>
+       
+        <input
+          name="address_line1"
+          value={form.address_line1}
+          onChange={handleChange}
+          placeholder="Address Line 1"
+          className="w-full mt-1 rounded-lg border border-gray-300 px-4 py-2.5 text-sm 
+                     focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+        />
+      </div>
+      <div>
+       
+        <input
+          name="address_line2"
+          value={form.address_line2}
+          onChange={handleChange}
+          placeholder="Address Line 2"
+          className="w-full mt-1 rounded-lg border border-gray-300 px-4 py-2.5 text-sm 
+                     focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+        />
+      </div>
 
+    </div>
+        <div className="grid grid-cols-2 gap-5">
+      <div>
+       
+        <input
+          name="pincode"
+          value={form.pincode}
+          onChange={handleChange}
+          placeholder="Pincode"
+          className="w-full mt-1 rounded-lg border border-gray-300 px-4 py-2.5 text-sm 
+                     focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+        />
+      </div>
+      <div>
+  <select
+    name="state_name"
+    value={form.state_name}
+    onChange={handleChange}
+    className="w-full mt-1 rounded-lg border border-gray-300 px-4 py-2.5 text-sm 
+               focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+  >
+    <option value="">Select State</option>
+
+    <option value="Andhra Pradesh">Andhra Pradesh</option>
+    <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+    <option value="Assam">Assam</option>
+    <option value="Bihar">Bihar</option>
+    <option value="Chhattisgarh">Chhattisgarh</option>
+    <option value="Delhi">Delhi</option>
+    <option value="Goa">Goa</option>
+    <option value="Gujarat">Gujarat</option>
+    <option value="Haryana">Haryana</option>
+    <option value="Himachal Pradesh">Himachal Pradesh</option>
+    <option value="Jharkhand">Jharkhand</option>
+    <option value="Karnataka">Karnataka</option>
+    <option value="Kerala">Kerala</option>
+    <option value="Madhya Pradesh">Madhya Pradesh</option>
+    <option value="Maharashtra">Maharashtra</option>
+    <option value="Odisha">Odisha</option>
+    <option value="Punjab">Punjab</option>
+    <option value="Rajasthan">Rajasthan</option>
+    <option value="Tamil Nadu">Tamil Nadu</option>
+    <option value="Telangana">Telangana</option>
+    <option value="Uttar Pradesh">Uttar Pradesh</option>
+    <option value="Uttarakhand">Uttarakhand</option>
+    <option value="West Bengal">West Bengal</option>
+  </select>
+</div>
+
+
+    </div>
+        <div className="grid grid-cols-2 gap-5">
+      <div>
+       
+        <input
+          name="city"
+          value={form.city}
+          onChange={handleChange}
+          placeholder="City"
+          className="w-full mt-1 rounded-lg border border-gray-300 px-4 py-2.5 text-sm 
+                     focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+        />
+      </div>
+      <div>
+  <select
+    name="country"
+    value={form.country}
+    onChange={handleChange}
+    className="w-full mt-1 rounded-lg border border-gray-300 px-4 py-2.5 text-sm 
+               focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+  >
+    <option value="">Select Country</option>
+
+    <option value="India">India</option>
+    <option value="United States">United States</option>
+    <option value="United Kingdom">United Kingdom</option>
+    <option value="Canada">Canada</option>
+    <option value="Australia">Australia</option>
+    <option value="United Arab Emirates">United Arab Emirates</option>
+    <option value="Singapore">Singapore</option>
+    <option value="Germany">Germany</option>
+    <option value="France">France</option>
+    <option value="Japan">Japan</option>
+    <option value="China">China</option>
+    <option value="South Africa">South Africa</option>
+  </select>
+</div>
+
+
+    </div>
+      </div>
+  </div>
+  <div className="flex ">
+      <button type="button" onClick={()=>{setBankopen(true)}} className="text-red-500 shadow-sm rounded p-2"><i class="fa-solid fa-plus"></i>Bank Details</button>
+    </div>
+    <div className="flex flex-wrap gap-4">
+  {addedbank?.length > 0 &&
+    addedbank.map((bank, index) => (
+      <div
+        key={bank.id || index}
+        className="flex flex-col p-4 border rounded-lg w-[280px] bg-gray-50"
+      >
+        <p className="font-semibold text-gray-800">
+          {bank.account_holder_name}
+        </p>
+
+        <p className="text-sm text-gray-600">
+          Bank: {bank.bank_name}
+        </p>
+
+        <p className="text-sm text-gray-600">
+          Branch: {bank.branch_name}
+        </p>
+
+        <p className="text-sm font-mono">
+          A/C No: {bank.account_no}
+        </p>
+
+        <p className="text-sm font-mono">
+          IFSC: {bank.ifsc_code}
+        </p>
+
+        <p className="text-xs text-gray-500">
+          Nickname: {bank.nick_name || "-"}
+        </p>
+
+        <span className="mt-2 inline-block w-fit px-2 py-1 text-xs rounded bg-blue-100 text-blue-700">
+          {bank.transaction_type}
+        </span>
+        <div className="flex w-[200px] justify-start gap-[5px] mt-[5px]">
+          <button onClick={()=>{handelEdit(bank,index)}} type="button" className="bg-blue-500 text-white p-[2px] text-[10px] rounded-[2px]">Edit</button>
+          <button
+  onClick={() =>
+    setAddedbank((prev) =>
+      prev.filter((_, idx) => idx !== index)
+    )
+  }
+  type="button"
+  className="bg-red-500 text-white p-[2px] text-[10px] rounded-[2px]"
+>
+  Delete
+</button>
+        </div>
+      </div>
+    ))}
+</div>
+
+
+
+
+    
   {/* OPENING BALANCE */}
   <div className="bg-white border rounded-xl p-6 space-y-4 shadow-sm">
     <h3 className="font-semibold text-sm text-gray-800">
       Opening Balance
     </h3>
+ 
 
     <div className="flex gap-8">
       <label className="flex items-center gap-2 text-sm text-gray-700">
@@ -595,26 +877,205 @@ const [selectedTcs, setSelectedTcs] = useState("");
         Credit
       </label>
     </div>
+ 
 
-    <div className="grid grid-cols-2 gap-5">
+    <div className="flex gap-5 w-full rounded border-gray-300 border  focus:ring-2 focus:border-blue-500  transition">
       <input
         name="opening_balance"
         value={form.opening_balance}
         onChange={handleChange}
-        placeholder="₹ Opening balance"
-        className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm 
-                   focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+        placeholder={`${form.balance_type==="credit"?"Enter credit amount":"Enter debit amount"} `}
+        className="w-[60%] rounded-lg  outline-none px-4 py-2.5 text-sm"
       />
 
     
+<p className={`${form.balance_type === "debit"?"text-red-500":"text-green-400"}  font-bold content-center`}>
+      {form.balance_type === "debit"
+        ? "Vendor payes you"
+        : "You pay the vendor"}
+    </p>
     </div>
 
-    <p className="text-xs text-gray-500">
-      {form.balance_type === "debit"
-        ? "Customer owes you money"
-        : "You owe customer money"}
-    </p>
   </div>
+  <div
+  className={`
+    bg-orange-50 border border-orange-200 rounded-lg
+    transition-all duration-500 overflow-hidden
+    ${ismoredetails ? "max-h-[500px] p-5" : "max-h-[70px] p-4"}
+  `}
+>
+  {/* HEADER */}
+  <div
+    onClick={() => seTismoredetails((prev) => !prev)}
+    className="cursor-pointer flex items-start gap-2"
+  >
+    <ChevronDown
+      size={18}
+      className={`mt-0.5 transition-transform duration-300 ${
+        ismoredetails ? "rotate-180" : ""
+      }`}
+    />
+    <div>
+      <p className="font-medium text-sm">More Details?</p>
+      <p className="text-xs text-gray-600">
+        Cess, Show Online Discount, Inventory tracking, Low stock alerts etc..
+      </p>
+    </div>
+  </div>
+
+  {/* CONTENT */}
+  {ismoredetails && (
+    <div className="mt-6 space-y-6 text-sm">
+
+      {/* GRID */}
+      <div className="grid grid-cols-2 gap-6">
+
+        {/* DISCOUNT */}
+        <div>
+          <label className="font-medium text-gray-700">Discount</label>
+          <div className="mt-1 flex w-full max-w-md">
+  <input onChange={(e)=>{setForm({...form,discount_value:e.target.value})}}
+    type="number"
+    placeholder="0"
+    className="
+      w-[200px]
+      rounded-l-md
+      border border-gray-300
+      px-3 py-2
+      text-sm
+      focus:z-10
+     
+    "
+  />
+
+  <select  value={form.discount_type}  onChange={(e)=>{setForm({...form,discount_type:e.target.value})}}
+    className=" outline-none
+      rounded-r-md
+      border border-l-0 border-gray-300
+      bg-white
+      px-3 py-2
+      text-sm
+     
+    "
+  >
+    <option selected value="">Select Type</option>
+    <option  value="percentage">Percentage (%)</option>
+    <option value="amount">Amount (₹)</option>
+  </select>
+</div>
+
+          
+          <p className="text-xs text-gray-500 mt-1">
+            Discount will be calculated based on the selected option. In Online Store,
+            discount will be shown as per the selected option.
+          </p>
+        </div>
+
+        {/* LOW STOCK ALERT */}
+        
+        <div>
+          <label className="font-medium text-gray-700">
+            Low Stock Alert at
+          </label>
+          <input onChange={(e)=>{setForm({...form,low_stock_alert_at:e.target.value})}}
+            type="number"
+            placeholder="0"
+            className="mt-1 w-full rounded-md border px-3 py-2 text-sm"
+          />
+          <p className="text-xs text-gray-500 mt-1">
+            You will be notified once the stock reaches the minimum stock qty. (BETA)
+          </p>
+        </div>
+
+      </div>
+
+      {/* TOGGLES */}
+      <div className="grid grid-cols-2 gap-6">
+
+        {/* SHOW ONLINE STORE */}
+        <div>
+  <p className="font-medium text-gray-700">Show in Online Store</p>
+
+  <div className="flex items-center gap-3 mt-2">
+  <label className="relative cursor-pointer">
+    <input
+      type="checkbox"
+      checked={form.show_online}
+      onChange={(e) => {e.target.checked?setForm({...form,show_online:true}):setForm({...form,show_online:false})}}
+      className="sr-only peer"
+    />
+
+    {/* Track */}
+    <div
+      className={`
+        w-10 h-5 rounded-full transition
+        ${form.show_online ? "bg-green-600" : "bg-gray-300"}
+      `}
+    />
+
+    {/* Thumb */}
+    <div
+      className={`
+        absolute top-0.5 left-0.5
+        w-4 h-4 bg-white rounded-full shadow
+        transition-transform
+        ${form.show_online ? "translate-x-5" : ""}
+      `}
+    />
+  </label>
+
+  <span className="text-xs text-gray-600">
+    Hides the item for sale and shows only while making a purchase
+  </span>
+</div>
+</div>
+
+
+        {/* NOT FOR SALE */}
+        <div>
+  <p className="font-medium text-gray-700">Not For Sale</p>
+
+  <div className="flex items-center gap-3 mt-2">
+  <label className="relative cursor-pointer">
+    <input
+      type="checkbox"
+      checked={form.not_for_sale}
+      onChange={(e) => {e.target.checked?setForm({...form,not_for_sale:true}):setForm({...form,not_for_sale:false})}}
+      className="sr-only peer"
+    />
+
+    {/* Track */}
+    <div
+      className={`
+        w-10 h-5 rounded-full transition
+        ${form.not_for_sale ? "bg-gray-600" : "bg-gray-300"}
+      `}
+    />
+
+    {/* Thumb */}
+    <div
+      className={`
+        absolute top-0.5 left-0.5
+        w-4 h-4 bg-white rounded-full shadow
+        transition-transform
+        ${form.not_for_sale ? "translate-x-5" : ""}
+      `}
+    />
+  </label>
+
+  <span className="text-xs text-gray-600">
+    Hides the item for sale and shows only while making a purchase
+  </span>
+</div>
+
+</div>
+
+
+      </div>
+
+    </div>
+  )}
+</div>
 
   {/* TAX & RCM */}
   <div className="bg-white border border-gray-200 rounded-xl p-6 space-y-4 shadow-sm">
@@ -920,25 +1381,7 @@ const [selectedTcs, setSelectedTcs] = useState("");
   
 
   {/* ACTIONS */}
-  <div className="flex justify-end gap-4 pt-4">
-    <button
-      type="button"
-      onClick={handleModel}
-      className="px-5 py-2.5 text-sm rounded-lg border border-gray-300 
-                 hover:bg-gray-100 transition"
-    >
-      Cancel
-    </button>
 
-    <button
-      type="submit"
-      onClick={isboth?createvendorand_customer:handelsubmit}
-      className="px-6 py-2.5 text-sm rounded-lg bg-blue-600 text-white 
-                 hover:bg-blue-700 shadow-md transition"
-    >
-      Save Vendor
-    </button>
-  </div>
 </form>
 
       </div>
@@ -952,9 +1395,243 @@ const [selectedTcs, setSelectedTcs] = useState("");
         <button onClick={handleModel} className="px-4 py-2 bg-gray-200 rounded-md">
           Close
         </button>
-        <button className="px-4 py-2 bg-blue-600 text-white rounded-md">Save</button>
+        <button  onClick={isboth?createvendorand_customer:handelsubmit} className="px-4 py-2 bg-blue-600 text-white rounded-md">Save Vendor</button>
       </div>
     </div>
+
+
+
+
+    { bankopen && (
+  <div
+    onClick={""}
+    className="fixed inset-0 bg-black/70 z-80"
+  />
+)}
+
+{/* Popup Container */}
+<div
+  className={`fixed top-0 right-0 h-full w-[550px] z-80 shadow-2xl
+    transition-all duration-300 flex flex-col
+    ${bankopen ? "translate-x-0" : "translate-x-full"}
+    ${theme === "dark"
+      ? "bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100"
+      : "bg-gray-50 text-gray-900"}
+  `}
+>
+  {/* Header */}
+  <div
+    className={`flex items-center justify-between px-6 py-4 border-b flex-none
+      ${theme === "dark" ? "border-gray-700 bg-gray-900" : "border-gray-200 bg-white"}
+    `}
+  >
+    <h2 className="text-lg font-semibold tracking-wide">Add Bank</h2>
+    <button
+      onClick={() => setBankopen(false)}
+      className="w-8 h-8 flex items-center justify-center rounded-full
+                 hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+    >
+      ✕
+    </button>
+    
+  </div>
+
+  {/* Body */}
+  <div className="flex-1 overflow-y-auto p-6">
+    <form   className="space-y-6">
+
+    {/* Account Holder */}
+<div>
+  <label className="text-sm font-medium">Account Holder Name</label>
+  <input
+    name="account_holder_name"
+    value={bankForm.account_holder_name}
+    onChange={handleBankChange}
+    className="w-full mt-1 p-2 border rounded-md"
+  />
+</div>
+
+{/* Account No */}
+<div>
+  <label className="text-sm font-medium text-red-600">* Account No</label>
+  <input
+    name="account_no"
+    value={bankForm.account_no}
+    onChange={handleBankChange}
+    className="w-full mt-1 p-2 border rounded-md"
+  />
+</div>
+
+{/* Confirm Account No */}
+<div>
+  <label className="text-sm font-medium text-red-600">* Confirm Bank Account No</label>
+  <input
+    name="confirm_account_no"
+    value={bankForm.confirm_account_no}
+    onChange={handleBankChange}
+    className="w-full mt-1 p-2 border rounded-md"
+  />
+</div>
+
+{/* IFSC */}
+<div>
+  <label className="text-sm font-medium text-red-600">* IFSC Code</label>
+  <div className="flex gap-2">
+    <input
+      name="ifsc_code"
+      value={bankForm.ifsc_code}
+      onChange={handleBankChange}
+      className="flex-1 p-2 border rounded-md"
+    />
+    <button
+     onClick={()=>{fetchifc(bankForm.ifsc_code)}}
+      type="button"
+      className="px-3 py-2 border rounded-md text-sm hover:bg-gray-100"
+    >
+      Fetch Bank Details
+    </button>
+  </div>
+</div>
+
+{/* Bank Name */}
+<div>
+  <label className="text-sm font-medium text-red-600">* Bank Name</label>
+  <input
+    name="bank_name"
+    value={bankForm.bank_name}
+    onChange={handleBankChange}
+    className="w-full mt-1 p-2 border rounded-md"
+  />
+</div>
+
+{/* Branch */}
+<div>
+  <label className="text-sm font-medium text-red-600">* Branch Name</label>
+  <input
+    name="branch_name"
+    value={bankForm.branch_name}
+    onChange={handleBankChange}
+    className="w-full mt-1 p-2 border rounded-md"
+  />
+</div>
+
+{/* UPI ID */}
+<div>
+  <label className="text-sm font-medium">
+  Prefered Transaction Type
+  </label>
+  <div className="flex gap-2">
+    <select
+      name="transaction_type"
+      value={bankForm.transaction_type}
+      onChange={handleBankChange}
+      
+      className="flex-1 p-2 border rounded-md"
+    >
+      <option>IMPS</option>
+      <option>NEFT</option>
+      <option>RTGS</option>
+    </select>
+
+  </div>
+</div>
+
+{/* UPI Number */}
+<div>
+  <label className="text-sm font-medium">
+  Nick Name
+  </label>
+  <input
+    name="nick_name"
+    value={bankForm.nick_name}
+    onChange={handleBankChange}
+    placeholder="Nick Name"
+    className="w-full mt-1 p-2 border rounded-md"
+  />
+</div>
+
+{/* Opening Balance */}
+{/* <div>
+  <label className="text-sm font-medium">
+    Opening Balance (Optional)
+  </label>
+  <input
+    name="opening_balance"
+    value={bankForm.opening_balance}
+    onChange={handleBankChange}
+    className="w-full mt-1 p-2 border rounded-md"
+  />
+</div> */}
+
+{/* Notes */}
+{/* <div>
+  <label className="text-sm font-medium">Notes</label>
+  <textarea
+    name="notes"
+    value={bankForm.notes}
+    onChange={handleBankChange}
+    rows={3}
+    placeholder="Beneficiary name, SWIFT code etc."
+    className="w-full mt-1 p-2 border rounded-md"
+  />
+</div> */}
+
+
+<div className="flex items-center gap-3">
+  <input
+    type="checkbox"
+    checked={bankForm.is_default}
+    onChange={handleToggle}
+    className="w-4 h-4"
+  />
+  <span className="text-sm">Set as default bank</span>
+</div>
+
+
+    </form>
+  </div>
+
+
+  <div
+    className={`flex justify-end gap-3 px-6 py-4 border-t flex-none
+      ${theme === "dark" ? "border-gray-700 bg-gray-900" : "border-gray-200 bg-white"}
+    `}
+  >
+    <button
+      onClick={() => setBankopen(false)}
+      className="px-5 py-2 rounded-lg border border-gray-300
+                 hover:bg-gray-100 dark:hover:bg-gray-700 transition text-sm"
+    >
+      Cancel
+    </button>
+
+    <button
+  onClick={() => {
+    if (isediting) {
+     
+      setAddedbank((prev) =>
+        prev.map((b, idx) =>
+          idx === editIndex ? bankForm : b
+        )
+      );
+    } else {
+      
+      setAddedbank((prev) => [...prev, bankForm]);
+    }
+
+   
+    setIsediting(false);
+    setEditIndex(null);
+    setBankopen(false);
+  }}
+  className="px-5 py-2 rounded-lg bg-blue-600 text-white
+             hover:bg-blue-700 shadow-md transition text-sm"
+>
+  {isediting ? "Update Bank" : "Save Bank"}
+</button>
+
+  </div>
+</div>
 
             {/* Info Section */}
             <motion.div

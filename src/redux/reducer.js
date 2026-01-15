@@ -1,4 +1,4 @@
-import { ADD_COMPANY ,GET_COMPANY,ADD_CUSTOMER,GET_CUSTOMER,ADD_MERCHANT,GET_MERCHANT,GET_PRODUCTS,ADD_CATEGORY,GET_CATEGORY,ADD_PRODUCT,GET_INVOICE, GET_EXPENSE,GET_PAYMENTS,ADD_EXP_CATEGORY,GET_EXP_CATEGORY, ADD_EXPENSE,ADD_BANK,GET_BANK,GET_WAREHOUSE,GET_INVENTORY_TIMELINE, ADD_INVOICE,ADD_SIGNATURE} from "./action";
+import { ADD_COMPANY ,GET_COMPANY,ADD_CUSTOMER,GET_CUSTOMER,ADD_MERCHANT,GET_MERCHANT,GET_PRODUCTS,ADD_CATEGORY,GET_CATEGORY,ADD_PRODUCT,GET_INVOICE, GET_EXPENSE,GET_PAYMENTS,ADD_EXP_CATEGORY,GET_EXP_CATEGORY, ADD_EXPENSE,ADD_BANK,GET_BANK,GET_WAREHOUSE,GET_INVENTORY_TIMELINE, ADD_INVOICE,ADD_SIGNATURE,GET_BANK_BY_IFSC} from "./action";
 
 
 const initialaddcomState ={
@@ -303,6 +303,26 @@ export const signatureReducer =(state=initialsignatureState,action)=>{
        
      } 
     else{
+        return state
+    }
+
+}
+
+const  ifscbybank ={
+    ifsc :[]
+}
+
+
+ export const ifscReducer =(state=ifscbybank,action)=>{
+
+    if (action.type===GET_BANK_BY_IFSC) {
+
+        return{
+            ...state,
+            ifsc:action.payload
+        }
+        
+    } else{
         return state
     }
 
